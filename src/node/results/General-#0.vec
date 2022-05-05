@@ -1,0 +1,642 @@
+version 2
+run General-0-20220503-19:44:37-24709
+attr configname General
+attr datetime 20220503-19:44:37
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network Fanet
+attr processid 24709
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param *.host[*].numApps 1
+param *.host[*].app[0].typename "\"PingApp\""
+param *.host[*].app[0].startTime uniform(1s,5s)
+param *.host[*].app[0].printPing true
+param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
+param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneImage "\"showcases/desert\""
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneImageSize 5000m
+param *.visualizer.osgVisualizer.sceneVisualizer.axisLength 1000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinX -2000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinY -2000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinZ 0m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxX 3000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxY 3000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxZ 1000m
+param *.visualizer.osgVisualizer.networkNodeVisualizer.displayModuleName false
+param *.visualizer.*.mobilityVisualizer.displayMobility true
+param *.visualizer.*.mobilityVisualizer.displayPositions true
+param *.visualizer.*.mobilityVisualizer.displayOrientations true
+param *.visualizer.*.mobilityVisualizer.displayVelocities true
+param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
+param *.visualizer.*.mobilityVisualizer.animationSpeed 1
+param **.constraintAreaMinX 0m
+param **.constraintAreaMinY 0m
+param **.constraintAreaMinZ 0m
+param **.constraintAreaMaxX 1000m
+param **.constraintAreaMaxY 1000m
+param **.constraintAreaMaxZ 1000m
+param *.visualizer.*.mediumVisualizer.signalPropagationAnimationSpeed 500/3e8
+param *.visualizer.*.mediumVisualizer.signalTransmissionAnimationSpeed 50000/3e8
+param *.visualizer.*.mediumVisualizer.displaySignals true
+param *.visualizer.*.mediumVisualizer.displayTransmissions true
+param *.visualizer.*.mediumVisualizer.displayReceptions true
+param *.visualizer.*.mediumVisualizer.transmissionPlacementPriority 10
+param *.visualizer.*.mediumVisualizer.receptionPlacementPriority 10
+param *.visualizer.*.mediumVisualizer.displaySignals true
+param *.visualizer.*.mediumVisualizer.signalFadingDistance 50m
+param *.visualizer.*.mediumVisualizer.signalRingSize 50m
+param *.visualizer.osgVisualizer.mediumVisualizer.signalShape "\"both\""
+param *.host[*].osgModel "\"3d/drone.ive.100.scale.0,0,90.rot\""
+param *.host[*].mobility.typename "\"MassMobility\""
+param *.host[*].mobility.changeInterval 1s
+param *.host[*].mobility.initialMovementHeading "uniform(0deg, 360deg)"
+param *.host[*].mobility.initialMovementElevation "uniform(-90deg, 90deg)"
+param *.host[*].mobility.angleDelta uniform(-10deg,10deg)
+param *.host[*].mobility.rotationAxisAngle uniform(-10deg,10deg)
+param *.host[*].mobility.speed uniform(10mps,20mps)
+param *.host[*].mobility.faceForward false
+param **.constraintAreaMinZ 200m
+
+vector 0 Fanet.host[0].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 1 Fanet.host[0].wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, vector"
+vector 2 Fanet.host[1].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 3 Fanet.host[1].wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, vector"
+vector 4 Fanet.host[2].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 5 Fanet.host[2].wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, vector"
+vector 6 Fanet.host[0].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 7 Fanet.host[1].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 8 Fanet.host[2].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 9 Fanet.host[0].wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr title "contention window, vector"
+vector 10 Fanet.host[1].wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr title "contention window, vector"
+vector 11 Fanet.host[2].wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr title "contention window, vector"
+vector 12 Fanet.host[1].wlan[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received from upper layer, vector(packetBytes)"
+vector 13 Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 14 Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 15 Fanet.host[1].wlan[0].mac.dcf.channelAccess.contention backoffPeriodGenerated:vector ETV
+attr interpolationmode none
+attr title "backoff periods, vector"
+vector 16 Fanet.host[1].wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
+attr interpolationmode sample-hold
+attr source count(backoffStarted)-count(backoffStopped)
+attr title "backoff active, vector"
+vector 17 Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 18 Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 19 Fanet.host[1].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetEnqueued) - count(packetDequeued)"
+attr title "queue length, vector"
+vector 20 Fanet.host[1].wlan[0].mac.dcf datarateSelected:vector ETV
+attr interpolationmode none
+attr title "datarates selected, vector"
+vector 21 Fanet.host[1].wlan[0].mac packetSentToLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 22 Fanet.host[1].wlan[0].mac.dcf frameSequenceActive:vector ETV
+attr interpolationmode sample-hold
+attr source count(frameSequenceStarted)-count(frameSequenceFinished)
+attr title "frame sequence active, vector"
+vector 23 Fanet.host[1].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 24 Fanet.host[1].wlan[0].mac.dcf packetSentToPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent, vector(packetBytes)"
+vector 25 Fanet.host[1].wlan[0].mac.dcf packetSentToPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, vector(packetBytes)"
+vector 26 Fanet.host[1].wlan[0].mac.dcf packetSentToPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, vector(packetBytes)"
+vector 27 Fanet.host[1].wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetDequeued)
+attr title "queueing times, vector"
+vector 28 Fanet.host[0].wlan[0].mac packetReceivedFromLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 29 Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received, vector(packetBytes)"
+vector 30 Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Multicast(packetReceivedFromPeer)
+attr title "packets received: multicast, vector(packetBytes)"
+vector 31 Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, vector(packetBytes)"
+vector 32 Fanet.host[0].wlan[0].mac packetSentToUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent to upper layer, vector(packetBytes)"
+vector 33 Fanet.host[2].wlan[0].mac packetReceivedFromLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 34 Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received, vector(packetBytes)"
+vector 35 Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Multicast(packetReceivedFromPeer)
+attr title "packets received: multicast, vector(packetBytes)"
+vector 36 Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, vector(packetBytes)"
+vector 37 Fanet.host[2].wlan[0].mac packetSentToUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent to upper layer, vector(packetBytes)"
+vector 38 Fanet.host[0].wlan[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received from upper layer, vector(packetBytes)"
+vector 39 Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 40 Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 41 Fanet.host[0].wlan[0].mac.dcf.channelAccess.contention backoffPeriodGenerated:vector ETV
+attr interpolationmode none
+attr title "backoff periods, vector"
+vector 42 Fanet.host[0].wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
+attr interpolationmode sample-hold
+attr source count(backoffStarted)-count(backoffStopped)
+attr title "backoff active, vector"
+vector 43 Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 44 Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 45 Fanet.host[0].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetEnqueued) - count(packetDequeued)"
+attr title "queue length, vector"
+vector 46 Fanet.host[0].wlan[0].mac.dcf datarateSelected:vector ETV
+attr interpolationmode none
+attr title "datarates selected, vector"
+vector 47 Fanet.host[0].wlan[0].mac packetSentToLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 48 Fanet.host[0].wlan[0].mac.dcf frameSequenceActive:vector ETV
+attr interpolationmode sample-hold
+attr source count(frameSequenceStarted)-count(frameSequenceFinished)
+attr title "frame sequence active, vector"
+vector 49 Fanet.host[0].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 50 Fanet.host[0].wlan[0].mac.dcf packetSentToPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent, vector(packetBytes)"
+vector 51 Fanet.host[0].wlan[0].mac.dcf packetSentToPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, vector(packetBytes)"
+vector 52 Fanet.host[0].wlan[0].mac.dcf packetSentToPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, vector(packetBytes)"
+vector 53 Fanet.host[0].wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetDequeued)
+attr title "queueing times, vector"
+vector 54 Fanet.host[1].wlan[0].mac packetReceivedFromLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 55 Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received, vector(packetBytes)"
+vector 56 Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Multicast(packetReceivedFromPeer)
+attr title "packets received: multicast, vector(packetBytes)"
+vector 57 Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211NotRetry(packetReceivedFromPeer)
+attr title "packets received: without retry, vector(packetBytes)"
+vector 58 Fanet.host[1].wlan[0].mac packetSentToUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent to upper layer, vector(packetBytes)"
+vector 59 Fanet.host[2].wlan[0].mac packetReceivedFromUpper:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets received from upper layer, vector(packetBytes)"
+vector 60 Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 61 Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 62 Fanet.host[2].wlan[0].mac.dcf.channelAccess.contention backoffPeriodGenerated:vector ETV
+attr interpolationmode none
+attr title "backoff periods, vector"
+vector 63 Fanet.host[2].wlan[0].mac.dcf.channelAccess.contention backoffActive:vector ETV
+attr interpolationmode sample-hold
+attr source count(backoffStarted)-count(backoffStopped)
+attr title "backoff active, vector"
+vector 64 Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 65 Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 66 Fanet.host[2].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetEnqueued) - count(packetDequeued)"
+attr title "queue length, vector"
+vector 67 Fanet.host[2].wlan[0].mac.dcf datarateSelected:vector ETV
+attr interpolationmode none
+attr title "datarates selected, vector"
+vector 68 Fanet.host[2].wlan[0].mac packetSentToLower:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 69 Fanet.host[2].wlan[0].mac.dcf frameSequenceActive:vector ETV
+attr interpolationmode sample-hold
+attr source count(frameSequenceStarted)-count(frameSequenceFinished)
+attr title "frame sequence active, vector"
+vector 70 Fanet.host[2].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 71 Fanet.host[2].wlan[0].mac.dcf packetSentToPeer:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packets sent, vector(packetBytes)"
+vector 72 Fanet.host[2].wlan[0].mac.dcf packetSentToPeerMulticast:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211Multicast(packetSentToPeer)
+attr title "packets sent: multicast, vector(packetBytes)"
+vector 73 Fanet.host[2].wlan[0].mac.dcf packetSentToPeerWithoutRetry:vector(packetBytes) ETV
+attr interpolationmode none
+attr source ieee80211NotRetry(packetSentToPeer)
+attr title "packets sent: without retry, vector(packetBytes)"
+vector 74 Fanet.host[2].wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetDequeued)
+attr title "queueing times, vector"
+0	0	0	0
+0	0	0	0
+0	0	0	2
+0	432	13.442657440901	3
+0	437	13.442711440901	2
+0	777	22.679205408786	3
+0	782	22.679259408786	2
+1	0	0	0
+2	0	0	0
+2	0	0	0
+2	0	0	2
+2	337	11.027633703779	3
+2	342	11.027687703779	2
+2	718	21.476465477608	3
+2	723	21.476519477608	2
+2	1069	30.85233757738	3
+2	1074	30.85239157738	2
+3	0	0	0
+4	0	0	0
+4	0	0	0
+4	0	0	2
+4	458	13.579456198495	3
+4	463	13.579510198495	2
+4	872	25.038397349417	3
+4	877	25.038451349417	2
+5	0	0	0
+6	0	0	1
+6	339	11.027635550489	3
+6	343	11.027689550489	1
+6	432	13.442657440901	0
+6	437	13.442711440901	1
+6	461	13.579458628638	3
+6	469	13.579512628638	1
+6	720	21.476467132956	3
+6	724	21.476521132956	1
+6	777	22.679205408786	0
+6	782	22.679259408786	1
+6	874	25.038399655044	3
+6	878	25.038453655044	1
+6	1071	30.852339217871	3
+6	1075	30.852393217871	1
+7	0	0	1
+7	337	11.027633703779	0
+7	342	11.027687703779	1
+7	434	13.442659227201	3
+7	438	13.442713227201	1
+7	460	13.579458511397	3
+7	464	13.579512511397	1
+7	718	21.476465477608	0
+7	723	21.476519477608	1
+7	779	22.679207046505	3
+7	783	22.679261046505	1
+7	875	25.038399870157	3
+7	883	25.038453870157	1
+7	1069	30.85233757738	0
+7	1074	30.85239157738	1
+8	0	0	1
+8	340	11.027635991155	3
+8	348	11.027689991155	1
+8	435	13.442659869313	3
+8	443	13.442713869313	1
+8	458	13.579456198495	0
+8	463	13.579510198495	1
+8	721	21.476468045198	3
+8	729	21.476522045198	1
+8	780	22.679207849711	3
+8	788	22.679261849711	1
+8	872	25.038397349417	0
+8	877	25.038451349417	1
+8	1072	30.852340024174	3
+8	1080	30.852394024174	1
+9	0	0	31
+10	0	0	31
+11	0	0	31
+12	334	11.027633703779	48
+12	715	21.476465477608	48
+12	1066	30.85233757738	48
+13	334	11.027633703779	76
+13	715	21.476465477608	76
+13	1066	30.85233757738	76
+14	334	11.027633703779	1
+14	336	11.027633703779	0
+14	715	21.476465477608	1
+14	717	21.476465477608	0
+14	1066	30.85233757738	1
+14	1068	30.85233757738	0
+15	334	11.027633703779	7
+15	715	21.476465477608	23
+15	1066	30.85233757738	1
+16	334	11.027633703779	1
+16	335	11.027633703779	0
+16	715	21.476465477608	1
+16	716	21.476465477608	0
+16	1066	30.85233757738	1
+16	1067	30.85233757738	0
+17	336	11.027633703779	76
+17	717	21.476465477608	76
+17	1068	30.85233757738	76
+18	336	11.027633703779	0
+18	717	21.476465477608	0
+18	1068	30.85233757738	0
+19	336	11.027633703779	1
+19	341	11.027687703779	0
+19	717	21.476465477608	1
+19	722	21.476519477608	0
+19	1068	30.85233757738	1
+19	1073	30.85239157738	0
+20	336	11.027633703779	24000000
+20	717	21.476465477608	24000000
+20	1068	30.85233757738	24000000
+21	336	11.027633703779	76
+21	717	21.476465477608	76
+21	1068	30.85233757738	76
+22	336	11.027633703779	1
+22	341	11.027687703779	0
+22	717	21.476465477608	1
+22	722	21.476519477608	0
+22	1068	30.85233757738	1
+22	1073	30.85239157738	0
+23	337	11.027633703779	1
+23	338	11.027633703779	2
+23	341	11.027687703779	1
+23	342	11.027687703779	0
+23	718	21.476465477608	1
+23	719	21.476465477608	2
+23	722	21.476519477608	1
+23	723	21.476519477608	0
+23	1069	30.85233757738	1
+23	1070	30.85233757738	2
+23	1073	30.85239157738	1
+23	1074	30.85239157738	0
+24	341	11.027687703779	76
+24	722	21.476519477608	76
+24	1073	30.85239157738	76
+25	341	11.027687703779	76
+25	722	21.476519477608	76
+25	1073	30.85239157738	76
+26	341	11.027687703779	76
+26	722	21.476519477608	76
+26	1073	30.85239157738	76
+27	341	11.027687703779	5.4e-05
+27	722	21.476519477608	5.4e-05
+27	1073	30.85239157738	5.4e-05
+28	344	11.027689550489	76
+28	470	13.579512628638	76
+28	725	21.476521132956	76
+28	879	25.038453655044	76
+28	1076	30.852393217871	76
+29	344	11.027689550489	76
+29	470	13.579512628638	76
+29	725	21.476521132956	76
+29	879	25.038453655044	76
+29	1076	30.852393217871	76
+30	344	11.027689550489	76
+30	470	13.579512628638	76
+30	725	21.476521132956	76
+30	879	25.038453655044	76
+30	1076	30.852393217871	76
+31	344	11.027689550489	76
+31	470	13.579512628638	76
+31	725	21.476521132956	76
+31	879	25.038453655044	76
+31	1076	30.852393217871	76
+32	344	11.027689550489	48
+32	470	13.579512628638	48
+32	725	21.476521132956	48
+32	879	25.038453655044	48
+32	1076	30.852393217871	48
+33	349	11.027689991155	76
+33	444	13.442713869313	76
+33	730	21.476522045198	76
+33	789	22.679261849711	76
+33	1081	30.852394024174	76
+34	349	11.027689991155	76
+34	444	13.442713869313	76
+34	730	21.476522045198	76
+34	789	22.679261849711	76
+34	1081	30.852394024174	76
+35	349	11.027689991155	76
+35	444	13.442713869313	76
+35	730	21.476522045198	76
+35	789	22.679261849711	76
+35	1081	30.852394024174	76
+36	349	11.027689991155	76
+36	444	13.442713869313	76
+36	730	21.476522045198	76
+36	789	22.679261849711	76
+36	1081	30.852394024174	76
+37	349	11.027689991155	48
+37	444	13.442713869313	48
+37	730	21.476522045198	48
+37	789	22.679261849711	48
+37	1081	30.852394024174	48
+38	429	13.442657440901	48
+38	774	22.679205408786	48
+39	429	13.442657440901	76
+39	774	22.679205408786	76
+40	429	13.442657440901	1
+40	431	13.442657440901	0
+40	774	22.679205408786	1
+40	776	22.679205408786	0
+41	429	13.442657440901	19
+41	774	22.679205408786	24
+42	429	13.442657440901	1
+42	430	13.442657440901	0
+42	774	22.679205408786	1
+42	775	22.679205408786	0
+43	431	13.442657440901	76
+43	776	22.679205408786	76
+44	431	13.442657440901	0
+44	776	22.679205408786	0
+45	431	13.442657440901	1
+45	436	13.442711440901	0
+45	776	22.679205408786	1
+45	781	22.679259408786	0
+46	431	13.442657440901	24000000
+46	776	22.679205408786	24000000
+47	431	13.442657440901	76
+47	776	22.679205408786	76
+48	431	13.442657440901	1
+48	436	13.442711440901	0
+48	776	22.679205408786	1
+48	781	22.679259408786	0
+49	432	13.442657440901	1
+49	433	13.442657440901	2
+49	436	13.442711440901	1
+49	437	13.442711440901	0
+49	777	22.679205408786	1
+49	778	22.679205408786	2
+49	781	22.679259408786	1
+49	782	22.679259408786	0
+50	436	13.442711440901	76
+50	781	22.679259408786	76
+51	436	13.442711440901	76
+51	781	22.679259408786	76
+52	436	13.442711440901	76
+52	781	22.679259408786	76
+53	436	13.442711440901	5.4e-05
+53	781	22.679259408786	5.4e-05
+54	439	13.442713227201	76
+54	465	13.579512511397	76
+54	784	22.679261046505	76
+54	884	25.038453870157	76
+55	439	13.442713227201	76
+55	465	13.579512511397	76
+55	784	22.679261046505	76
+55	884	25.038453870157	76
+56	439	13.442713227201	76
+56	465	13.579512511397	76
+56	784	22.679261046505	76
+56	884	25.038453870157	76
+57	439	13.442713227201	76
+57	465	13.579512511397	76
+57	784	22.679261046505	76
+57	884	25.038453870157	76
+58	439	13.442713227201	48
+58	465	13.579512511397	48
+58	784	22.679261046505	48
+58	884	25.038453870157	48
+59	455	13.579456198495	48
+59	869	25.038397349417	48
+60	455	13.579456198495	76
+60	869	25.038397349417	76
+61	455	13.579456198495	1
+61	457	13.579456198495	0
+61	869	25.038397349417	1
+61	871	25.038397349417	0
+62	455	13.579456198495	18
+62	869	25.038397349417	12
+63	455	13.579456198495	1
+63	456	13.579456198495	0
+63	869	25.038397349417	1
+63	870	25.038397349417	0
+64	457	13.579456198495	76
+64	871	25.038397349417	76
+65	457	13.579456198495	0
+65	871	25.038397349417	0
+66	457	13.579456198495	1
+66	462	13.579510198495	0
+66	871	25.038397349417	1
+66	876	25.038451349417	0
+67	457	13.579456198495	24000000
+67	871	25.038397349417	24000000
+68	457	13.579456198495	76
+68	871	25.038397349417	76
+69	457	13.579456198495	1
+69	462	13.579510198495	0
+69	871	25.038397349417	1
+69	876	25.038451349417	0
+70	458	13.579456198495	1
+70	459	13.579456198495	2
+70	462	13.579510198495	1
+70	463	13.579510198495	0
+70	872	25.038397349417	1
+70	873	25.038397349417	2
+70	876	25.038451349417	1
+70	877	25.038451349417	0
+71	462	13.579510198495	76
+71	876	25.038451349417	76
+72	462	13.579510198495	76
+72	876	25.038451349417	76
+73	462	13.579510198495	76
+73	876	25.038451349417	76
+74	462	13.579510198495	5.4e-05
+74	876	25.038451349417	5.4e-05
+

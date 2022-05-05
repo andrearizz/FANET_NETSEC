@@ -1,0 +1,106 @@
+file 4619 1651591282                                            
+version 2
+run General-0-20220503-17:07:38-16857
+attr configname General
+attr datetime 20220503-17:07:38
+attr experiment General
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network Fanet
+attr processid 16857
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param *.host[*].numApps 1
+param *.host[*].app[0].typename "\"PingApp\""
+param *.host[*].app[0].startTime uniform(1s,5s)
+param *.host[*].app[0].printPing true
+param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
+param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneImage "\"showcases/desert\""
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneImageSize 5000m
+param *.visualizer.osgVisualizer.sceneVisualizer.axisLength 1000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinX -2000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinY -2000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinZ 0m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxX 3000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxY 3000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxZ 1000m
+param *.visualizer.osgVisualizer.networkNodeVisualizer.displayModuleName false
+param *.visualizer.*.mobilityVisualizer.displayMobility true
+param *.visualizer.*.mobilityVisualizer.displayPositions true
+param *.visualizer.*.mobilityVisualizer.displayOrientations true
+param *.visualizer.*.mobilityVisualizer.displayVelocities true
+param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
+param *.visualizer.*.mobilityVisualizer.animationSpeed 1
+param **.constraintAreaMinX 0m
+param **.constraintAreaMinY 0m
+param **.constraintAreaMinZ 0m
+param **.constraintAreaMaxX 1000m
+param **.constraintAreaMaxY 1000m
+param **.constraintAreaMaxZ 1000m
+param *.visualizer.*.mediumVisualizer.signalPropagationAnimationSpeed 500/3e8
+param *.visualizer.*.mediumVisualizer.signalTransmissionAnimationSpeed 50000/3e8
+param *.visualizer.*.mediumVisualizer.displaySignals true
+param *.visualizer.*.mediumVisualizer.displayTransmissions true
+param *.visualizer.*.mediumVisualizer.displayReceptions true
+param *.visualizer.*.mediumVisualizer.transmissionPlacementPriority 10
+param *.visualizer.*.mediumVisualizer.receptionPlacementPriority 10
+param *.visualizer.*.mediumVisualizer.displaySignals true
+param *.visualizer.*.mediumVisualizer.signalFadingDistance 50m
+param *.visualizer.*.mediumVisualizer.signalRingSize 50m
+param *.visualizer.osgVisualizer.mediumVisualizer.signalShape "\"both\""
+param *.host[*].osgModel "\"3d/drone.ive.100.scale.0,0,90.rot\""
+param *.host[*].mobility.typename "\"MassMobility\""
+param *.host[*].mobility.changeInterval 1s
+param *.host[*].mobility.initialMovementHeading "uniform(0deg, 360deg)"
+param *.host[*].mobility.initialMovementElevation "uniform(-90deg, 90deg)"
+param *.host[*].mobility.angleDelta uniform(-10deg,10deg)
+param *.host[*].mobility.rotationAxisAngle uniform(-10deg,10deg)
+param *.host[*].mobility.speed uniform(10mps,20mps)
+param *.host[*].mobility.faceForward false
+param **.constraintAreaMinZ 200m
+
+vector 0 Fanet.host[0].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 1 Fanet.host[0].wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, vector"
+vector 2 Fanet.host[1].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 3 Fanet.host[1].wlan[0].radio radioChannel:vector ETV
+attr interpolationmode sample-hold
+attr source radioChannelChanged
+attr title "Radio channel, vector"
+vector 4 Fanet.host[0].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 5 Fanet.host[1].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 6 Fanet.host[0].wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr title "contention window, vector"
+vector 7 Fanet.host[1].wlan[0].mac.dcf.recoveryProcedure contentionWindowChanged:vector ETV
+attr interpolationmode sample-hold
+attr title "contention window, vector"
+0	4520 24 0 0 0 0 3 0 2 2 4
+1	4544 8 0 0 0 0 1 0 0 0 0
+2	4552 24 0 0 0 0 3 0 2 2 4
+3	4576 8 0 0 0 0 1 0 0 0 0
+4	4584 8 0 0 0 0 1 1 1 1 1
+5	4592 8 0 0 0 0 1 1 1 1 1
+6	4600 9 0 0 0 0 1 31 31 31 961
+7	4609 9 0 0 0 0 1 31 31 31 961
+
