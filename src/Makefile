@@ -34,7 +34,7 @@ PROJECTRELATIVE_PATH = src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc, .msg and .sm files
-OBJS = $O/gpsr/Gpsr.o $O/gpsr/PositionTable.o $O/gpsr/Gpsr_m.o
+OBJS = $O/gpsr/Gpsr.o $O/gpsr/PositionTable.o $O/gpsrSybil/GpsrSybil.o $O/gpsr/Gpsr_m.o
 
 # Message files
 MSGFILES = \

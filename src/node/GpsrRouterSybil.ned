@@ -14,32 +14,18 @@
 // 
 
 package progetto2.node;
-import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
-import inet.physicallayer.ieee80211.packetlevel.Ieee80211ScalarRadioMedium;
-import inet.visualizer.integrated.IntegratedVisualizer;
 
-network Fanet
+import inet.node.inet.AdhocHost;
+import progetto2.gpsrSybil.GpsrSybil;
+
+module GpsrRouterSybil extends AdhocHost
 {
-    parameters:
-
-        int numHosts;
-		int numAttackers;
-
     submodules:
-
-        visualizer: IntegratedVisualizer {
-            @display("p=100,50");
+        gpsr: GpsrSybil {
+            parameters:
+                @display("p=825,226");
         }
-
-        host[numHosts]: Drone;
-        configurator: Ipv4NetworkConfigurator {
-            @display("p=98,250");
-        }
-        
-        attacker[numAttackers]: Sybil;
-        
-        
-        radioMedium: Ieee80211ScalarRadioMedium {
-            @display("p=103,143");
-        }
+    connections:
+        gpsr.ipOut --> tn.in++;
+        gpsr.ipIn <-- tn.out++;
 }
