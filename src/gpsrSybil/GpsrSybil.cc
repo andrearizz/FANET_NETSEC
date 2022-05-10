@@ -169,6 +169,7 @@ void GpsrSybil::processBeaconTimer()
     const L3Address selfAddress = getSelfAddress();
     if (!selfAddress.isUnspecified()) {
         sendBeacon(createBeaconSybil(("host["+std::to_string(rand() % 3) + "]").c_str()));
+        //sendBeacon(createBeaconSybil(("host["+std::to_string(2) + "]").c_str()));
         storeSelfPositionInGlobalRegistry();
     }
     scheduleBeaconTimer();

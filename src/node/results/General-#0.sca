@@ -1,27 +1,39 @@
 version 2
-run General-0-20220506-12:41:17-30134
+run General-0-20220510-18:41:56-94479
 attr configname General
-attr datetime 20220506-12:41:17
+attr datetime 20220510-18:41:56
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network Fanet
-attr processid 30134
+attr processid 94479
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
-param *.host[*].numApps 1
-param *.host[*].app[0].typename "\"PingApp\""
-param *.host[*].app[0].startTime uniform(1s,5s)
-param *.host[*].app[0].printPing true
-param *.attacker[*].numApps 1
-param *.attacker[*].app[0].typename "\"PingApp\""
-param *.attacker[*].app[0].startTime uniform(1s,5s)
-param *.attacker[*].app[0].printPing true
+param *.host[0].numApps 1
+param *.host[0].app[0].typename "\"UdpBasicApp\""
+param *.host[0].app[0].destAddresses "\"host[2]\""
+param *.host[0].app[0].destPort 5000
+param *.host[0].app[0].messageLength 1000B
+param *.host[0].app[0].sendInterval exponential(1s)
+param *.host[0].app[0].packetName "\"UDPdata\""
+param *.host[2].numApps 1
+param *.host[2].app[0].typename "\"UdpSink\""
+param *.host[2].app[0].localPort 5000
+param **.wlan[*].bitrate 24Mbps
+param *.configurator.addStaticRoutes false
+param **.netmaskRoutes "\"\""
+param **.arp.typename "\"GlobalArp\""
+param *.host*.wlan[0].typename "\"AckingWirelessInterface\""
+param *.host*.wlan[0].radio.transmitter.communicationRange 450m
+param *.host*.wlan[0].radio.displayCommunicationRange true
+param *.attacker*.wlan[0].typename "\"AckingWirelessInterface\""
+param *.attacker*.wlan[0].radio.transmitter.communicationRange 450m
+param *.attacker*.wlan[0].radio.displayCommunicationRange true
 param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
 param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
 param *.visualizer.osgVisualizer.sceneVisualizer.sceneImage "\"showcases/desert\""
@@ -42,6 +54,7 @@ param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
 param *.visualizer.*.mobilityVisualizer.animationSpeed 1
 param *.visualizer.*.packetDropVisualizer.displayPacketDrops true
 param *.visualizer.*.packetDropVisualizer.labelFormat "\"%n/reason: %r\""
+param *.visualizer.*.packetDropVisualizer.fadeOutTime 10s
 param **.constraintAreaMinX 0m
 param **.constraintAreaMinY 0m
 param **.constraintAreaMinZ 0m
@@ -76,7 +89,6 @@ param *.attacker[*].mobility.angleDelta uniform(-10deg,10deg)
 param *.attacker[*].mobility.rotationAxisAngle uniform(-10deg,10deg)
 param *.attacker[*].mobility.speed uniform(10mps,20mps)
 param *.attacker[*].mobility.faceForward false
-param **.constraintAreaMinZ 200m
 
 scalar Fanet.host[0].lo[0].lo rcvdPkFromHl:count 0
 attr interpolationmode none
@@ -94,16 +106,16 @@ scalar Fanet.host[0].lo[0].lo passedUpPk:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed to higher layer, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:count 1
+scalar Fanet.host[0].wlan[0].mac.queue packetPopped:count 8
 attr interpolationmode none
 attr title "packet popped, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:sum(packetBytes) 76
+scalar Fanet.host[0].wlan[0].mac.queue packetPopped:sum(packetBytes) 7516
 attr interpolationmode none
 attr title "packet popped, sum(packetBytes)"
-statistic Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:histogram
-field count 1
+statistic Fanet.host[0].wlan[0].mac.queue queueingTime:histogram
+field count 8
 field mean 0
-field stddev nan
+field stddev 0
 field min 0
 field max 0
 field sum 0
@@ -138,7 +150,7 @@ bin	-0.08	0
 bin	-0.06	0
 bin	-0.04	0
 bin	-0.02	0
-bin	0	1
+bin	0	8
 bin	0.02	0
 bin	0.04	0
 bin	0.06	0
@@ -164,588 +176,121 @@ bin	0.44	0
 bin	0.46	0
 bin	0.48	0
 bin	0.5	0
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:max 1
+scalar Fanet.host[0].wlan[0].mac.queue queueLength:max 1
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, max"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:timeavg 0
+scalar Fanet.host[0].wlan[0].mac.queue queueLength:timeavg 0
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, timeavg"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:count 1
+scalar Fanet.host[0].wlan[0].mac.queue packetPushed:count 8
 attr interpolationmode none
 attr title "packet pushed, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:sum(packetBytes) 76
+scalar Fanet.host[0].wlan[0].mac.queue packetPushed:sum(packetBytes) 7516
 attr interpolationmode none
 attr title "packet pushed, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:count 0
+scalar Fanet.host[0].wlan[0].mac.queue packetDropQueueOverflow:count 0
 attr interpolationmode none
 attr source packetDropReasonIsQueueOverflow(packetDropped)
 attr title "packet drops: queue overflow, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:sum(packetBytes) 0
+scalar Fanet.host[0].wlan[0].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsQueueOverflow(packetDropped)
 attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:count 0
+scalar Fanet.host[0].wlan[0].mac.queue packetRemoved:count 0
 attr interpolationmode none
 attr title "packets removed, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:sum(packetBytes) 0
+scalar Fanet.host[0].wlan[0].mac.queue packetRemoved:sum(packetBytes) 0
 attr interpolationmode none
 attr title "packets removed, sum(packetBytes)"
-statistic Fanet.host[0].wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:histogram
-field count 1
-field mean 5.4e-05
-field stddev nan
-field min 5.4e-05
-field max 5.4e-05
-field sum 5.4e-05
-field sqrsum 2.916e-09
+scalar Fanet.host[0].wlan[0].mac rcvdPkFromLl:count 2
 attr interpolationmode none
-attr source queueingTime(packetDequeued)
-attr title "queueing times, histogram"
-bin	-inf	0
-bin	0	1
-bin	0.01	0
-bin	0.02	0
-bin	0.03	0
-bin	0.04	0
-bin	0.05	0
-bin	0.06	0
-bin	0.07	0
-bin	0.08	0
-bin	0.09	0
-bin	0.1	0
-bin	0.11	0
-bin	0.12	0
-bin	0.13	0
-bin	0.14	0
-bin	0.15	0
-bin	0.16	0
-bin	0.17	0
-bin	0.18	0
-bin	0.19	0
-bin	0.2	0
-bin	0.21	0
-bin	0.22	0
-bin	0.23	0
-bin	0.24	0
-bin	0.25	0
-bin	0.26	0
-bin	0.27	0
-bin	0.28	0
-bin	0.29	0
-bin	0.3	0
-bin	0.31	0
-bin	0.32	0
-bin	0.33	0
-bin	0.34	0
-bin	0.35	0
-bin	0.36	0
-bin	0.37	0
-bin	0.38	0
-bin	0.39	0
-bin	0.4	0
-bin	0.41	0
-bin	0.42	0
-bin	0.43	0
-bin	0.44	0
-bin	0.45	0
-bin	0.46	0
-bin	0.47	0
-bin	0.48	0
-bin	0.49	0
-bin	0.5	0
-bin	0.51	0
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:max 1
-attr interpolationmode sample-hold
-attr source "count(packetEnqueued) - count(packetDequeued)"
-attr title "queue length, max"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:timeavg 6.2371882929619e-06
-attr interpolationmode sample-hold
-attr source "count(packetEnqueued) - count(packetDequeued)"
-attr title "queue length, timeavg"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.contention channelAccessGranted:count 1
-attr title "channel access granted, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess.contention stateChanged:count 24
-attr interpolationmode none
-attr title "contention state changed, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.channelAccess channelOwnershipChanged:count 2
-attr interpolationmode sample-hold
-attr title "channel ownership, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.originatorMacDataService packetAggregated:count 0
-attr title "packets aggregated, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.originatorMacDataService packetFragmented:count 0
-attr title "packets fragmented, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.recipientMacDataService packetDeaggregated:count 0
-attr title "packets deaggregated, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.recipientMacDataService packetDefragmented:count 3
-attr title "packets defragmented, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:count 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, count"
-scalar Fanet.host[0].wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf.recoveryProcedure retryLimitReached:count 0
-attr title "retry limit reached, count"
-scalar Fanet.host[0].wlan[0].mac.dcf frameSequenceFinished:count 1
-attr title "finished frame sequences, count"
-statistic Fanet.host[0].wlan[0].mac.dcf frameSequenceDuration:histogram
-field count 1
-field mean 5.4e-05
-field stddev nan
-field min 5.4e-05
-field max 5.4e-05
-field sum 5.4e-05
-field sqrsum 2.916e-09
-attr source frameSequenceDuration(frameSequenceFinished)
-attr title "frame sequence durations, histogram"
-bin	-inf	0
-bin	0	1
-bin	0.01	0
-bin	0.02	0
-bin	0.03	0
-bin	0.04	0
-bin	0.05	0
-bin	0.06	0
-bin	0.07	0
-bin	0.08	0
-bin	0.09	0
-bin	0.1	0
-bin	0.11	0
-bin	0.12	0
-bin	0.13	0
-bin	0.14	0
-bin	0.15	0
-bin	0.16	0
-bin	0.17	0
-bin	0.18	0
-bin	0.19	0
-bin	0.2	0
-bin	0.21	0
-bin	0.22	0
-bin	0.23	0
-bin	0.24	0
-bin	0.25	0
-bin	0.26	0
-bin	0.27	0
-bin	0.28	0
-bin	0.29	0
-bin	0.3	0
-bin	0.31	0
-bin	0.32	0
-bin	0.33	0
-bin	0.34	0
-bin	0.35	0
-bin	0.36	0
-bin	0.37	0
-bin	0.38	0
-bin	0.39	0
-bin	0.4	0
-bin	0.41	0
-bin	0.42	0
-bin	0.43	0
-bin	0.44	0
-bin	0.45	0
-bin	0.46	0
-bin	0.47	0
-bin	0.48	0
-bin	0.49	0
-bin	0.5	0
-bin	0.51	0
-statistic Fanet.host[0].wlan[0].mac.dcf frameSequenceNumPackets:histogram
-field count 1
-field mean 1
-field stddev nan
-field min 1
-field max 1
-field sum 1
-field sqrsum 1
-attr source frameSequenceNumPackets(frameSequenceFinished)
-attr title "frame sequences: number of packets, histogram"
-bin	-inf	0
-bin	0	0
-bin	1	1
-bin	2	0
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeer:count 3
-attr interpolationmode none
-attr title "packets received, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeer:sum(packetBytes) 228
-attr interpolationmode none
-attr title "packets received, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerUnicast:count 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetReceivedFromPeer)
-attr title "packets received: unicast, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerUnicast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetReceivedFromPeer)
-attr title "packets received: unicast, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerMulticast:count 3
-attr interpolationmode none
-attr source ieee80211Multicast(packetReceivedFromPeer)
-attr title "packets received: multicast, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerMulticast:sum(packetBytes) 228
-attr interpolationmode none
-attr source ieee80211Multicast(packetReceivedFromPeer)
-attr title "packets received: multicast, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerBroadcast:count 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetReceivedFromPeer)
-attr title "packets received: broadcast, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerBroadcast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetReceivedFromPeer)
-attr title "packets received: broadcast, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerWithRetry:count 0
-attr interpolationmode none
-attr source ieee80211Retry(packetReceivedFromPeer)
-attr title "packets received: with retry, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerWithRetry:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Retry(packetReceivedFromPeer)
-attr title "packets received: with retry, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:count 3
-attr interpolationmode none
-attr source ieee80211NotRetry(packetReceivedFromPeer)
-attr title "packets received: without retry, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:sum(packetBytes) 228
-attr interpolationmode none
-attr source ieee80211NotRetry(packetReceivedFromPeer)
-attr title "packets received: without retry, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeer:count 1
-attr interpolationmode none
-attr title "packets sent, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeer:sum(packetBytes) 76
-attr interpolationmode none
-attr title "packets sent, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeerUnicast:count 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetSentToPeer)
-attr title "packets sent: unicast, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeerUnicast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetSentToPeer)
-attr title "packets sent: unicast, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeerMulticast:count 1
-attr interpolationmode none
-attr source ieee80211Multicast(packetSentToPeer)
-attr title "packets sent: multicast, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeerMulticast:sum(packetBytes) 76
-attr interpolationmode none
-attr source ieee80211Multicast(packetSentToPeer)
-attr title "packets sent: multicast, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeerBroadcast:count 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetSentToPeer)
-attr title "packets sent: broadcast , count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeerBroadcast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetSentToPeer)
-attr title "packets sent: broadcast , sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeerWithRetry:count 0
-attr interpolationmode none
-attr source ieee80211Retry(packetSentToPeer)
-attr title "packets sent: with retry, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeerWithRetry:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Retry(packetSentToPeer)
-attr title "packets sent: with retry, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeerWithoutRetry:count 1
-attr interpolationmode none
-attr source ieee80211NotRetry(packetSentToPeer)
-attr title "packets sent: without retry, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetSentToPeerWithoutRetry:sum(packetBytes) 76
-attr interpolationmode none
-attr source ieee80211NotRetry(packetSentToPeer)
-attr title "packets sent: without retry, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetDrop:count 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetDrop:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetDropNotAddressedToUs:count 0
-attr interpolationmode none
-attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetDropNotAddressedToUs:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetDropQueueOverflow:count 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetDropQueueOverflow:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf packetDropRetryLimitReached:count 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, count"
-scalar Fanet.host[0].wlan[0].mac.dcf packetDropRetryLimitReached:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac.dcf linkBroken:count 0
-attr interpolationmode none
-attr title "link breaks, count"
-scalar Fanet.host[0].wlan[0].mac packetReceivedFromLower:count 3
-attr interpolationmode none
+attr source packetReceivedFromLower
 attr title "packets received from lower layer, count"
-scalar Fanet.host[0].wlan[0].mac packetReceivedFromLower:sum(packetBytes) 228
+scalar Fanet.host[0].wlan[0].mac rcvdPkFromLl:sum(packetBytes) 112
 attr interpolationmode none
+attr source packetReceivedFromLower
 attr title "packets received from lower layer, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac packetSentToLower:count 1
+scalar Fanet.host[0].wlan[0].mac sentDownPk:count 8
 attr interpolationmode none
+attr source packetSentToLower
 attr title "packets sent to lower layer, count"
-scalar Fanet.host[0].wlan[0].mac packetSentToLower:sum(packetBytes) 76
+scalar Fanet.host[0].wlan[0].mac sentDownPk:sum(packetBytes) 7644
 attr interpolationmode none
+attr source packetSentToLower
 attr title "packets sent to lower layer, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac packetReceivedFromUpper:count 1
+scalar Fanet.host[0].wlan[0].mac rcvdPkFromHl:count 8
 attr interpolationmode none
-attr title "packets received from upper layer, count"
-scalar Fanet.host[0].wlan[0].mac packetReceivedFromUpper:sum(packetBytes) 48
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, count"
+scalar Fanet.host[0].wlan[0].mac rcvdPkFromHl:sum(packetBytes) 7516
 attr interpolationmode none
-attr title "packets received from upper layer, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac packetSentToUpper:count 3
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, sum(packetBytes)"
+scalar Fanet.host[0].wlan[0].mac passedUpPk:count 2
 attr interpolationmode none
-attr title "packets sent to upper layer, count"
-scalar Fanet.host[0].wlan[0].mac packetSentToUpper:sum(packetBytes) 144
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Fanet.host[0].wlan[0].mac passedUpPk:sum(packetBytes) 80
 attr interpolationmode none
-attr title "packets sent to upper layer, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac packetDrop:count 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, count"
-scalar Fanet.host[0].wlan[0].mac packetDrop:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, sum(packetBytes)"
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
 scalar Fanet.host[0].wlan[0].mac packetDropIncorrectlyReceived:count 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
-attr title "packet drops: incorrectly received, count"
+attr title "packet drop: incorrectly received, count"
 scalar Fanet.host[0].wlan[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
-attr title "packet drops: incorrectly received, sum(packetBytes)"
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Fanet.host[0].wlan[0].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Fanet.host[0].wlan[0].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
 scalar Fanet.host[0].wlan[0].mac packetDropNotAddressedToUs:count 0
 attr interpolationmode none
 attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, count"
+attr title "packet drop: not addressed to us, count"
 scalar Fanet.host[0].wlan[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac packetDropQueueOverflow:count 0
+attr title "packet drop: not addressed to us, sum(packetBytes)"
+scalar Fanet.host[0].wlan[0].mac linkBroken:count 1
 attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, count"
-scalar Fanet.host[0].wlan[0].mac packetDropQueueOverflow:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac packetDropRetryLimitReached:count 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, count"
-scalar Fanet.host[0].wlan[0].mac packetDropRetryLimitReached:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac packetDropDuplicateDetected:count 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, count"
-scalar Fanet.host[0].wlan[0].mac packetDropDuplicateDetected:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac packetDropOther:count 0
-attr interpolationmode none
-attr source packetDropReasonIsOther(packetDropped)
-attr title "packet drops: other, count"
-scalar Fanet.host[0].wlan[0].mac packetDropOther:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsOther(packetDropped)
-attr title "packet drops: other, sum(packetBytes)"
-scalar Fanet.host[0].wlan[0].mac linkBroken:count 0
-attr interpolationmode none
-attr title "link breaks, count"
-statistic Fanet.host[0].wlan[0].radio radioChannel:histogram
-field count 1
-field mean 0
-field stddev nan
-field min 0
-field max 0
-field sum 0
-field sqrsum 0
-attr interpolationmode sample-hold
-attr source radioChannelChanged
-attr title "Radio channel, histogram"
-bin	-inf	0
-bin	-0.5	0
-bin	-0.48	0
-bin	-0.46	0
-bin	-0.44	0
-bin	-0.42	0
-bin	-0.4	0
-bin	-0.38	0
-bin	-0.36	0
-bin	-0.34	0
-bin	-0.32	0
-bin	-0.3	0
-bin	-0.28	0
-bin	-0.26	0
-bin	-0.24	0
-bin	-0.22	0
-bin	-0.2	0
-bin	-0.18	0
-bin	-0.16	0
-bin	-0.14	0
-bin	-0.12	0
-bin	-0.1	0
-bin	-0.08	0
-bin	-0.06	0
-bin	-0.04	0
-bin	-0.02	0
-bin	0	1
-bin	0.02	0
-bin	0.04	0
-bin	0.06	0
-bin	0.08	0
-bin	0.1	0
-bin	0.12	0
-bin	0.14	0
-bin	0.16	0
-bin	0.18	0
-bin	0.2	0
-bin	0.22	0
-bin	0.24	0
-bin	0.26	0
-bin	0.28	0
-bin	0.3	0
-bin	0.32	0
-bin	0.34	0
-bin	0.36	0
-bin	0.38	0
-bin	0.4	0
-bin	0.42	0
-bin	0.44	0
-bin	0.46	0
-bin	0.48	0
-bin	0.5	0
-scalar Fanet.host[0].wlan[0].radio radioMode:count 5
+attr source linkBroken
+attr title "link break, count"
+scalar Fanet.host[0].wlan[0].radio radioMode:count 3
 attr interpolationmode sample-hold
 attr source radioModeChanged
 attr title "Radio mode, count"
-scalar Fanet.host[0].wlan[0].radio receptionState:count 10
+scalar Fanet.host[0].wlan[0].radio receptionState:count 5
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, count"
-scalar Fanet.host[0].wlan[0].radio transmissionState:count 4
+scalar Fanet.host[0].wlan[0].radio transmissionState:count 17
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, count"
 statistic Fanet.host[0].wlan[0].radio minSnir:histogram
-field count 3
-field mean 1317.6899490498
-field stddev 1595.7178920042
-field min 351.97103550034
-field max 3159.5401437885
-field sum 3953.0698471493
-field sqrsum 10301551.587205
+field count 0
+field mean nan
+field stddev nan
+field min nan
+field max nan
+field sum 0
+field sqrsum 0
 attr source minimumSnir(packetSentToUpper)
 attr title "Min SNIR, histogram"
 bin	-inf	0
 bin	0	0
-bin	50	0
-bin	100	0
-bin	150	0
-bin	200	0
-bin	250	0
-bin	300	0
-bin	350	1
-bin	400	1
-bin	450	0
-bin	500	0
-bin	550	0
-bin	600	0
-bin	650	0
-bin	700	0
-bin	750	0
-bin	800	0
-bin	850	0
-bin	900	0
-bin	950	0
-bin	1000	0
-bin	1050	0
-bin	1100	0
-bin	1150	0
-bin	1200	0
-bin	1250	0
-bin	1300	0
-bin	1350	0
-bin	1400	0
-bin	1450	0
-bin	1500	0
-bin	1550	0
-bin	1600	0
-bin	1650	0
-bin	1700	0
-bin	1750	0
-bin	1800	0
-bin	1850	0
-bin	1900	0
-bin	1950	0
-bin	2000	0
-bin	2050	0
-bin	2100	0
-bin	2150	0
-bin	2200	0
-bin	2250	0
-bin	2300	0
-bin	2350	0
-bin	2400	0
-bin	2450	0
-bin	2500	0
-bin	2550	0
-bin	2600	0
-bin	2650	0
-bin	2700	0
-bin	2750	0
-bin	2800	0
-bin	2850	0
-bin	2900	0
-bin	2950	0
-bin	3000	0
-bin	3050	0
-bin	3100	0
-bin	3150	1
-bin	3200	0
-bin	3250	0
-bin	3300	0
-bin	3350	0
-bin	3400	0
-bin	3450	0
-bin	3500	0
-bin	3550	0
-bin	3600	0
-bin	3650	0
-bin	3700	0
-bin	3750	0
-bin	3800	0
-bin	3850	0
-bin	3900	0
+bin	1	0
 statistic Fanet.host[0].wlan[0].radio packetErrorRate:histogram
-field count 3
+field count 2
 field mean 0
 field stddev 0
 field min 0
@@ -780,7 +325,7 @@ bin	-0.08	0
 bin	-0.06	0
 bin	-0.04	0
 bin	-0.02	0
-bin	0	3
+bin	0	2
 bin	0.02	0
 bin	0.04	0
 bin	0.06	0
@@ -807,31 +352,129 @@ bin	0.46	0
 bin	0.48	0
 bin	0.5	0
 statistic Fanet.host[0].wlan[0].radio bitErrorRate:histogram
-field count 0
-field mean nan
-field stddev nan
-field min nan
-field max nan
+field count 2
+field mean 0
+field stddev 0
+field min 0
+field max 0
 field sum 0
 field sqrsum 0
 attr source bitErrorRate(packetSentToUpper)
 attr title "Bit error rate, histogram"
 bin	-inf	0
-bin	0	0
-bin	1	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	2
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
 statistic Fanet.host[0].wlan[0].radio symbolErrorRate:histogram
-field count 0
-field mean nan
-field stddev nan
-field min nan
-field max nan
+field count 2
+field mean 0
+field stddev 0
+field min 0
+field max 0
 field sum 0
 field sqrsum 0
 attr source symbolErrorRate(packetSentToUpper)
 attr title "Symbol error rate, histogram"
 bin	-inf	0
-bin	0	0
-bin	1	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	2
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
 scalar Fanet.host[0].ipv4.ip packetDropAddressResolutionFailed:count 0
 attr interpolationmode none
 attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
@@ -880,24 +523,6 @@ scalar Fanet.host[0].ipv4.ip packetDropUndefined:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsUndefined(packetDropped)
 attr title "packet drop: undefined, sum(packetBytes)"
-scalar Fanet.host[0].ipv4.arp arpResolutionFailed:count 0
-attr title "ARP failed resolutions, count"
-scalar Fanet.host[0].ipv4.arp arpResolutionCompleted:count 0
-attr title "ARP completed resolutions, count"
-scalar Fanet.host[0].ipv4.arp arpResolutionInitiated:count 0
-attr title "ARP initiated resolutions, count"
-scalar Fanet.host[0].ipv4.arp arpReplySent:count 0
-attr source arpReplySent
-attr title "ARP replies sent, count"
-scalar Fanet.host[0].ipv4.arp arpReplySent:sum(packetBytes) 0
-attr source arpReplySent
-attr title "ARP replies sent, sum(packetBytes)"
-scalar Fanet.host[0].ipv4.arp arpRequestSent:count 0
-attr source arpRequestSent
-attr title "ARP request sent, count"
-scalar Fanet.host[0].ipv4.arp arpRequestSent:sum(packetBytes) 0
-attr source arpRequestSent
-attr title "ARP request sent, sum(packetBytes)"
 scalar Fanet.host[0].udp packetReceived:count 0
 attr interpolationmode none
 attr source packetReceived
@@ -906,11 +531,11 @@ scalar Fanet.host[0].udp packetReceived:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetReceived
 attr title "packets received, sum(packetBytes)"
-scalar Fanet.host[0].udp packetSent:count 0
+scalar Fanet.host[0].udp packetSent:count 17
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, count"
-scalar Fanet.host[0].udp packetSent:sum(packetBytes) 0
+scalar Fanet.host[0].udp packetSent:sum(packetBytes) 17136
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, sum(packetBytes)"
@@ -926,19 +551,17 @@ scalar Fanet.host[0].udp droppedPkBadChecksum:count 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
 attr title "packets dropped (checksum error), count"
-scalar Fanet.host[0].app[0] pingRxSeq:count 0
+scalar Fanet.host[0].app[0] "packets sent" 17
+scalar Fanet.host[0].app[0] "packets received" 0
+scalar Fanet.host[0].app[0] packetReceived:count 0
 attr interpolationmode none
-attr title "ping rx seq, count"
-scalar Fanet.host[0].app[0] pingTxSeq:count 0
+attr source packetReceived
+attr title "packets received, count"
+scalar Fanet.host[0].app[0] packetReceived:sum(packetBytes) 0
 attr interpolationmode none
-attr title "ping tx seq, count"
-scalar Fanet.host[0].app[0] numOutOfOrderArrivals:last nan
-attr interpolationmode none
-attr title "ping out-of-order arrivals, last"
-scalar Fanet.host[0].app[0] numLost:last nan
-attr interpolationmode none
-attr title "pings lost, last"
-statistic Fanet.host[0].app[0] rtt:histogram
+attr source packetReceived
+attr title "packets received, sum(packetBytes)"
+statistic Fanet.host[0].app[0] rcvdPkLifetime:stats
 field count 0
 field mean nan
 field stddev nan
@@ -947,11 +570,17 @@ field max nan
 field sum 0
 field sqrsum 0
 attr interpolationmode none
-attr title "ping round-trip time, histogram"
+attr source dataAge(packetReceived)
+attr title "received packet lifetime, stats"
 attr unit s
-bin	-inf	0
-bin	0	0
-bin	1	0
+scalar Fanet.host[0].app[0] packetSent:count 17
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, count"
+scalar Fanet.host[0].app[0] packetSent:sum(packetBytes) 17000
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, sum(packetBytes)"
 scalar Fanet.host[1].lo[0].lo rcvdPkFromHl:count 0
 attr interpolationmode none
 attr source packetReceivedFromUpper
@@ -968,16 +597,16 @@ scalar Fanet.host[1].lo[0].lo passedUpPk:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed to higher layer, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:count 1
+scalar Fanet.host[1].wlan[0].mac.queue packetPopped:count 2
 attr interpolationmode none
 attr title "packet popped, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:sum(packetBytes) 76
+scalar Fanet.host[1].wlan[0].mac.queue packetPopped:sum(packetBytes) 80
 attr interpolationmode none
 attr title "packet popped, sum(packetBytes)"
-statistic Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:histogram
-field count 1
+statistic Fanet.host[1].wlan[0].mac.queue queueingTime:histogram
+field count 2
 field mean 0
-field stddev nan
+field stddev 0
 field min 0
 field max 0
 field sum 0
@@ -1012,7 +641,7 @@ bin	-0.08	0
 bin	-0.06	0
 bin	-0.04	0
 bin	-0.02	0
-bin	0	1
+bin	0	2
 bin	0.02	0
 bin	0.04	0
 bin	0.06	0
@@ -1038,621 +667,132 @@ bin	0.44	0
 bin	0.46	0
 bin	0.48	0
 bin	0.5	0
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:max 1
+scalar Fanet.host[1].wlan[0].mac.queue queueLength:max 1
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, max"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:timeavg 0
+scalar Fanet.host[1].wlan[0].mac.queue queueLength:timeavg 0
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, timeavg"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:count 1
+scalar Fanet.host[1].wlan[0].mac.queue packetPushed:count 2
 attr interpolationmode none
 attr title "packet pushed, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:sum(packetBytes) 76
+scalar Fanet.host[1].wlan[0].mac.queue packetPushed:sum(packetBytes) 80
 attr interpolationmode none
 attr title "packet pushed, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:count 0
+scalar Fanet.host[1].wlan[0].mac.queue packetDropQueueOverflow:count 0
 attr interpolationmode none
 attr source packetDropReasonIsQueueOverflow(packetDropped)
 attr title "packet drops: queue overflow, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:sum(packetBytes) 0
+scalar Fanet.host[1].wlan[0].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsQueueOverflow(packetDropped)
 attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:count 0
+scalar Fanet.host[1].wlan[0].mac.queue packetRemoved:count 0
 attr interpolationmode none
 attr title "packets removed, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:sum(packetBytes) 0
+scalar Fanet.host[1].wlan[0].mac.queue packetRemoved:sum(packetBytes) 0
 attr interpolationmode none
 attr title "packets removed, sum(packetBytes)"
-statistic Fanet.host[1].wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:histogram
-field count 1
-field mean 5.4e-05
-field stddev nan
-field min 5.4e-05
-field max 5.4e-05
-field sum 5.4e-05
-field sqrsum 2.916e-09
+scalar Fanet.host[1].wlan[0].mac rcvdPkFromLl:count 0
 attr interpolationmode none
-attr source queueingTime(packetDequeued)
-attr title "queueing times, histogram"
-bin	-inf	0
-bin	0	1
-bin	0.01	0
-bin	0.02	0
-bin	0.03	0
-bin	0.04	0
-bin	0.05	0
-bin	0.06	0
-bin	0.07	0
-bin	0.08	0
-bin	0.09	0
-bin	0.1	0
-bin	0.11	0
-bin	0.12	0
-bin	0.13	0
-bin	0.14	0
-bin	0.15	0
-bin	0.16	0
-bin	0.17	0
-bin	0.18	0
-bin	0.19	0
-bin	0.2	0
-bin	0.21	0
-bin	0.22	0
-bin	0.23	0
-bin	0.24	0
-bin	0.25	0
-bin	0.26	0
-bin	0.27	0
-bin	0.28	0
-bin	0.29	0
-bin	0.3	0
-bin	0.31	0
-bin	0.32	0
-bin	0.33	0
-bin	0.34	0
-bin	0.35	0
-bin	0.36	0
-bin	0.37	0
-bin	0.38	0
-bin	0.39	0
-bin	0.4	0
-bin	0.41	0
-bin	0.42	0
-bin	0.43	0
-bin	0.44	0
-bin	0.45	0
-bin	0.46	0
-bin	0.47	0
-bin	0.48	0
-bin	0.49	0
-bin	0.5	0
-bin	0.51	0
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:max 1
-attr interpolationmode sample-hold
-attr source "count(packetEnqueued) - count(packetDequeued)"
-attr title "queue length, max"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:timeavg 8.8438691710206e-06
-attr interpolationmode sample-hold
-attr source "count(packetEnqueued) - count(packetDequeued)"
-attr title "queue length, timeavg"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.contention channelAccessGranted:count 1
-attr title "channel access granted, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess.contention stateChanged:count 14
-attr interpolationmode none
-attr title "contention state changed, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.channelAccess channelOwnershipChanged:count 2
-attr interpolationmode sample-hold
-attr title "channel ownership, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.originatorMacDataService packetAggregated:count 0
-attr title "packets aggregated, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.originatorMacDataService packetFragmented:count 0
-attr title "packets fragmented, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.recipientMacDataService packetDeaggregated:count 0
-attr title "packets deaggregated, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.recipientMacDataService packetDefragmented:count 1
-attr title "packets defragmented, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:count 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, count"
-scalar Fanet.host[1].wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf.recoveryProcedure retryLimitReached:count 0
-attr title "retry limit reached, count"
-scalar Fanet.host[1].wlan[0].mac.dcf frameSequenceFinished:count 1
-attr title "finished frame sequences, count"
-statistic Fanet.host[1].wlan[0].mac.dcf frameSequenceDuration:histogram
-field count 1
-field mean 5.4e-05
-field stddev nan
-field min 5.4e-05
-field max 5.4e-05
-field sum 5.4e-05
-field sqrsum 2.916e-09
-attr source frameSequenceDuration(frameSequenceFinished)
-attr title "frame sequence durations, histogram"
-bin	-inf	0
-bin	0	1
-bin	0.01	0
-bin	0.02	0
-bin	0.03	0
-bin	0.04	0
-bin	0.05	0
-bin	0.06	0
-bin	0.07	0
-bin	0.08	0
-bin	0.09	0
-bin	0.1	0
-bin	0.11	0
-bin	0.12	0
-bin	0.13	0
-bin	0.14	0
-bin	0.15	0
-bin	0.16	0
-bin	0.17	0
-bin	0.18	0
-bin	0.19	0
-bin	0.2	0
-bin	0.21	0
-bin	0.22	0
-bin	0.23	0
-bin	0.24	0
-bin	0.25	0
-bin	0.26	0
-bin	0.27	0
-bin	0.28	0
-bin	0.29	0
-bin	0.3	0
-bin	0.31	0
-bin	0.32	0
-bin	0.33	0
-bin	0.34	0
-bin	0.35	0
-bin	0.36	0
-bin	0.37	0
-bin	0.38	0
-bin	0.39	0
-bin	0.4	0
-bin	0.41	0
-bin	0.42	0
-bin	0.43	0
-bin	0.44	0
-bin	0.45	0
-bin	0.46	0
-bin	0.47	0
-bin	0.48	0
-bin	0.49	0
-bin	0.5	0
-bin	0.51	0
-statistic Fanet.host[1].wlan[0].mac.dcf frameSequenceNumPackets:histogram
-field count 1
-field mean 1
-field stddev nan
-field min 1
-field max 1
-field sum 1
-field sqrsum 1
-attr source frameSequenceNumPackets(frameSequenceFinished)
-attr title "frame sequences: number of packets, histogram"
-bin	-inf	0
-bin	0	0
-bin	1	1
-bin	2	0
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeer:count 1
-attr interpolationmode none
-attr title "packets received, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeer:sum(packetBytes) 76
-attr interpolationmode none
-attr title "packets received, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerUnicast:count 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetReceivedFromPeer)
-attr title "packets received: unicast, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerUnicast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetReceivedFromPeer)
-attr title "packets received: unicast, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerMulticast:count 1
-attr interpolationmode none
-attr source ieee80211Multicast(packetReceivedFromPeer)
-attr title "packets received: multicast, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerMulticast:sum(packetBytes) 76
-attr interpolationmode none
-attr source ieee80211Multicast(packetReceivedFromPeer)
-attr title "packets received: multicast, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerBroadcast:count 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetReceivedFromPeer)
-attr title "packets received: broadcast, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerBroadcast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetReceivedFromPeer)
-attr title "packets received: broadcast, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerWithRetry:count 0
-attr interpolationmode none
-attr source ieee80211Retry(packetReceivedFromPeer)
-attr title "packets received: with retry, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerWithRetry:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Retry(packetReceivedFromPeer)
-attr title "packets received: with retry, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:count 1
-attr interpolationmode none
-attr source ieee80211NotRetry(packetReceivedFromPeer)
-attr title "packets received: without retry, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:sum(packetBytes) 76
-attr interpolationmode none
-attr source ieee80211NotRetry(packetReceivedFromPeer)
-attr title "packets received: without retry, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeer:count 1
-attr interpolationmode none
-attr title "packets sent, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeer:sum(packetBytes) 76
-attr interpolationmode none
-attr title "packets sent, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeerUnicast:count 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetSentToPeer)
-attr title "packets sent: unicast, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeerUnicast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetSentToPeer)
-attr title "packets sent: unicast, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeerMulticast:count 1
-attr interpolationmode none
-attr source ieee80211Multicast(packetSentToPeer)
-attr title "packets sent: multicast, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeerMulticast:sum(packetBytes) 76
-attr interpolationmode none
-attr source ieee80211Multicast(packetSentToPeer)
-attr title "packets sent: multicast, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeerBroadcast:count 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetSentToPeer)
-attr title "packets sent: broadcast , count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeerBroadcast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetSentToPeer)
-attr title "packets sent: broadcast , sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeerWithRetry:count 0
-attr interpolationmode none
-attr source ieee80211Retry(packetSentToPeer)
-attr title "packets sent: with retry, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeerWithRetry:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Retry(packetSentToPeer)
-attr title "packets sent: with retry, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeerWithoutRetry:count 1
-attr interpolationmode none
-attr source ieee80211NotRetry(packetSentToPeer)
-attr title "packets sent: without retry, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetSentToPeerWithoutRetry:sum(packetBytes) 76
-attr interpolationmode none
-attr source ieee80211NotRetry(packetSentToPeer)
-attr title "packets sent: without retry, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetDrop:count 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetDrop:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetDropNotAddressedToUs:count 0
-attr interpolationmode none
-attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetDropNotAddressedToUs:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetDropQueueOverflow:count 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetDropQueueOverflow:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf packetDropRetryLimitReached:count 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, count"
-scalar Fanet.host[1].wlan[0].mac.dcf packetDropRetryLimitReached:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac.dcf linkBroken:count 0
-attr interpolationmode none
-attr title "link breaks, count"
-scalar Fanet.host[1].wlan[0].mac packetReceivedFromLower:count 1
-attr interpolationmode none
+attr source packetReceivedFromLower
 attr title "packets received from lower layer, count"
-scalar Fanet.host[1].wlan[0].mac packetReceivedFromLower:sum(packetBytes) 76
+scalar Fanet.host[1].wlan[0].mac rcvdPkFromLl:sum(packetBytes) 0
 attr interpolationmode none
+attr source packetReceivedFromLower
 attr title "packets received from lower layer, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac packetSentToLower:count 1
+scalar Fanet.host[1].wlan[0].mac sentDownPk:count 2
 attr interpolationmode none
+attr source packetSentToLower
 attr title "packets sent to lower layer, count"
-scalar Fanet.host[1].wlan[0].mac packetSentToLower:sum(packetBytes) 76
+scalar Fanet.host[1].wlan[0].mac sentDownPk:sum(packetBytes) 112
 attr interpolationmode none
+attr source packetSentToLower
 attr title "packets sent to lower layer, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac packetReceivedFromUpper:count 1
+scalar Fanet.host[1].wlan[0].mac rcvdPkFromHl:count 2
 attr interpolationmode none
-attr title "packets received from upper layer, count"
-scalar Fanet.host[1].wlan[0].mac packetReceivedFromUpper:sum(packetBytes) 48
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, count"
+scalar Fanet.host[1].wlan[0].mac rcvdPkFromHl:sum(packetBytes) 80
 attr interpolationmode none
-attr title "packets received from upper layer, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac packetSentToUpper:count 1
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, sum(packetBytes)"
+scalar Fanet.host[1].wlan[0].mac passedUpPk:count 0
 attr interpolationmode none
-attr title "packets sent to upper layer, count"
-scalar Fanet.host[1].wlan[0].mac packetSentToUpper:sum(packetBytes) 48
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Fanet.host[1].wlan[0].mac passedUpPk:sum(packetBytes) 0
 attr interpolationmode none
-attr title "packets sent to upper layer, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac packetDrop:count 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, count"
-scalar Fanet.host[1].wlan[0].mac packetDrop:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, sum(packetBytes)"
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
 scalar Fanet.host[1].wlan[0].mac packetDropIncorrectlyReceived:count 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
-attr title "packet drops: incorrectly received, count"
+attr title "packet drop: incorrectly received, count"
 scalar Fanet.host[1].wlan[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
-attr title "packet drops: incorrectly received, sum(packetBytes)"
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Fanet.host[1].wlan[0].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Fanet.host[1].wlan[0].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
 scalar Fanet.host[1].wlan[0].mac packetDropNotAddressedToUs:count 0
 attr interpolationmode none
 attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, count"
+attr title "packet drop: not addressed to us, count"
 scalar Fanet.host[1].wlan[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac packetDropQueueOverflow:count 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, count"
-scalar Fanet.host[1].wlan[0].mac packetDropQueueOverflow:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac packetDropRetryLimitReached:count 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, count"
-scalar Fanet.host[1].wlan[0].mac packetDropRetryLimitReached:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac packetDropDuplicateDetected:count 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, count"
-scalar Fanet.host[1].wlan[0].mac packetDropDuplicateDetected:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, sum(packetBytes)"
-scalar Fanet.host[1].wlan[0].mac packetDropOther:count 0
-attr interpolationmode none
-attr source packetDropReasonIsOther(packetDropped)
-attr title "packet drops: other, count"
-scalar Fanet.host[1].wlan[0].mac packetDropOther:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsOther(packetDropped)
-attr title "packet drops: other, sum(packetBytes)"
+attr title "packet drop: not addressed to us, sum(packetBytes)"
 scalar Fanet.host[1].wlan[0].mac linkBroken:count 0
 attr interpolationmode none
-attr title "link breaks, count"
-statistic Fanet.host[1].wlan[0].radio radioChannel:histogram
-field count 1
-field mean 0
-field stddev nan
-field min 0
-field max 0
-field sum 0
-field sqrsum 0
-attr interpolationmode sample-hold
-attr source radioChannelChanged
-attr title "Radio channel, histogram"
-bin	-inf	0
-bin	-0.5	0
-bin	-0.48	0
-bin	-0.46	0
-bin	-0.44	0
-bin	-0.42	0
-bin	-0.4	0
-bin	-0.38	0
-bin	-0.36	0
-bin	-0.34	0
-bin	-0.32	0
-bin	-0.3	0
-bin	-0.28	0
-bin	-0.26	0
-bin	-0.24	0
-bin	-0.22	0
-bin	-0.2	0
-bin	-0.18	0
-bin	-0.16	0
-bin	-0.14	0
-bin	-0.12	0
-bin	-0.1	0
-bin	-0.08	0
-bin	-0.06	0
-bin	-0.04	0
-bin	-0.02	0
-bin	0	1
-bin	0.02	0
-bin	0.04	0
-bin	0.06	0
-bin	0.08	0
-bin	0.1	0
-bin	0.12	0
-bin	0.14	0
-bin	0.16	0
-bin	0.18	0
-bin	0.2	0
-bin	0.22	0
-bin	0.24	0
-bin	0.26	0
-bin	0.28	0
-bin	0.3	0
-bin	0.32	0
-bin	0.34	0
-bin	0.36	0
-bin	0.38	0
-bin	0.4	0
-bin	0.42	0
-bin	0.44	0
-bin	0.46	0
-bin	0.48	0
-bin	0.5	0
-scalar Fanet.host[1].wlan[0].radio radioMode:count 5
+attr source linkBroken
+attr title "link break, count"
+scalar Fanet.host[1].wlan[0].radio radioMode:count 3
 attr interpolationmode sample-hold
 attr source radioModeChanged
 attr title "Radio mode, count"
-scalar Fanet.host[1].wlan[0].radio receptionState:count 5
+scalar Fanet.host[1].wlan[0].radio receptionState:count 1
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, count"
-scalar Fanet.host[1].wlan[0].radio transmissionState:count 4
+scalar Fanet.host[1].wlan[0].radio transmissionState:count 5
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, count"
 statistic Fanet.host[1].wlan[0].radio minSnir:histogram
-field count 1
-field mean 417.38826431433
+field count 0
+field mean nan
 field stddev nan
-field min 417.38826431433
-field max 417.38826431433
-field sum 417.38826431433
-field sqrsum 174212.96318733
+field min nan
+field max nan
+field sum 0
+field sqrsum 0
 attr source minimumSnir(packetSentToUpper)
 attr title "Min SNIR, histogram"
 bin	-inf	0
-bin	416.88	0
-bin	416.9	0
-bin	416.92	0
-bin	416.94	0
-bin	416.96	0
-bin	416.98	0
-bin	417	0
-bin	417.02	0
-bin	417.04	0
-bin	417.06	0
-bin	417.08	0
-bin	417.1	0
-bin	417.12	0
-bin	417.14	0
-bin	417.16	0
-bin	417.18	0
-bin	417.2	0
-bin	417.22	0
-bin	417.24	0
-bin	417.26	0
-bin	417.28	0
-bin	417.3	0
-bin	417.32	0
-bin	417.34	0
-bin	417.36	0
-bin	417.38	1
-bin	417.4	0
-bin	417.42	0
-bin	417.44	0
-bin	417.46	0
-bin	417.48	0
-bin	417.5	0
-bin	417.52	0
-bin	417.54	0
-bin	417.56	0
-bin	417.58	0
-bin	417.6	0
-bin	417.62	0
-bin	417.64	0
-bin	417.66	0
-bin	417.68	0
-bin	417.7	0
-bin	417.72	0
-bin	417.74	0
-bin	417.76	0
-bin	417.78	0
-bin	417.8	0
-bin	417.82	0
-bin	417.84	0
-bin	417.86	0
-bin	417.88	0
-bin	417.9	0
+bin	0	0
+bin	1	0
 statistic Fanet.host[1].wlan[0].radio packetErrorRate:histogram
-field count 1
-field mean 0
+field count 0
+field mean nan
 field stddev nan
-field min 0
-field max 0
+field min nan
+field max nan
 field sum 0
 field sqrsum 0
 attr source packetErrorRate(packetSentToUpper)
 attr title "Packet error rate, histogram"
 bin	-inf	0
-bin	-0.5	0
-bin	-0.48	0
-bin	-0.46	0
-bin	-0.44	0
-bin	-0.42	0
-bin	-0.4	0
-bin	-0.38	0
-bin	-0.36	0
-bin	-0.34	0
-bin	-0.32	0
-bin	-0.3	0
-bin	-0.28	0
-bin	-0.26	0
-bin	-0.24	0
-bin	-0.22	0
-bin	-0.2	0
-bin	-0.18	0
-bin	-0.16	0
-bin	-0.14	0
-bin	-0.12	0
-bin	-0.1	0
-bin	-0.08	0
-bin	-0.06	0
-bin	-0.04	0
-bin	-0.02	0
-bin	0	1
-bin	0.02	0
-bin	0.04	0
-bin	0.06	0
-bin	0.08	0
-bin	0.1	0
-bin	0.12	0
-bin	0.14	0
-bin	0.16	0
-bin	0.18	0
-bin	0.2	0
-bin	0.22	0
-bin	0.24	0
-bin	0.26	0
-bin	0.28	0
-bin	0.3	0
-bin	0.32	0
-bin	0.34	0
-bin	0.36	0
-bin	0.38	0
-bin	0.4	0
-bin	0.42	0
-bin	0.44	0
-bin	0.46	0
-bin	0.48	0
-bin	0.5	0
+bin	0	0
+bin	1	0
 statistic Fanet.host[1].wlan[0].radio bitErrorRate:histogram
 field count 0
 field mean nan
@@ -1727,24 +867,6 @@ scalar Fanet.host[1].ipv4.ip packetDropUndefined:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsUndefined(packetDropped)
 attr title "packet drop: undefined, sum(packetBytes)"
-scalar Fanet.host[1].ipv4.arp arpResolutionFailed:count 0
-attr title "ARP failed resolutions, count"
-scalar Fanet.host[1].ipv4.arp arpResolutionCompleted:count 0
-attr title "ARP completed resolutions, count"
-scalar Fanet.host[1].ipv4.arp arpResolutionInitiated:count 0
-attr title "ARP initiated resolutions, count"
-scalar Fanet.host[1].ipv4.arp arpReplySent:count 0
-attr source arpReplySent
-attr title "ARP replies sent, count"
-scalar Fanet.host[1].ipv4.arp arpReplySent:sum(packetBytes) 0
-attr source arpReplySent
-attr title "ARP replies sent, sum(packetBytes)"
-scalar Fanet.host[1].ipv4.arp arpRequestSent:count 0
-attr source arpRequestSent
-attr title "ARP request sent, count"
-scalar Fanet.host[1].ipv4.arp arpRequestSent:sum(packetBytes) 0
-attr source arpRequestSent
-attr title "ARP request sent, sum(packetBytes)"
 scalar Fanet.host[1].udp packetReceived:count 0
 attr interpolationmode none
 attr source packetReceived
@@ -1773,32 +895,6 @@ scalar Fanet.host[1].udp droppedPkBadChecksum:count 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
 attr title "packets dropped (checksum error), count"
-scalar Fanet.host[1].app[0] pingRxSeq:count 0
-attr interpolationmode none
-attr title "ping rx seq, count"
-scalar Fanet.host[1].app[0] pingTxSeq:count 0
-attr interpolationmode none
-attr title "ping tx seq, count"
-scalar Fanet.host[1].app[0] numOutOfOrderArrivals:last nan
-attr interpolationmode none
-attr title "ping out-of-order arrivals, last"
-scalar Fanet.host[1].app[0] numLost:last nan
-attr interpolationmode none
-attr title "pings lost, last"
-statistic Fanet.host[1].app[0] rtt:histogram
-field count 0
-field mean nan
-field stddev nan
-field min nan
-field max nan
-field sum 0
-field sqrsum 0
-attr interpolationmode none
-attr title "ping round-trip time, histogram"
-attr unit s
-bin	-inf	0
-bin	0	0
-bin	1	0
 scalar Fanet.host[2].lo[0].lo rcvdPkFromHl:count 0
 attr interpolationmode none
 attr source packetReceivedFromUpper
@@ -1815,13 +911,13 @@ scalar Fanet.host[2].lo[0].lo passedUpPk:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed to higher layer, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:count 2
+scalar Fanet.host[2].wlan[0].mac.queue packetPopped:count 2
 attr interpolationmode none
 attr title "packet popped, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:sum(packetBytes) 152
+scalar Fanet.host[2].wlan[0].mac.queue packetPopped:sum(packetBytes) 80
 attr interpolationmode none
 attr title "packet popped, sum(packetBytes)"
-statistic Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:histogram
+statistic Fanet.host[2].wlan[0].mac.queue queueingTime:histogram
 field count 2
 field mean 0
 field stddev 0
@@ -1885,583 +981,121 @@ bin	0.44	0
 bin	0.46	0
 bin	0.48	0
 bin	0.5	0
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:max 1
+scalar Fanet.host[2].wlan[0].mac.queue queueLength:max 1
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, max"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:timeavg 0
+scalar Fanet.host[2].wlan[0].mac.queue queueLength:timeavg 0
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, timeavg"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:count 2
+scalar Fanet.host[2].wlan[0].mac.queue packetPushed:count 2
 attr interpolationmode none
 attr title "packet pushed, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:sum(packetBytes) 152
+scalar Fanet.host[2].wlan[0].mac.queue packetPushed:sum(packetBytes) 80
 attr interpolationmode none
 attr title "packet pushed, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:count 0
+scalar Fanet.host[2].wlan[0].mac.queue packetDropQueueOverflow:count 0
 attr interpolationmode none
 attr source packetDropReasonIsQueueOverflow(packetDropped)
 attr title "packet drops: queue overflow, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:sum(packetBytes) 0
+scalar Fanet.host[2].wlan[0].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsQueueOverflow(packetDropped)
 attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:count 0
+scalar Fanet.host[2].wlan[0].mac.queue packetRemoved:count 0
 attr interpolationmode none
 attr title "packets removed, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:sum(packetBytes) 0
+scalar Fanet.host[2].wlan[0].mac.queue packetRemoved:sum(packetBytes) 0
 attr interpolationmode none
 attr title "packets removed, sum(packetBytes)"
-statistic Fanet.host[2].wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:histogram
-field count 1
-field mean 5.4e-05
-field stddev nan
-field min 5.4e-05
-field max 5.4e-05
-field sum 5.4e-05
-field sqrsum 2.916e-09
+scalar Fanet.host[2].wlan[0].mac rcvdPkFromLl:count 7
 attr interpolationmode none
-attr source queueingTime(packetDequeued)
-attr title "queueing times, histogram"
-bin	-inf	0
-bin	0	1
-bin	0.01	0
-bin	0.02	0
-bin	0.03	0
-bin	0.04	0
-bin	0.05	0
-bin	0.06	0
-bin	0.07	0
-bin	0.08	0
-bin	0.09	0
-bin	0.1	0
-bin	0.11	0
-bin	0.12	0
-bin	0.13	0
-bin	0.14	0
-bin	0.15	0
-bin	0.16	0
-bin	0.17	0
-bin	0.18	0
-bin	0.19	0
-bin	0.2	0
-bin	0.21	0
-bin	0.22	0
-bin	0.23	0
-bin	0.24	0
-bin	0.25	0
-bin	0.26	0
-bin	0.27	0
-bin	0.28	0
-bin	0.29	0
-bin	0.3	0
-bin	0.31	0
-bin	0.32	0
-bin	0.33	0
-bin	0.34	0
-bin	0.35	0
-bin	0.36	0
-bin	0.37	0
-bin	0.38	0
-bin	0.39	0
-bin	0.4	0
-bin	0.41	0
-bin	0.42	0
-bin	0.43	0
-bin	0.44	0
-bin	0.45	0
-bin	0.46	0
-bin	0.47	0
-bin	0.48	0
-bin	0.49	0
-bin	0.5	0
-bin	0.51	0
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:max 1
-attr interpolationmode sample-hold
-attr source "count(packetEnqueued) - count(packetDequeued)"
-attr title "queue length, max"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:timeavg 5.9811898062123e-06
-attr interpolationmode sample-hold
-attr source "count(packetEnqueued) - count(packetDequeued)"
-attr title "queue length, timeavg"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.contention channelAccessGranted:count 2
-attr title "channel access granted, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess.contention stateChanged:count 24
-attr interpolationmode none
-attr title "contention state changed, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.channelAccess channelOwnershipChanged:count 3
-attr interpolationmode sample-hold
-attr title "channel ownership, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.originatorMacDataService packetAggregated:count 0
-attr title "packets aggregated, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.originatorMacDataService packetFragmented:count 0
-attr title "packets fragmented, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.recipientMacDataService packetDeaggregated:count 0
-attr title "packets deaggregated, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.recipientMacDataService packetDefragmented:count 2
-attr title "packets defragmented, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:count 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, count"
-scalar Fanet.host[2].wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf.recoveryProcedure retryLimitReached:count 0
-attr title "retry limit reached, count"
-scalar Fanet.host[2].wlan[0].mac.dcf frameSequenceFinished:count 1
-attr title "finished frame sequences, count"
-statistic Fanet.host[2].wlan[0].mac.dcf frameSequenceDuration:histogram
-field count 1
-field mean 5.4e-05
-field stddev nan
-field min 5.4e-05
-field max 5.4e-05
-field sum 5.4e-05
-field sqrsum 2.916e-09
-attr source frameSequenceDuration(frameSequenceFinished)
-attr title "frame sequence durations, histogram"
-bin	-inf	0
-bin	0	1
-bin	0.01	0
-bin	0.02	0
-bin	0.03	0
-bin	0.04	0
-bin	0.05	0
-bin	0.06	0
-bin	0.07	0
-bin	0.08	0
-bin	0.09	0
-bin	0.1	0
-bin	0.11	0
-bin	0.12	0
-bin	0.13	0
-bin	0.14	0
-bin	0.15	0
-bin	0.16	0
-bin	0.17	0
-bin	0.18	0
-bin	0.19	0
-bin	0.2	0
-bin	0.21	0
-bin	0.22	0
-bin	0.23	0
-bin	0.24	0
-bin	0.25	0
-bin	0.26	0
-bin	0.27	0
-bin	0.28	0
-bin	0.29	0
-bin	0.3	0
-bin	0.31	0
-bin	0.32	0
-bin	0.33	0
-bin	0.34	0
-bin	0.35	0
-bin	0.36	0
-bin	0.37	0
-bin	0.38	0
-bin	0.39	0
-bin	0.4	0
-bin	0.41	0
-bin	0.42	0
-bin	0.43	0
-bin	0.44	0
-bin	0.45	0
-bin	0.46	0
-bin	0.47	0
-bin	0.48	0
-bin	0.49	0
-bin	0.5	0
-bin	0.51	0
-statistic Fanet.host[2].wlan[0].mac.dcf frameSequenceNumPackets:histogram
-field count 1
-field mean 1
-field stddev nan
-field min 1
-field max 1
-field sum 1
-field sqrsum 1
-attr source frameSequenceNumPackets(frameSequenceFinished)
-attr title "frame sequences: number of packets, histogram"
-bin	-inf	0
-bin	0	0
-bin	1	1
-bin	2	0
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeer:count 2
-attr interpolationmode none
-attr title "packets received, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeer:sum(packetBytes) 152
-attr interpolationmode none
-attr title "packets received, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerUnicast:count 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetReceivedFromPeer)
-attr title "packets received: unicast, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerUnicast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetReceivedFromPeer)
-attr title "packets received: unicast, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerMulticast:count 2
-attr interpolationmode none
-attr source ieee80211Multicast(packetReceivedFromPeer)
-attr title "packets received: multicast, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerMulticast:sum(packetBytes) 152
-attr interpolationmode none
-attr source ieee80211Multicast(packetReceivedFromPeer)
-attr title "packets received: multicast, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerBroadcast:count 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetReceivedFromPeer)
-attr title "packets received: broadcast, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerBroadcast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetReceivedFromPeer)
-attr title "packets received: broadcast, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerWithRetry:count 0
-attr interpolationmode none
-attr source ieee80211Retry(packetReceivedFromPeer)
-attr title "packets received: with retry, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerWithRetry:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Retry(packetReceivedFromPeer)
-attr title "packets received: with retry, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:count 2
-attr interpolationmode none
-attr source ieee80211NotRetry(packetReceivedFromPeer)
-attr title "packets received: without retry, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:sum(packetBytes) 152
-attr interpolationmode none
-attr source ieee80211NotRetry(packetReceivedFromPeer)
-attr title "packets received: without retry, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeer:count 1
-attr interpolationmode none
-attr title "packets sent, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeer:sum(packetBytes) 76
-attr interpolationmode none
-attr title "packets sent, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeerUnicast:count 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetSentToPeer)
-attr title "packets sent: unicast, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeerUnicast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetSentToPeer)
-attr title "packets sent: unicast, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeerMulticast:count 1
-attr interpolationmode none
-attr source ieee80211Multicast(packetSentToPeer)
-attr title "packets sent: multicast, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeerMulticast:sum(packetBytes) 76
-attr interpolationmode none
-attr source ieee80211Multicast(packetSentToPeer)
-attr title "packets sent: multicast, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeerBroadcast:count 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetSentToPeer)
-attr title "packets sent: broadcast , count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeerBroadcast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetSentToPeer)
-attr title "packets sent: broadcast , sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeerWithRetry:count 0
-attr interpolationmode none
-attr source ieee80211Retry(packetSentToPeer)
-attr title "packets sent: with retry, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeerWithRetry:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Retry(packetSentToPeer)
-attr title "packets sent: with retry, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeerWithoutRetry:count 1
-attr interpolationmode none
-attr source ieee80211NotRetry(packetSentToPeer)
-attr title "packets sent: without retry, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetSentToPeerWithoutRetry:sum(packetBytes) 76
-attr interpolationmode none
-attr source ieee80211NotRetry(packetSentToPeer)
-attr title "packets sent: without retry, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetDrop:count 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetDrop:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetDropNotAddressedToUs:count 0
-attr interpolationmode none
-attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetDropNotAddressedToUs:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetDropQueueOverflow:count 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetDropQueueOverflow:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf packetDropRetryLimitReached:count 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, count"
-scalar Fanet.host[2].wlan[0].mac.dcf packetDropRetryLimitReached:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac.dcf linkBroken:count 0
-attr interpolationmode none
-attr title "link breaks, count"
-scalar Fanet.host[2].wlan[0].mac packetReceivedFromLower:count 2
-attr interpolationmode none
+attr source packetReceivedFromLower
 attr title "packets received from lower layer, count"
-scalar Fanet.host[2].wlan[0].mac packetReceivedFromLower:sum(packetBytes) 152
+scalar Fanet.host[2].wlan[0].mac rcvdPkFromLl:sum(packetBytes) 6560
 attr interpolationmode none
+attr source packetReceivedFromLower
 attr title "packets received from lower layer, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac packetSentToLower:count 2
+scalar Fanet.host[2].wlan[0].mac sentDownPk:count 2
 attr interpolationmode none
+attr source packetSentToLower
 attr title "packets sent to lower layer, count"
-scalar Fanet.host[2].wlan[0].mac packetSentToLower:sum(packetBytes) 152
+scalar Fanet.host[2].wlan[0].mac sentDownPk:sum(packetBytes) 112
 attr interpolationmode none
+attr source packetSentToLower
 attr title "packets sent to lower layer, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac packetReceivedFromUpper:count 2
+scalar Fanet.host[2].wlan[0].mac rcvdPkFromHl:count 2
 attr interpolationmode none
-attr title "packets received from upper layer, count"
-scalar Fanet.host[2].wlan[0].mac packetReceivedFromUpper:sum(packetBytes) 96
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, count"
+scalar Fanet.host[2].wlan[0].mac rcvdPkFromHl:sum(packetBytes) 80
 attr interpolationmode none
-attr title "packets received from upper layer, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac packetSentToUpper:count 2
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, sum(packetBytes)"
+scalar Fanet.host[2].wlan[0].mac passedUpPk:count 7
 attr interpolationmode none
-attr title "packets sent to upper layer, count"
-scalar Fanet.host[2].wlan[0].mac packetSentToUpper:sum(packetBytes) 96
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Fanet.host[2].wlan[0].mac passedUpPk:sum(packetBytes) 6448
 attr interpolationmode none
-attr title "packets sent to upper layer, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac packetDrop:count 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, count"
-scalar Fanet.host[2].wlan[0].mac packetDrop:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, sum(packetBytes)"
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
 scalar Fanet.host[2].wlan[0].mac packetDropIncorrectlyReceived:count 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
-attr title "packet drops: incorrectly received, count"
+attr title "packet drop: incorrectly received, count"
 scalar Fanet.host[2].wlan[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
-attr title "packet drops: incorrectly received, sum(packetBytes)"
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Fanet.host[2].wlan[0].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Fanet.host[2].wlan[0].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
 scalar Fanet.host[2].wlan[0].mac packetDropNotAddressedToUs:count 0
 attr interpolationmode none
 attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, count"
+attr title "packet drop: not addressed to us, count"
 scalar Fanet.host[2].wlan[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac packetDropQueueOverflow:count 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, count"
-scalar Fanet.host[2].wlan[0].mac packetDropQueueOverflow:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac packetDropRetryLimitReached:count 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, count"
-scalar Fanet.host[2].wlan[0].mac packetDropRetryLimitReached:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac packetDropDuplicateDetected:count 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, count"
-scalar Fanet.host[2].wlan[0].mac packetDropDuplicateDetected:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, sum(packetBytes)"
-scalar Fanet.host[2].wlan[0].mac packetDropOther:count 0
-attr interpolationmode none
-attr source packetDropReasonIsOther(packetDropped)
-attr title "packet drops: other, count"
-scalar Fanet.host[2].wlan[0].mac packetDropOther:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsOther(packetDropped)
-attr title "packet drops: other, sum(packetBytes)"
+attr title "packet drop: not addressed to us, sum(packetBytes)"
 scalar Fanet.host[2].wlan[0].mac linkBroken:count 0
 attr interpolationmode none
-attr title "link breaks, count"
-statistic Fanet.host[2].wlan[0].radio radioChannel:histogram
-field count 1
-field mean 0
-field stddev nan
-field min 0
-field max 0
-field sum 0
-field sqrsum 0
-attr interpolationmode sample-hold
-attr source radioChannelChanged
-attr title "Radio channel, histogram"
-bin	-inf	0
-bin	-0.5	0
-bin	-0.48	0
-bin	-0.46	0
-bin	-0.44	0
-bin	-0.42	0
-bin	-0.4	0
-bin	-0.38	0
-bin	-0.36	0
-bin	-0.34	0
-bin	-0.32	0
-bin	-0.3	0
-bin	-0.28	0
-bin	-0.26	0
-bin	-0.24	0
-bin	-0.22	0
-bin	-0.2	0
-bin	-0.18	0
-bin	-0.16	0
-bin	-0.14	0
-bin	-0.12	0
-bin	-0.1	0
-bin	-0.08	0
-bin	-0.06	0
-bin	-0.04	0
-bin	-0.02	0
-bin	0	1
-bin	0.02	0
-bin	0.04	0
-bin	0.06	0
-bin	0.08	0
-bin	0.1	0
-bin	0.12	0
-bin	0.14	0
-bin	0.16	0
-bin	0.18	0
-bin	0.2	0
-bin	0.22	0
-bin	0.24	0
-bin	0.26	0
-bin	0.28	0
-bin	0.3	0
-bin	0.32	0
-bin	0.34	0
-bin	0.36	0
-bin	0.38	0
-bin	0.4	0
-bin	0.42	0
-bin	0.44	0
-bin	0.46	0
-bin	0.48	0
-bin	0.5	0
-scalar Fanet.host[2].wlan[0].radio radioMode:count 6
+attr source linkBroken
+attr title "link break, count"
+scalar Fanet.host[2].wlan[0].radio radioMode:count 3
 attr interpolationmode sample-hold
 attr source radioModeChanged
 attr title "Radio mode, count"
-scalar Fanet.host[2].wlan[0].radio receptionState:count 8
+scalar Fanet.host[2].wlan[0].radio receptionState:count 15
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, count"
-scalar Fanet.host[2].wlan[0].radio transmissionState:count 6
+scalar Fanet.host[2].wlan[0].radio transmissionState:count 5
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, count"
 statistic Fanet.host[2].wlan[0].radio minSnir:histogram
-field count 2
-field mean 1790.0247624431
-field stddev 1744.5402993521
-field min 556.44848671803
-field max 3023.6010381682
-field sum 3580.0495248862
-field sqrsum 9451798.1563825
+field count 0
+field mean nan
+field stddev nan
+field min nan
+field max nan
+field sum 0
+field sqrsum 0
 attr source minimumSnir(packetSentToUpper)
 attr title "Min SNIR, histogram"
 bin	-inf	0
 bin	0	0
-bin	50	0
-bin	100	0
-bin	150	0
-bin	200	0
-bin	250	0
-bin	300	0
-bin	350	0
-bin	400	0
-bin	450	0
-bin	500	0
-bin	550	1
-bin	600	0
-bin	650	0
-bin	700	0
-bin	750	0
-bin	800	0
-bin	850	0
-bin	900	0
-bin	950	0
-bin	1000	0
-bin	1050	0
-bin	1100	0
-bin	1150	0
-bin	1200	0
-bin	1250	0
-bin	1300	0
-bin	1350	0
-bin	1400	0
-bin	1450	0
-bin	1500	0
-bin	1550	0
-bin	1600	0
-bin	1650	0
-bin	1700	0
-bin	1750	0
-bin	1800	0
-bin	1850	0
-bin	1900	0
-bin	1950	0
-bin	2000	0
-bin	2050	0
-bin	2100	0
-bin	2150	0
-bin	2200	0
-bin	2250	0
-bin	2300	0
-bin	2350	0
-bin	2400	0
-bin	2450	0
-bin	2500	0
-bin	2550	0
-bin	2600	0
-bin	2650	0
-bin	2700	0
-bin	2750	0
-bin	2800	0
-bin	2850	0
-bin	2900	0
-bin	2950	0
-bin	3000	1
-bin	3050	0
-bin	3100	0
-bin	3150	0
-bin	3200	0
-bin	3250	0
-bin	3300	0
-bin	3350	0
-bin	3400	0
-bin	3450	0
-bin	3500	0
-bin	3550	0
-bin	3600	0
-bin	3650	0
+bin	1	0
 statistic Fanet.host[2].wlan[0].radio packetErrorRate:histogram
-field count 2
+field count 7
 field mean 0
 field stddev 0
 field min 0
@@ -2496,7 +1130,7 @@ bin	-0.08	0
 bin	-0.06	0
 bin	-0.04	0
 bin	-0.02	0
-bin	0	2
+bin	0	7
 bin	0.02	0
 bin	0.04	0
 bin	0.06	0
@@ -2523,31 +1157,129 @@ bin	0.46	0
 bin	0.48	0
 bin	0.5	0
 statistic Fanet.host[2].wlan[0].radio bitErrorRate:histogram
-field count 0
-field mean nan
-field stddev nan
-field min nan
-field max nan
+field count 7
+field mean 0
+field stddev 0
+field min 0
+field max 0
 field sum 0
 field sqrsum 0
 attr source bitErrorRate(packetSentToUpper)
 attr title "Bit error rate, histogram"
 bin	-inf	0
-bin	0	0
-bin	1	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	7
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
 statistic Fanet.host[2].wlan[0].radio symbolErrorRate:histogram
-field count 0
-field mean nan
-field stddev nan
-field min nan
-field max nan
+field count 7
+field mean 0
+field stddev 0
+field min 0
+field max 0
 field sum 0
 field sqrsum 0
 attr source symbolErrorRate(packetSentToUpper)
 attr title "Symbol error rate, histogram"
 bin	-inf	0
-bin	0	0
-bin	1	0
+bin	-0.5	0
+bin	-0.48	0
+bin	-0.46	0
+bin	-0.44	0
+bin	-0.42	0
+bin	-0.4	0
+bin	-0.38	0
+bin	-0.36	0
+bin	-0.34	0
+bin	-0.32	0
+bin	-0.3	0
+bin	-0.28	0
+bin	-0.26	0
+bin	-0.24	0
+bin	-0.22	0
+bin	-0.2	0
+bin	-0.18	0
+bin	-0.16	0
+bin	-0.14	0
+bin	-0.12	0
+bin	-0.1	0
+bin	-0.08	0
+bin	-0.06	0
+bin	-0.04	0
+bin	-0.02	0
+bin	0	7
+bin	0.02	0
+bin	0.04	0
+bin	0.06	0
+bin	0.08	0
+bin	0.1	0
+bin	0.12	0
+bin	0.14	0
+bin	0.16	0
+bin	0.18	0
+bin	0.2	0
+bin	0.22	0
+bin	0.24	0
+bin	0.26	0
+bin	0.28	0
+bin	0.3	0
+bin	0.32	0
+bin	0.34	0
+bin	0.36	0
+bin	0.38	0
+bin	0.4	0
+bin	0.42	0
+bin	0.44	0
+bin	0.46	0
+bin	0.48	0
+bin	0.5	0
 scalar Fanet.host[2].ipv4.ip packetDropAddressResolutionFailed:count 0
 attr interpolationmode none
 attr source packetDropReasonIsAddressResolutionFailed(packetDropped)
@@ -2596,29 +1328,11 @@ scalar Fanet.host[2].ipv4.ip packetDropUndefined:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsUndefined(packetDropped)
 attr title "packet drop: undefined, sum(packetBytes)"
-scalar Fanet.host[2].ipv4.arp arpResolutionFailed:count 0
-attr title "ARP failed resolutions, count"
-scalar Fanet.host[2].ipv4.arp arpResolutionCompleted:count 0
-attr title "ARP completed resolutions, count"
-scalar Fanet.host[2].ipv4.arp arpResolutionInitiated:count 0
-attr title "ARP initiated resolutions, count"
-scalar Fanet.host[2].ipv4.arp arpReplySent:count 0
-attr source arpReplySent
-attr title "ARP replies sent, count"
-scalar Fanet.host[2].ipv4.arp arpReplySent:sum(packetBytes) 0
-attr source arpReplySent
-attr title "ARP replies sent, sum(packetBytes)"
-scalar Fanet.host[2].ipv4.arp arpRequestSent:count 0
-attr source arpRequestSent
-attr title "ARP request sent, count"
-scalar Fanet.host[2].ipv4.arp arpRequestSent:sum(packetBytes) 0
-attr source arpRequestSent
-attr title "ARP request sent, sum(packetBytes)"
-scalar Fanet.host[2].udp packetReceived:count 0
+scalar Fanet.host[2].udp packetReceived:count 6
 attr interpolationmode none
 attr source packetReceived
 attr title "packets received, count"
-scalar Fanet.host[2].udp packetReceived:sum(packetBytes) 0
+scalar Fanet.host[2].udp packetReceived:sum(packetBytes) 6048
 attr interpolationmode none
 attr source packetReceived
 attr title "packets received, sum(packetBytes)"
@@ -2630,7 +1344,7 @@ scalar Fanet.host[2].udp packetSent:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, sum(packetBytes)"
-scalar Fanet.host[2].udp passedUpPk:count 0
+scalar Fanet.host[2].udp passedUpPk:count 6
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed up, count"
@@ -2642,32 +1356,118 @@ scalar Fanet.host[2].udp droppedPkBadChecksum:count 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
 attr title "packets dropped (checksum error), count"
-scalar Fanet.host[2].app[0] pingRxSeq:count 0
+scalar Fanet.host[2].app[0] packetReceived:count 6
 attr interpolationmode none
-attr title "ping rx seq, count"
-scalar Fanet.host[2].app[0] pingTxSeq:count 0
+attr source packetReceived
+attr title "packets received, count"
+scalar Fanet.host[2].app[0] packetReceived:sum(packetBytes) 6000
 attr interpolationmode none
-attr title "ping tx seq, count"
-scalar Fanet.host[2].app[0] numOutOfOrderArrivals:last nan
+attr source packetReceived
+attr title "packets received, sum(packetBytes)"
+statistic Fanet.host[2].app[0] endToEndDelay:histogram
+field count 6
+field mean 0.00036660277466667
+field stddev 1.1997001123943e-07
+field min 0.000366504991
+field max 0.000366802313
+field sum 0.002199616648
+field sqrsum 8.0638563832381e-07
 attr interpolationmode none
-attr title "ping out-of-order arrivals, last"
-scalar Fanet.host[2].app[0] numLost:last nan
-attr interpolationmode none
-attr title "pings lost, last"
-statistic Fanet.host[2].app[0] rtt:histogram
-field count 0
-field mean nan
-field stddev nan
-field min nan
-field max nan
-field sum 0
-field sqrsum 0
-attr interpolationmode none
-attr title "ping round-trip time, histogram"
+attr source dataAge(packetReceived)
+attr title "end-to-end delay, histogram"
 attr unit s
 bin	-inf	0
-bin	0	0
-bin	1	0
+bin	0.00036643	0
+bin	0.000366435	0
+bin	0.00036644	0
+bin	0.000366445	0
+bin	0.00036645	0
+bin	0.000366455	0
+bin	0.00036646	0
+bin	0.000366465	0
+bin	0.00036647	0
+bin	0.000366475	0
+bin	0.00036648	0
+bin	0.000366485	0
+bin	0.00036649	0
+bin	0.000366495	0
+bin	0.0003665	1
+bin	0.000366505	0
+bin	0.00036651	2
+bin	0.000366515	0
+bin	0.00036652	0
+bin	0.000366525	0
+bin	0.00036653	0
+bin	0.000366535	0
+bin	0.00036654	0
+bin	0.000366545	0
+bin	0.00036655	0
+bin	0.000366555	0
+bin	0.00036656	0
+bin	0.000366565	0
+bin	0.00036657	0
+bin	0.000366575	0
+bin	0.00036658	0
+bin	0.000366585	0
+bin	0.00036659	0
+bin	0.000366595	0
+bin	0.0003666	0
+bin	0.000366605	1
+bin	0.00036661	0
+bin	0.000366615	0
+bin	0.00036662	0
+bin	0.000366625	0
+bin	0.00036663	0
+bin	0.000366635	0
+bin	0.00036664	0
+bin	0.000366645	0
+bin	0.00036665	0
+bin	0.000366655	0
+bin	0.00036666	0
+bin	0.000366665	0
+bin	0.00036667	0
+bin	0.000366675	1
+bin	0.00036668	0
+bin	0.000366685	0
+bin	0.00036669	0
+bin	0.000366695	0
+bin	0.0003667	0
+bin	0.000366705	0
+bin	0.00036671	0
+bin	0.000366715	0
+bin	0.00036672	0
+bin	0.000366725	0
+bin	0.00036673	0
+bin	0.000366735	0
+bin	0.00036674	0
+bin	0.000366745	0
+bin	0.00036675	0
+bin	0.000366755	0
+bin	0.00036676	0
+bin	0.000366765	0
+bin	0.00036677	0
+bin	0.000366775	0
+bin	0.00036678	0
+bin	0.000366785	0
+bin	0.00036679	0
+bin	0.000366795	0
+bin	0.0003668	1
+bin	0.000366805	0
+bin	0.00036681	0
+bin	0.000366815	0
+bin	0.00036682	0
+bin	0.000366825	0
+bin	0.00036683	0
+bin	0.000366835	0
+bin	0.00036684	0
+bin	0.000366845	0
+bin	0.00036685	0
+bin	0.000366855	0
+bin	0.00036686	0
+bin	0.000366865	0
+bin	0.00036687	0
+bin	0.000366875	0
+bin	0.00036688	0
 scalar Fanet.attacker[0].lo[0].lo rcvdPkFromHl:count 0
 attr interpolationmode none
 attr source packetReceivedFromUpper
@@ -2684,13 +1484,13 @@ scalar Fanet.attacker[0].lo[0].lo passedUpPk:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed to higher layer, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:count 1
+scalar Fanet.attacker[0].wlan[0].mac.queue packetPopped:count 1
 attr interpolationmode none
 attr title "packet popped, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetPopped:sum(packetBytes) 76
+scalar Fanet.attacker[0].wlan[0].mac.queue packetPopped:sum(packetBytes) 40
 attr interpolationmode none
 attr title "packet popped, sum(packetBytes)"
-statistic Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue queueingTime:histogram
+statistic Fanet.attacker[0].wlan[0].mac.queue queueingTime:histogram
 field count 1
 field mean 0
 field stddev nan
@@ -2754,644 +1554,132 @@ bin	0.44	0
 bin	0.46	0
 bin	0.48	0
 bin	0.5	0
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:max 1
+scalar Fanet.attacker[0].wlan[0].mac.queue queueLength:max 1
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, max"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue queueLength:timeavg 0
+scalar Fanet.attacker[0].wlan[0].mac.queue queueLength:timeavg 0
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, timeavg"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:count 1
+scalar Fanet.attacker[0].wlan[0].mac.queue packetPushed:count 1
 attr interpolationmode none
 attr title "packet pushed, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetPushed:sum(packetBytes) 76
+scalar Fanet.attacker[0].wlan[0].mac.queue packetPushed:sum(packetBytes) 40
 attr interpolationmode none
 attr title "packet pushed, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:count 0
+scalar Fanet.attacker[0].wlan[0].mac.queue packetDropQueueOverflow:count 0
 attr interpolationmode none
 attr source packetDropReasonIsQueueOverflow(packetDropped)
 attr title "packet drops: queue overflow, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetDropQueueOverflow:sum(packetBytes) 0
+scalar Fanet.attacker[0].wlan[0].mac.queue packetDropQueueOverflow:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsQueueOverflow(packetDropped)
 attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:count 0
+scalar Fanet.attacker[0].wlan[0].mac.queue packetRemoved:count 0
 attr interpolationmode none
 attr title "packets removed, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.pendingQueue packetRemoved:sum(packetBytes) 0
+scalar Fanet.attacker[0].wlan[0].mac.queue packetRemoved:sum(packetBytes) 0
 attr interpolationmode none
 attr title "packets removed, sum(packetBytes)"
-statistic Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.inProgressFrames queueingTime:histogram
-field count 1
-field mean 5.4e-05
-field stddev nan
-field min 5.4e-05
-field max 5.4e-05
-field sum 5.4e-05
-field sqrsum 2.916e-09
+scalar Fanet.attacker[0].wlan[0].mac rcvdPkFromLl:count 0
 attr interpolationmode none
-attr source queueingTime(packetDequeued)
-attr title "queueing times, histogram"
-bin	-inf	0
-bin	0	1
-bin	0.01	0
-bin	0.02	0
-bin	0.03	0
-bin	0.04	0
-bin	0.05	0
-bin	0.06	0
-bin	0.07	0
-bin	0.08	0
-bin	0.09	0
-bin	0.1	0
-bin	0.11	0
-bin	0.12	0
-bin	0.13	0
-bin	0.14	0
-bin	0.15	0
-bin	0.16	0
-bin	0.17	0
-bin	0.18	0
-bin	0.19	0
-bin	0.2	0
-bin	0.21	0
-bin	0.22	0
-bin	0.23	0
-bin	0.24	0
-bin	0.25	0
-bin	0.26	0
-bin	0.27	0
-bin	0.28	0
-bin	0.29	0
-bin	0.3	0
-bin	0.31	0
-bin	0.32	0
-bin	0.33	0
-bin	0.34	0
-bin	0.35	0
-bin	0.36	0
-bin	0.37	0
-bin	0.38	0
-bin	0.39	0
-bin	0.4	0
-bin	0.41	0
-bin	0.42	0
-bin	0.43	0
-bin	0.44	0
-bin	0.45	0
-bin	0.46	0
-bin	0.47	0
-bin	0.48	0
-bin	0.49	0
-bin	0.5	0
-bin	0.51	0
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:max 1
-attr interpolationmode sample-hold
-attr source "count(packetEnqueued) - count(packetDequeued)"
-attr title "queue length, max"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.inProgressFrames queueLength:timeavg 8.6916441996721e-06
-attr interpolationmode sample-hold
-attr source "count(packetEnqueued) - count(packetDequeued)"
-attr title "queue length, timeavg"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.contention channelAccessGranted:count 1
-attr title "channel access granted, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess.contention stateChanged:count 18
-attr interpolationmode none
-attr title "contention state changed, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.channelAccess channelOwnershipChanged:count 2
-attr interpolationmode sample-hold
-attr title "channel ownership, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.originatorMacDataService packetAggregated:count 0
-attr title "packets aggregated, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.originatorMacDataService packetFragmented:count 0
-attr title "packets fragmented, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.recipientMacDataService packetDeaggregated:count 0
-attr title "packets deaggregated, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.recipientMacDataService packetDefragmented:count 2
-attr title "packets defragmented, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:count 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.recipientMacDataService packetDropDuplicateDetected:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf.recoveryProcedure retryLimitReached:count 0
-attr title "retry limit reached, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf frameSequenceFinished:count 1
-attr title "finished frame sequences, count"
-statistic Fanet.attacker[0].wlan[0].mac.dcf frameSequenceDuration:histogram
-field count 1
-field mean 5.4e-05
-field stddev nan
-field min 5.4e-05
-field max 5.4e-05
-field sum 5.4e-05
-field sqrsum 2.916e-09
-attr source frameSequenceDuration(frameSequenceFinished)
-attr title "frame sequence durations, histogram"
-bin	-inf	0
-bin	0	1
-bin	0.01	0
-bin	0.02	0
-bin	0.03	0
-bin	0.04	0
-bin	0.05	0
-bin	0.06	0
-bin	0.07	0
-bin	0.08	0
-bin	0.09	0
-bin	0.1	0
-bin	0.11	0
-bin	0.12	0
-bin	0.13	0
-bin	0.14	0
-bin	0.15	0
-bin	0.16	0
-bin	0.17	0
-bin	0.18	0
-bin	0.19	0
-bin	0.2	0
-bin	0.21	0
-bin	0.22	0
-bin	0.23	0
-bin	0.24	0
-bin	0.25	0
-bin	0.26	0
-bin	0.27	0
-bin	0.28	0
-bin	0.29	0
-bin	0.3	0
-bin	0.31	0
-bin	0.32	0
-bin	0.33	0
-bin	0.34	0
-bin	0.35	0
-bin	0.36	0
-bin	0.37	0
-bin	0.38	0
-bin	0.39	0
-bin	0.4	0
-bin	0.41	0
-bin	0.42	0
-bin	0.43	0
-bin	0.44	0
-bin	0.45	0
-bin	0.46	0
-bin	0.47	0
-bin	0.48	0
-bin	0.49	0
-bin	0.5	0
-bin	0.51	0
-statistic Fanet.attacker[0].wlan[0].mac.dcf frameSequenceNumPackets:histogram
-field count 1
-field mean 1
-field stddev nan
-field min 1
-field max 1
-field sum 1
-field sqrsum 1
-attr source frameSequenceNumPackets(frameSequenceFinished)
-attr title "frame sequences: number of packets, histogram"
-bin	-inf	0
-bin	0	0
-bin	1	1
-bin	2	0
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeer:count 2
-attr interpolationmode none
-attr title "packets received, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeer:sum(packetBytes) 152
-attr interpolationmode none
-attr title "packets received, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeerUnicast:count 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetReceivedFromPeer)
-attr title "packets received: unicast, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeerUnicast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetReceivedFromPeer)
-attr title "packets received: unicast, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeerMulticast:count 2
-attr interpolationmode none
-attr source ieee80211Multicast(packetReceivedFromPeer)
-attr title "packets received: multicast, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeerMulticast:sum(packetBytes) 152
-attr interpolationmode none
-attr source ieee80211Multicast(packetReceivedFromPeer)
-attr title "packets received: multicast, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeerBroadcast:count 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetReceivedFromPeer)
-attr title "packets received: broadcast, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeerBroadcast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetReceivedFromPeer)
-attr title "packets received: broadcast, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeerWithRetry:count 0
-attr interpolationmode none
-attr source ieee80211Retry(packetReceivedFromPeer)
-attr title "packets received: with retry, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeerWithRetry:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Retry(packetReceivedFromPeer)
-attr title "packets received: with retry, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:count 2
-attr interpolationmode none
-attr source ieee80211NotRetry(packetReceivedFromPeer)
-attr title "packets received: without retry, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetReceivedFromPeerWithoutRetry:sum(packetBytes) 152
-attr interpolationmode none
-attr source ieee80211NotRetry(packetReceivedFromPeer)
-attr title "packets received: without retry, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeer:count 1
-attr interpolationmode none
-attr title "packets sent, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeer:sum(packetBytes) 76
-attr interpolationmode none
-attr title "packets sent, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeerUnicast:count 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetSentToPeer)
-attr title "packets sent: unicast, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeerUnicast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Unicast(packetSentToPeer)
-attr title "packets sent: unicast, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeerMulticast:count 1
-attr interpolationmode none
-attr source ieee80211Multicast(packetSentToPeer)
-attr title "packets sent: multicast, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeerMulticast:sum(packetBytes) 76
-attr interpolationmode none
-attr source ieee80211Multicast(packetSentToPeer)
-attr title "packets sent: multicast, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeerBroadcast:count 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetSentToPeer)
-attr title "packets sent: broadcast , count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeerBroadcast:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Broadcast(packetSentToPeer)
-attr title "packets sent: broadcast , sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeerWithRetry:count 0
-attr interpolationmode none
-attr source ieee80211Retry(packetSentToPeer)
-attr title "packets sent: with retry, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeerWithRetry:sum(packetBytes) 0
-attr interpolationmode none
-attr source ieee80211Retry(packetSentToPeer)
-attr title "packets sent: with retry, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeerWithoutRetry:count 1
-attr interpolationmode none
-attr source ieee80211NotRetry(packetSentToPeer)
-attr title "packets sent: without retry, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetSentToPeerWithoutRetry:sum(packetBytes) 76
-attr interpolationmode none
-attr source ieee80211NotRetry(packetSentToPeer)
-attr title "packets sent: without retry, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetDrop:count 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetDrop:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetDropNotAddressedToUs:count 0
-attr interpolationmode none
-attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetDropNotAddressedToUs:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetDropQueueOverflow:count 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetDropQueueOverflow:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetDropRetryLimitReached:count 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, count"
-scalar Fanet.attacker[0].wlan[0].mac.dcf packetDropRetryLimitReached:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac.dcf linkBroken:count 0
-attr interpolationmode none
-attr title "link breaks, count"
-scalar Fanet.attacker[0].wlan[0].mac packetReceivedFromLower:count 2
-attr interpolationmode none
+attr source packetReceivedFromLower
 attr title "packets received from lower layer, count"
-scalar Fanet.attacker[0].wlan[0].mac packetReceivedFromLower:sum(packetBytes) 152
+scalar Fanet.attacker[0].wlan[0].mac rcvdPkFromLl:sum(packetBytes) 0
 attr interpolationmode none
+attr source packetReceivedFromLower
 attr title "packets received from lower layer, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac packetSentToLower:count 1
+scalar Fanet.attacker[0].wlan[0].mac sentDownPk:count 1
 attr interpolationmode none
+attr source packetSentToLower
 attr title "packets sent to lower layer, count"
-scalar Fanet.attacker[0].wlan[0].mac packetSentToLower:sum(packetBytes) 76
+scalar Fanet.attacker[0].wlan[0].mac sentDownPk:sum(packetBytes) 56
 attr interpolationmode none
+attr source packetSentToLower
 attr title "packets sent to lower layer, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac packetReceivedFromUpper:count 1
+scalar Fanet.attacker[0].wlan[0].mac rcvdPkFromHl:count 1
 attr interpolationmode none
-attr title "packets received from upper layer, count"
-scalar Fanet.attacker[0].wlan[0].mac packetReceivedFromUpper:sum(packetBytes) 48
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, count"
+scalar Fanet.attacker[0].wlan[0].mac rcvdPkFromHl:sum(packetBytes) 40
 attr interpolationmode none
-attr title "packets received from upper layer, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac packetSentToUpper:count 2
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, sum(packetBytes)"
+scalar Fanet.attacker[0].wlan[0].mac passedUpPk:count 0
 attr interpolationmode none
-attr title "packets sent to upper layer, count"
-scalar Fanet.attacker[0].wlan[0].mac packetSentToUpper:sum(packetBytes) 96
+attr source packetSentToUpper
+attr title "packets passed to higher layer, count"
+scalar Fanet.attacker[0].wlan[0].mac passedUpPk:sum(packetBytes) 0
 attr interpolationmode none
-attr title "packets sent to upper layer, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac packetDrop:count 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, count"
-scalar Fanet.attacker[0].wlan[0].mac packetDrop:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropped
-attr title "packet drops, sum(packetBytes)"
+attr source packetSentToUpper
+attr title "packets passed to higher layer, sum(packetBytes)"
 scalar Fanet.attacker[0].wlan[0].mac packetDropIncorrectlyReceived:count 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
-attr title "packet drops: incorrectly received, count"
+attr title "packet drop: incorrectly received, count"
 scalar Fanet.attacker[0].wlan[0].mac packetDropIncorrectlyReceived:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
-attr title "packet drops: incorrectly received, sum(packetBytes)"
+attr title "packet drop: incorrectly received, sum(packetBytes)"
+scalar Fanet.attacker[0].wlan[0].mac packetDropInterfaceDown:count 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, count"
+scalar Fanet.attacker[0].wlan[0].mac packetDropInterfaceDown:sum(packetBytes) 0
+attr interpolationmode none
+attr source packetDropReasonIsInterfaceDown(packetDropped)
+attr title "packet drop: interface down, sum(packetBytes)"
 scalar Fanet.attacker[0].wlan[0].mac packetDropNotAddressedToUs:count 0
 attr interpolationmode none
 attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, count"
+attr title "packet drop: not addressed to us, count"
 scalar Fanet.attacker[0].wlan[0].mac packetDropNotAddressedToUs:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drops: not addressed to us, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac packetDropQueueOverflow:count 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, count"
-scalar Fanet.attacker[0].wlan[0].mac packetDropQueueOverflow:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsQueueOverflow(packetDropped)
-attr title "packet drops: queue overflow, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac packetDropRetryLimitReached:count 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, count"
-scalar Fanet.attacker[0].wlan[0].mac packetDropRetryLimitReached:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsRetryLimitReached(packetDropped)
-attr title "packet drops: retry limit reached, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac packetDropDuplicateDetected:count 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, count"
-scalar Fanet.attacker[0].wlan[0].mac packetDropDuplicateDetected:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsDuplicateDetected(packetDropped)
-attr title "packet drops: duplicate detected, sum(packetBytes)"
-scalar Fanet.attacker[0].wlan[0].mac packetDropOther:count 0
-attr interpolationmode none
-attr source packetDropReasonIsOther(packetDropped)
-attr title "packet drops: other, count"
-scalar Fanet.attacker[0].wlan[0].mac packetDropOther:sum(packetBytes) 0
-attr interpolationmode none
-attr source packetDropReasonIsOther(packetDropped)
-attr title "packet drops: other, sum(packetBytes)"
+attr title "packet drop: not addressed to us, sum(packetBytes)"
 scalar Fanet.attacker[0].wlan[0].mac linkBroken:count 0
 attr interpolationmode none
-attr title "link breaks, count"
-statistic Fanet.attacker[0].wlan[0].radio radioChannel:histogram
-field count 1
-field mean 0
-field stddev nan
-field min 0
-field max 0
-field sum 0
-field sqrsum 0
-attr interpolationmode sample-hold
-attr source radioChannelChanged
-attr title "Radio channel, histogram"
-bin	-inf	0
-bin	-0.5	0
-bin	-0.48	0
-bin	-0.46	0
-bin	-0.44	0
-bin	-0.42	0
-bin	-0.4	0
-bin	-0.38	0
-bin	-0.36	0
-bin	-0.34	0
-bin	-0.32	0
-bin	-0.3	0
-bin	-0.28	0
-bin	-0.26	0
-bin	-0.24	0
-bin	-0.22	0
-bin	-0.2	0
-bin	-0.18	0
-bin	-0.16	0
-bin	-0.14	0
-bin	-0.12	0
-bin	-0.1	0
-bin	-0.08	0
-bin	-0.06	0
-bin	-0.04	0
-bin	-0.02	0
-bin	0	1
-bin	0.02	0
-bin	0.04	0
-bin	0.06	0
-bin	0.08	0
-bin	0.1	0
-bin	0.12	0
-bin	0.14	0
-bin	0.16	0
-bin	0.18	0
-bin	0.2	0
-bin	0.22	0
-bin	0.24	0
-bin	0.26	0
-bin	0.28	0
-bin	0.3	0
-bin	0.32	0
-bin	0.34	0
-bin	0.36	0
-bin	0.38	0
-bin	0.4	0
-bin	0.42	0
-bin	0.44	0
-bin	0.46	0
-bin	0.48	0
-bin	0.5	0
-scalar Fanet.attacker[0].wlan[0].radio radioMode:count 5
+attr source linkBroken
+attr title "link break, count"
+scalar Fanet.attacker[0].wlan[0].radio radioMode:count 3
 attr interpolationmode sample-hold
 attr source radioModeChanged
 attr title "Radio mode, count"
-scalar Fanet.attacker[0].wlan[0].radio receptionState:count 7
+scalar Fanet.attacker[0].wlan[0].radio receptionState:count 1
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, count"
-scalar Fanet.attacker[0].wlan[0].radio transmissionState:count 4
+scalar Fanet.attacker[0].wlan[0].radio transmissionState:count 3
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, count"
 statistic Fanet.attacker[0].wlan[0].radio minSnir:histogram
-field count 2
-field mean 514.77062094442
-field stddev 171.67186320865
-field min 393.38028233065
-field max 636.16095955818
-field sum 1029.5412418888
-field sqrsum 559448.81299253
+field count 0
+field mean nan
+field stddev nan
+field min nan
+field max nan
+field sum 0
+field sqrsum 0
 attr source minimumSnir(packetSentToUpper)
 attr title "Min SNIR, histogram"
 bin	-inf	0
-bin	330	0
-bin	335	0
-bin	340	0
-bin	345	0
-bin	350	0
-bin	355	0
-bin	360	0
-bin	365	0
-bin	370	0
-bin	375	0
-bin	380	0
-bin	385	0
-bin	390	1
-bin	395	0
-bin	400	0
-bin	405	0
-bin	410	0
-bin	415	0
-bin	420	0
-bin	425	0
-bin	430	0
-bin	435	0
-bin	440	0
-bin	445	0
-bin	450	0
-bin	455	0
-bin	460	0
-bin	465	0
-bin	470	0
-bin	475	0
-bin	480	0
-bin	485	0
-bin	490	0
-bin	495	0
-bin	500	0
-bin	505	0
-bin	510	0
-bin	515	0
-bin	520	0
-bin	525	0
-bin	530	0
-bin	535	0
-bin	540	0
-bin	545	0
-bin	550	0
-bin	555	0
-bin	560	0
-bin	565	0
-bin	570	0
-bin	575	0
-bin	580	0
-bin	585	0
-bin	590	0
-bin	595	0
-bin	600	0
-bin	605	0
-bin	610	0
-bin	615	0
-bin	620	0
-bin	625	0
-bin	630	0
-bin	635	1
-bin	640	0
-bin	645	0
-bin	650	0
-bin	655	0
-bin	660	0
-bin	665	0
-bin	670	0
-bin	675	0
-bin	680	0
-bin	685	0
-bin	690	0
-bin	695	0
-bin	700	0
+bin	0	0
+bin	1	0
 statistic Fanet.attacker[0].wlan[0].radio packetErrorRate:histogram
-field count 2
-field mean 0
-field stddev 0
-field min 0
-field max 0
+field count 0
+field mean nan
+field stddev nan
+field min nan
+field max nan
 field sum 0
 field sqrsum 0
 attr source packetErrorRate(packetSentToUpper)
 attr title "Packet error rate, histogram"
 bin	-inf	0
-bin	-0.5	0
-bin	-0.48	0
-bin	-0.46	0
-bin	-0.44	0
-bin	-0.42	0
-bin	-0.4	0
-bin	-0.38	0
-bin	-0.36	0
-bin	-0.34	0
-bin	-0.32	0
-bin	-0.3	0
-bin	-0.28	0
-bin	-0.26	0
-bin	-0.24	0
-bin	-0.22	0
-bin	-0.2	0
-bin	-0.18	0
-bin	-0.16	0
-bin	-0.14	0
-bin	-0.12	0
-bin	-0.1	0
-bin	-0.08	0
-bin	-0.06	0
-bin	-0.04	0
-bin	-0.02	0
-bin	0	2
-bin	0.02	0
-bin	0.04	0
-bin	0.06	0
-bin	0.08	0
-bin	0.1	0
-bin	0.12	0
-bin	0.14	0
-bin	0.16	0
-bin	0.18	0
-bin	0.2	0
-bin	0.22	0
-bin	0.24	0
-bin	0.26	0
-bin	0.28	0
-bin	0.3	0
-bin	0.32	0
-bin	0.34	0
-bin	0.36	0
-bin	0.38	0
-bin	0.4	0
-bin	0.42	0
-bin	0.44	0
-bin	0.46	0
-bin	0.48	0
-bin	0.5	0
+bin	0	0
+bin	1	0
 statistic Fanet.attacker[0].wlan[0].radio bitErrorRate:histogram
 field count 0
 field mean nan
@@ -3466,24 +1754,6 @@ scalar Fanet.attacker[0].ipv4.ip packetDropUndefined:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetDropReasonIsUndefined(packetDropped)
 attr title "packet drop: undefined, sum(packetBytes)"
-scalar Fanet.attacker[0].ipv4.arp arpResolutionFailed:count 0
-attr title "ARP failed resolutions, count"
-scalar Fanet.attacker[0].ipv4.arp arpResolutionCompleted:count 0
-attr title "ARP completed resolutions, count"
-scalar Fanet.attacker[0].ipv4.arp arpResolutionInitiated:count 0
-attr title "ARP initiated resolutions, count"
-scalar Fanet.attacker[0].ipv4.arp arpReplySent:count 0
-attr source arpReplySent
-attr title "ARP replies sent, count"
-scalar Fanet.attacker[0].ipv4.arp arpReplySent:sum(packetBytes) 0
-attr source arpReplySent
-attr title "ARP replies sent, sum(packetBytes)"
-scalar Fanet.attacker[0].ipv4.arp arpRequestSent:count 0
-attr source arpRequestSent
-attr title "ARP request sent, count"
-scalar Fanet.attacker[0].ipv4.arp arpRequestSent:sum(packetBytes) 0
-attr source arpRequestSent
-attr title "ARP request sent, sum(packetBytes)"
 scalar Fanet.attacker[0].udp packetReceived:count 0
 attr interpolationmode none
 attr source packetReceived
@@ -3512,40 +1782,14 @@ scalar Fanet.attacker[0].udp droppedPkBadChecksum:count 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
 attr title "packets dropped (checksum error), count"
-scalar Fanet.attacker[0].app[0] pingRxSeq:count 0
-attr interpolationmode none
-attr title "ping rx seq, count"
-scalar Fanet.attacker[0].app[0] pingTxSeq:count 0
-attr interpolationmode none
-attr title "ping tx seq, count"
-scalar Fanet.attacker[0].app[0] numOutOfOrderArrivals:last nan
-attr interpolationmode none
-attr title "ping out-of-order arrivals, last"
-scalar Fanet.attacker[0].app[0] numLost:last nan
-attr interpolationmode none
-attr title "pings lost, last"
-statistic Fanet.attacker[0].app[0] rtt:histogram
-field count 0
-field mean nan
-field stddev nan
-field min nan
-field max nan
-field sum 0
-field sqrsum 0
-attr interpolationmode none
-attr title "ping round-trip time, histogram"
-attr unit s
-bin	-inf	0
-bin	0	0
-bin	1	0
-scalar Fanet.radioMedium.propagation "Arrival computation count" 15
-scalar Fanet.radioMedium "transmission count" 5
-scalar Fanet.radioMedium "signal send count" 15
-scalar Fanet.radioMedium "reception computation count" 13
-scalar Fanet.radioMedium "interference computation count" 45
-scalar Fanet.radioMedium "reception decision computation count" 8
-scalar Fanet.radioMedium "listening decision computation count" 24
-scalar Fanet.radioMedium "reception cache hit" 82.666666666667
+scalar Fanet.radioMedium.propagation "Arrival computation count" 39
+scalar Fanet.radioMedium "transmission count" 13
+scalar Fanet.radioMedium "signal send count" 39
+scalar Fanet.radioMedium "reception computation count" 39
+scalar Fanet.radioMedium "interference computation count" 144
+scalar Fanet.radioMedium "reception decision computation count" 9
+scalar Fanet.radioMedium "listening decision computation count" 96
+scalar Fanet.radioMedium "reception cache hit" 78.688524590164
 attr unit %
 scalar Fanet.radioMedium "interference cache hit" 66.666666666667
 attr unit %

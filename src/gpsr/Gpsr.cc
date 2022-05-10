@@ -253,6 +253,7 @@ void Gpsr::processBeacon(Packet *packet)
     const auto& beacon = packet->peekAtFront<GpsrBeacon>();
     EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
     neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
+    EV_INFO << "---------------Processing neighborPositionTable: address = " << neighborPositionTable << endl;
     delete packet;
 }
 //
@@ -307,7 +308,9 @@ PositionTable Gpsr::globalPositionTable;
 Coord Gpsr::lookupPositionInGlobalRegistry(const L3Address& address) const
 {
     // KLUDGE: implement position registry protocol
-    return globalPositionTable.getPosition(address);
+    Coord position = globalPositionTable.getPosition(address);
+    EV_INFO << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << position << address;
+    return position;
 }
 
 void Gpsr::storePositionInGlobalRegistry(const L3Address& address, const Coord& position) const

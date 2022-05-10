@@ -15,7 +15,9 @@
 
 package progetto2.node;
 import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
+import inet.physicallayer.contract.packetlevel.IRadioMedium;
 import inet.physicallayer.ieee80211.packetlevel.Ieee80211ScalarRadioMedium;
+import inet.visualizer.base.PacketDropVisualizerBase;
 import inet.visualizer.integrated.IntegratedVisualizer;
 
 network Fanet
@@ -23,7 +25,8 @@ network Fanet
     parameters:
 
         int numHosts;
-		int numAttackers;
+        int numAttackers;
+
 
     submodules:
 
@@ -32,14 +35,15 @@ network Fanet
         }
 
         host[numHosts]: Drone;
+
+        attacker[numAttackers]: Sybil {
+            @display("p=329,89");
+        }
         configurator: Ipv4NetworkConfigurator {
             @display("p=98,250");
         }
-        
-        attacker[numAttackers]: Sybil;
-        
-        
-        radioMedium: Ieee80211ScalarRadioMedium {
-            @display("p=103,143");
+
+        radioMedium: <default("UnitDiskRadioMedium")> like IRadioMedium {
+            @display("p=100,147");
         }
 }
