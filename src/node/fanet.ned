@@ -24,6 +24,33 @@ network Fanet
 {
     parameters:
 
+        int numHosts;        
+
+
+    submodules:
+
+        visualizer: IntegratedVisualizer {
+            @display("p=100,50");
+        }
+
+        host[numHosts]: Drone;
+        
+       
+        configurator: Ipv4NetworkConfigurator {
+            @display("p=98,250");
+        }
+
+        radioMedium: <default("UnitDiskRadioMedium")> like IRadioMedium {
+            @display("p=100,147");
+        }
+}
+
+
+network FanetSybil
+{
+    
+    parameters:
+
         int numHosts;
         int numAttackers;
 
@@ -35,10 +62,10 @@ network Fanet
         }
 
         host[numHosts]: Drone;
-
-        attacker[numAttackers]: Sybil {
-            @display("p=329,89");
-        }
+        
+        attacker[numAttackers]: Sybil;
+        
+       
         configurator: Ipv4NetworkConfigurator {
             @display("p=98,250");
         }
@@ -46,4 +73,5 @@ network Fanet
         radioMedium: <default("UnitDiskRadioMedium")> like IRadioMedium {
             @display("p=100,147");
         }
+   
 }

@@ -1,14 +1,14 @@
 version 2
-run General-0-20220510-18:41:56-94479
+run General-0-20220520-15:09:19-53477
 attr configname General
-attr datetime 20220510-18:41:56
+attr datetime 20220520-15:09:19
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network Fanet
-attr processid 94479
+attr processid 53477
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -16,23 +16,24 @@ attr runnumber 0
 attr seedset 0
 param *.host[0].numApps 1
 param *.host[0].app[0].typename "\"UdpBasicApp\""
-param *.host[0].app[0].destAddresses "\"host[2]\""
+param *.host[0].app[0].startTime uniform(1s,5s)
+param *.host[0].app[0].destAddresses "\"host[10]\""
 param *.host[0].app[0].destPort 5000
 param *.host[0].app[0].messageLength 1000B
 param *.host[0].app[0].sendInterval exponential(1s)
 param *.host[0].app[0].packetName "\"UDPdata\""
-param *.host[2].numApps 1
-param *.host[2].app[0].typename "\"UdpSink\""
-param *.host[2].app[0].localPort 5000
+param *.host[10].numApps 1
+param *.host[10].app[0].typename "\"UdpSink\""
+param *.host[10].app[0].localPort 5000
 param **.wlan[*].bitrate 24Mbps
 param *.configurator.addStaticRoutes false
 param **.netmaskRoutes "\"\""
 param **.arp.typename "\"GlobalArp\""
 param *.host*.wlan[0].typename "\"AckingWirelessInterface\""
-param *.host*.wlan[0].radio.transmitter.communicationRange 450m
+param *.host*.wlan[0].radio.transmitter.communicationRange 400m
 param *.host*.wlan[0].radio.displayCommunicationRange true
 param *.attacker*.wlan[0].typename "\"AckingWirelessInterface\""
-param *.attacker*.wlan[0].radio.transmitter.communicationRange 450m
+param *.attacker*.wlan[0].radio.transmitter.communicationRange 400m
 param *.attacker*.wlan[0].radio.displayCommunicationRange true
 param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
 param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
@@ -52,23 +53,23 @@ param *.visualizer.*.mobilityVisualizer.displayOrientations true
 param *.visualizer.*.mobilityVisualizer.displayVelocities true
 param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
 param *.visualizer.*.mobilityVisualizer.animationSpeed 1
-param *.visualizer.*.packetDropVisualizer.displayPacketDrops true
+param *.visualizer.*.packetDropVisualizer.displayPacketDrops false
 param *.visualizer.*.packetDropVisualizer.labelFormat "\"%n/reason: %r\""
 param *.visualizer.*.packetDropVisualizer.fadeOutTime 10s
 param **.constraintAreaMinX 0m
 param **.constraintAreaMinY 0m
 param **.constraintAreaMinZ 0m
-param **.constraintAreaMaxX 1000m
-param **.constraintAreaMaxY 1000m
-param **.constraintAreaMaxZ 1000m
+param **.constraintAreaMaxX 2500m
+param **.constraintAreaMaxY 2000m
+param **.constraintAreaMaxZ 200m
 param *.visualizer.*.mediumVisualizer.signalPropagationAnimationSpeed 500/3e8
 param *.visualizer.*.mediumVisualizer.signalTransmissionAnimationSpeed 50000/3e8
-param *.visualizer.*.mediumVisualizer.displaySignals true
-param *.visualizer.*.mediumVisualizer.displayTransmissions true
-param *.visualizer.*.mediumVisualizer.displayReceptions true
+param *.visualizer.*.mediumVisualizer.displaySignals false
+param *.visualizer.*.mediumVisualizer.displayTransmissions false
+param *.visualizer.*.mediumVisualizer.displayReceptions false
 param *.visualizer.*.mediumVisualizer.transmissionPlacementPriority 10
 param *.visualizer.*.mediumVisualizer.receptionPlacementPriority 10
-param *.visualizer.*.mediumVisualizer.displaySignals true
+param *.visualizer.*.mediumVisualizer.displaySignals false
 param *.visualizer.*.mediumVisualizer.signalFadingDistance 50m
 param *.visualizer.*.mediumVisualizer.signalRingSize 50m
 param *.visualizer.osgVisualizer.mediumVisualizer.signalShape "\"both\""
@@ -102,50 +103,114 @@ vector 2 Fanet.host[2].wlan[0].radio radioMode:vector ETV
 attr interpolationmode sample-hold
 attr source radioModeChanged
 attr title "Radio mode, vector"
-vector 3 Fanet.attacker[0].wlan[0].radio radioMode:vector ETV
+vector 3 Fanet.host[3].wlan[0].radio radioMode:vector ETV
 attr interpolationmode sample-hold
 attr source radioModeChanged
 attr title "Radio mode, vector"
-vector 4 Fanet.host[0].wlan[0].radio receptionState:vector ETV
+vector 4 Fanet.host[4].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 5 Fanet.host[5].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 6 Fanet.host[6].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 7 Fanet.host[7].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 8 Fanet.host[8].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 9 Fanet.host[9].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 10 Fanet.host[0].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 5 Fanet.host[0].wlan[0].radio transmissionState:vector ETV
+vector 11 Fanet.host[0].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 6 Fanet.host[1].wlan[0].radio receptionState:vector ETV
+vector 12 Fanet.host[1].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 7 Fanet.host[1].wlan[0].radio transmissionState:vector ETV
+vector 13 Fanet.host[1].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 8 Fanet.host[2].wlan[0].radio receptionState:vector ETV
+vector 14 Fanet.host[2].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 9 Fanet.host[2].wlan[0].radio transmissionState:vector ETV
+vector 15 Fanet.host[2].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 10 Fanet.attacker[0].wlan[0].radio receptionState:vector ETV
+vector 16 Fanet.host[3].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 11 Fanet.attacker[0].wlan[0].radio transmissionState:vector ETV
+vector 17 Fanet.host[3].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 12 Fanet.host[0].app[0] packetSent:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSent
-attr title "packets sent, vector(packetBytes)"
-vector 13 Fanet.host[0].udp packetSent:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSent
-attr title "packets sent, vector(packetBytes)"
+vector 18 Fanet.host[4].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 19 Fanet.host[4].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 20 Fanet.host[5].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 21 Fanet.host[5].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 22 Fanet.host[6].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 23 Fanet.host[6].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 24 Fanet.host[7].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 25 Fanet.host[7].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 26 Fanet.host[8].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 27 Fanet.host[8].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 28 Fanet.host[9].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 29 Fanet.host[9].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
 0	0	0	0
 0	0	0	0
 0	0	0	4
@@ -158,788 +223,42 @@ attr title "packets sent, vector(packetBytes)"
 3	0	0	0
 3	0	0	0
 3	0	0	4
-4	0	0	1
-5	0	0	1
-6	0	0	1
-7	0	0	1
-8	0	0	1
-9	0	0	1
+4	0	0	0
+4	0	0	0
+4	0	0	4
+5	0	0	0
+5	0	0	0
+5	0	0	4
+6	0	0	0
+6	0	0	0
+6	0	0	4
+7	0	0	0
+7	0	0	0
+7	0	0	4
+8	0	0	0
+8	0	0	0
+8	0	0	4
+9	0	0	0
+9	0	0	0
+9	0	0	4
 10	0	0	1
 11	0	0	1
-12	32	0.795874504566	1000
-12	68	1.583075644548	1000
-12	95	2.134124131218	1000
-12	138	3.172283431882	1000
-12	165	3.747802628765	1000
-12	256	5.971327050801	1000
-13	34	0.795874504566	1008
-13	69	1.583075644548	1008
-13	96	2.134124131218	1008
-13	139	3.172283431882	1008
-13	166	3.747802628765	1008
-13	257	5.971327050801	1008
-12	391	9.286239330729	1000
-13	392	9.286239330729	1008
-vector 14 Fanet.host[0].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromUpper
-attr title "packets received from higher layer, vector(packetBytes)"
-vector 15 Fanet.host[0].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet pushed, vector(packetBytes)"
-vector 16 Fanet.host[0].wlan[0].mac.queue queueLength:vector ETV
-attr interpolationmode sample-hold
-attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
-attr title "queue length, vector"
-vector 17 Fanet.host[0].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet popped, vector(packetBytes)"
-vector 18 Fanet.host[0].wlan[0].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr source queueingTime(packetPopped)
-attr title "queueing times, vector"
-attr unit s
-vector 19 Fanet.host[0].wlan[0].mac sentDownPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToLower
-attr title "packets sent to lower layer, vector(packetBytes)"
-vector 20 Fanet.host[2].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromLower
-attr title "packets received from lower layer, vector(packetBytes)"
-vector 21 Fanet.host[2].wlan[0].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToUpper
-attr title "packets passed to higher layer, vector(packetBytes)"
-vector 22 Fanet.attacker[0].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromUpper
-attr title "packets received from higher layer, vector(packetBytes)"
-vector 23 Fanet.attacker[0].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet pushed, vector(packetBytes)"
-vector 24 Fanet.attacker[0].wlan[0].mac.queue queueLength:vector ETV
-attr interpolationmode sample-hold
-attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
-attr title "queue length, vector"
-vector 25 Fanet.attacker[0].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet popped, vector(packetBytes)"
-vector 26 Fanet.attacker[0].wlan[0].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr source queueingTime(packetPopped)
-attr title "queueing times, vector"
-attr unit s
-vector 27 Fanet.attacker[0].wlan[0].mac sentDownPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToLower
-attr title "packets sent to lower layer, vector(packetBytes)"
-vector 28 Fanet.host[1].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromUpper
-attr title "packets received from higher layer, vector(packetBytes)"
-vector 29 Fanet.host[1].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet pushed, vector(packetBytes)"
-vector 30 Fanet.host[1].wlan[0].mac.queue queueLength:vector ETV
-attr interpolationmode sample-hold
-attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
-attr title "queue length, vector"
-vector 31 Fanet.host[1].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet popped, vector(packetBytes)"
-vector 32 Fanet.host[1].wlan[0].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr source queueingTime(packetPopped)
-attr title "queueing times, vector"
-attr unit s
-vector 33 Fanet.host[1].wlan[0].mac sentDownPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToLower
-attr title "packets sent to lower layer, vector(packetBytes)"
-vector 34 Fanet.host[2].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromUpper
-attr title "packets received from higher layer, vector(packetBytes)"
-vector 35 Fanet.host[2].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet pushed, vector(packetBytes)"
-vector 36 Fanet.host[2].wlan[0].mac.queue queueLength:vector ETV
-attr interpolationmode sample-hold
-attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
-attr title "queue length, vector"
-vector 37 Fanet.host[2].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet popped, vector(packetBytes)"
-vector 38 Fanet.host[2].wlan[0].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr source queueingTime(packetPopped)
-attr title "queueing times, vector"
-attr unit s
-vector 39 Fanet.host[2].wlan[0].mac sentDownPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToLower
-attr title "packets sent to lower layer, vector(packetBytes)"
-vector 40 Fanet.host[0].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromLower
-attr title "packets received from lower layer, vector(packetBytes)"
-vector 41 Fanet.host[0].wlan[0].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToUpper
-attr title "packets passed to higher layer, vector(packetBytes)"
-vector 42 Fanet.host[2].udp packetReceived:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceived
-attr title "packets received, vector(packetBytes)"
-vector 43 Fanet.host[2].udp passedUpPk:vector(count) ETV
-attr interpolationmode none
-attr source packetSentToUpper
-attr title "packets passed up, vector(count)"
-vector 44 Fanet.host[2].app[0] packetReceived:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceived
-attr title "packets received, vector(packetBytes)"
-vector 45 Fanet.host[2].app[0] throughput:vector ETV
-attr source throughput(packetReceived)
-attr title "throughput, vector"
-attr unit bps
-vector 46 Fanet.host[2].app[0] endToEndDelay:vector ETV
-attr interpolationmode none
-attr source dataAge(packetReceived)
-attr title "end-to-end delay, vector"
-attr unit s
-vector 47 Fanet.host[2].app[0] rcvdPkSeqNo:vector ETV
-attr interpolationmode none
-attr source appPkSeqNo(packetReceived)
-attr title "received packet sequence number, vector"
-4	614	13.442658577948	3
-4	618	13.442681244615	1
-4	942	19.153019481986	3
-4	946	19.153042148653	1
-5	468	10.928446163889	2
-5	472	10.928468830556	1
-5	649	13.986539670475	2
-5	653	13.986905003808	1
-5	670	14.077700696599	2
-5	674	14.078066029932	1
-5	687	14.098126284998	2
-5	691	14.098491618331	1
-5	776	15.885613948437	2
-5	780	15.88597928177	1
-5	853	17.391398207074	2
-5	857	17.391763540407	1
-5	969	19.431712465016	2
-5	973	19.432077798349	1
-5	1010	20.073421637694	2
-5	1014	20.073786971027	1
-7	546	12.151893649716	2
-7	550	12.151916316383	1
-7	1063	21.079741581343	2
-7	1067	21.07976424801	1
-8	469	10.928447159795	3
-8	473	10.928469826462	1
-8	650	13.986540842133	3
-8	654	13.986906175466	1
-8	671	14.077701873642	3
-8	675	14.078067206975	1
-8	688	14.098127463231	3
-8	692	14.098492796564	1
-8	777	15.885615224306	3
-8	781	15.885980557639	1
-8	854	17.391399551941	3
-8	858	17.391764885274	1
-8	970	19.431713933996	3
-8	974	19.432079267329	1
-9	613	13.442657440901	2
-9	617	13.442680107568	1
-9	941	19.15301802801	2
-9	945	19.153040694677	1
-11	487	11.027633703779	2
-11	491	11.027656370446	1
-12	414	9.769841435677	1000
-12	508	11.3387375533	1000
-12	555	12.1781704062	1000
-12	645	13.986539670475	1000
-12	666	14.077700696599	1000
-12	683	14.098126284998	1000
-12	772	15.885613948437	1000
-12	849	17.391398207074	1000
-12	965	19.431712465016	1000
-12	1006	20.073421637694	1000
-13	415	9.769841435677	1008
-13	509	11.3387375533	1008
-13	556	12.1781704062	1008
-13	646	13.986539670475	1008
-13	667	14.077700696599	1008
-13	684	14.098126284998	1008
-13	773	15.885613948437	1008
-13	850	17.391398207074	1008
-13	966	19.431712465016	1008
-13	1007	20.073421637694	1008
-14	467	10.928446163889	40
-14	648	13.986539670475	1068
-14	669	14.077700696599	1068
-14	686	14.098126284998	1068
-14	775	15.885613948437	1068
-14	852	17.391398207074	1068
-14	968	19.431712465016	1068
-14	1009	20.073421637694	1068
-15	467	10.928446163889	40
-15	648	13.986539670475	1068
-15	669	14.077700696599	1068
-15	686	14.098126284998	1068
-15	775	15.885613948437	1068
-15	852	17.391398207074	1068
-15	968	19.431712465016	1068
-15	1009	20.073421637694	1068
-16	467	10.928446163889	1
-16	467	10.928446163889	0
-16	648	13.986539670475	1
-16	648	13.986539670475	0
-16	669	14.077700696599	1
-16	669	14.077700696599	0
-16	686	14.098126284998	1
-16	686	14.098126284998	0
-16	775	15.885613948437	1
-16	775	15.885613948437	0
-16	852	17.391398207074	1
-16	852	17.391398207074	0
-16	968	19.431712465016	1
-16	968	19.431712465016	0
-16	1009	20.073421637694	1
-16	1009	20.073421637694	0
-17	467	10.928446163889	40
-17	648	13.986539670475	1068
-17	669	14.077700696599	1068
-17	686	14.098126284998	1068
-17	775	15.885613948437	1068
-17	852	17.391398207074	1068
-17	968	19.431712465016	1068
-17	1009	20.073421637694	1068
-18	467	10.928446163889	0
-18	648	13.986539670475	0
-18	669	14.077700696599	0
-18	686	14.098126284998	0
-18	775	15.885613948437	0
-18	852	17.391398207074	0
-18	968	19.431712465016	0
-18	1009	20.073421637694	0
-19	467	10.928446163889	56
-19	648	13.986539670475	1084
-19	669	14.077700696599	1084
-19	686	14.098126284998	1084
-19	775	15.885613948437	1084
-19	852	17.391398207074	1084
-19	968	19.431712465016	1084
-19	1009	20.073421637694	1084
-20	474	10.928469826462	56
-20	655	13.986906175466	1084
-20	676	14.078067206975	1084
-20	693	14.098492796564	1084
-20	782	15.885980557639	1084
-20	859	17.391764885274	1084
-20	975	19.432079267329	1084
-21	474	10.928469826462	40
-21	655	13.986906175466	1068
-21	676	14.078067206975	1068
-21	693	14.098492796564	1068
-21	782	15.885980557639	1068
-21	859	17.391764885274	1068
-21	975	19.432079267329	1068
-22	486	11.027633703779	40
-23	486	11.027633703779	40
-24	486	11.027633703779	1
-24	486	11.027633703779	0
-25	486	11.027633703779	40
-26	486	11.027633703779	0
-27	486	11.027633703779	56
-28	545	12.151893649716	40
-28	1062	21.079741581343	40
-29	545	12.151893649716	40
-29	1062	21.079741581343	40
-30	545	12.151893649716	1
-30	545	12.151893649716	0
-30	1062	21.079741581343	1
-30	1062	21.079741581343	0
-31	545	12.151893649716	40
-31	1062	21.079741581343	40
-32	545	12.151893649716	0
-32	1062	21.079741581343	0
-33	545	12.151893649716	56
-33	1062	21.079741581343	56
-34	612	13.442657440901	40
-34	940	19.15301802801	40
-35	612	13.442657440901	40
-35	940	19.15301802801	40
-36	612	13.442657440901	1
-36	612	13.442657440901	0
-36	940	19.15301802801	1
-36	940	19.15301802801	0
-37	612	13.442657440901	40
-37	940	19.15301802801	40
-38	612	13.442657440901	0
-38	940	19.15301802801	0
-39	612	13.442657440901	56
-39	940	19.15301802801	56
-40	619	13.442681244615	56
-40	947	19.153042148653	56
-41	619	13.442681244615	40
-41	947	19.153042148653	40
-42	657	13.986906175466	1008
-42	678	14.078067206975	1008
-42	695	14.098492796564	1008
-42	784	15.885980557639	1008
-42	861	17.391764885274	1008
-42	977	19.432079267329	1008
-43	657	13.986906175466	1
-43	678	14.078067206975	2
-43	695	14.098492796564	3
-43	784	15.885980557639	4
-43	861	17.391764885274	5
-43	977	19.432079267329	6
-44	658	13.986906175466	1000
-44	679	14.078067206975	1000
-44	696	14.098492796564	1000
-44	785	15.885980557639	1000
-44	862	17.391764885274	1000
-44	978	19.432079267329	1000
-45	658	0.1	0
-45	658	0.2	0
-45	658	0.3	0
-45	658	0.4	0
-45	658	0.5	0
-45	658	0.6	0
-45	658	0.7	0
-45	658	0.8	0
-45	658	0.9	0
-45	658	1	0
-45	658	1.1	0
-45	658	1.2	0
-45	658	1.3	0
-45	658	1.4	0
-45	658	1.5	0
-45	658	1.6	0
-45	658	1.7	0
-45	658	1.8	0
-45	658	1.9	0
-45	658	2	0
-45	658	2.1	0
-45	658	2.2	0
-45	658	2.3	0
-45	658	2.4	0
-45	658	2.5	0
-45	658	2.6	0
-45	658	2.7	0
-45	658	2.8	0
-45	658	2.9	0
-45	658	3	0
-45	658	3.1	0
-45	658	3.2	0
-45	658	3.3	0
-45	658	3.4	0
-45	658	3.5	0
-45	658	3.6	0
-45	658	3.7	0
-45	658	3.8	0
-45	658	3.9	0
-45	658	4	0
-45	658	4.1	0
-45	658	4.2	0
-45	658	4.3	0
-45	658	4.4	0
-45	658	4.5	0
-45	658	4.6	0
-45	658	4.7	0
-45	658	4.8	0
-45	658	4.9	0
-45	658	5	0
-45	658	5.1	0
-45	658	5.2	0
-45	658	5.3	0
-45	658	5.4	0
-45	658	5.5	0
-45	658	5.6	0
-45	658	5.7	0
-45	658	5.8	0
-45	658	5.9	0
-45	658	6	0
-45	658	6.1	0
-45	658	6.2	0
-45	658	6.3	0
-45	658	6.4	0
-45	658	6.5	0
-45	658	6.6	0
-45	658	6.7	0
-45	658	6.8	0
-45	658	6.9	0
-45	658	7	0
-45	658	7.1	0
-45	658	7.2	0
-45	658	7.3	0
-45	658	7.4	0
-45	658	7.5	0
-45	658	7.6	0
-45	658	7.7	0
-45	658	7.8	0
-45	658	7.9	0
-45	658	8	0
-45	658	8.1	0
-45	658	8.2	0
-45	658	8.3	0
-45	658	8.4	0
-45	658	8.5	0
-45	658	8.6	0
-45	658	8.7	0
-45	658	8.8	0
-45	658	8.9	0
-45	658	9	0
-45	658	9.1	0
-45	658	9.2	0
-45	658	9.3	0
-45	658	9.4	0
-45	658	9.5	0
-45	658	9.6	0
-45	658	9.7	0
-45	658	9.8	0
-45	658	9.9	0
-45	658	10	0
-45	658	10.1	0
-45	658	10.2	0
-45	658	10.3	0
-45	658	10.4	0
-45	658	10.5	0
-45	658	10.6	0
-45	658	10.7	0
-45	658	10.8	0
-45	658	10.9	0
-45	658	11	0
-45	658	11.1	0
-45	658	11.2	0
-45	658	11.3	0
-45	658	11.4	0
-45	658	11.5	0
-45	658	11.6	0
-45	658	11.7	0
-45	658	11.8	0
-45	658	11.9	0
-45	658	12	0
-45	658	12.1	0
-45	658	12.2	0
-45	658	12.3	0
-45	658	12.4	0
-45	658	12.5	0
-45	658	12.6	0
-45	658	12.7	0
-45	658	12.8	0
-45	658	12.9	0
-45	658	13	0
-45	658	13.1	0
-45	658	13.2	0
-45	658	13.3	0
-45	658	13.4	0
-45	658	13.5	0
-45	658	13.6	0
-45	658	13.7	0
-45	658	13.8	0
-45	658	13.9	0
-45	679	14	80000
-45	785	14.1	160000
-45	785	14.2	0
-45	785	14.3	0
-45	785	14.4	0
-45	785	14.5	0
-45	785	14.6	0
-45	785	14.7	0
-45	785	14.8	0
-45	785	14.9	0
-45	785	15	0
-45	785	15.1	0
-45	785	15.2	0
-45	785	15.3	0
-45	785	15.4	0
-45	785	15.5	0
-45	785	15.6	0
-45	785	15.7	0
-45	785	15.8	0
-45	862	15.9	80000
-45	862	16	0
-45	862	16.1	0
-45	862	16.2	0
-45	862	16.3	0
-45	862	16.4	0
-45	862	16.5	0
-45	862	16.6	0
-45	862	16.7	0
-45	862	16.8	0
-45	862	16.9	0
-45	862	17	0
-45	862	17.1	0
-45	862	17.2	0
-45	862	17.3	0
-45	978	17.4	80000
-45	978	17.5	0
-45	978	17.6	0
-45	978	17.7	0
-45	978	17.8	0
-45	978	17.9	0
-45	978	18	0
-45	978	18.1	0
-45	978	18.2	0
-45	978	18.3	0
-45	978	18.4	0
-45	978	18.5	0
-45	978	18.6	0
-45	978	18.7	0
-45	978	18.8	0
-45	978	18.9	0
-45	978	19	0
-45	978	19.1	0
-45	978	19.2	0
-45	978	19.3	0
-45	978	19.4	0
-46	658	13.986906175466	0.000366504991
-46	679	14.078067206975	0.000366510376
-46	696	14.098492796564	0.000366511566
-46	785	15.885980557639	0.000366609202
-46	862	17.391764885274	0.0003666782
-46	978	19.432079267329	0.000366802313
-47	658	13.986906175466	10
-47	679	14.078067206975	11
-47	696	14.098492796564	12
-47	785	15.885980557639	13
-47	862	17.391764885274	14
-47	978	19.432079267329	15
-vector 48 Fanet.host[0].app[0] throughput:vector ETV
-attr source throughput(packetReceived)
-attr title "throughput, vector"
-attr unit bps
-45	1067	19.5	80000
-45	1067	19.6	0
-45	1067	19.7	0
-45	1067	19.8	0
-45	1067	19.9	0
-45	1067	20	0
-45	1067	20.1	0
-45	1067	20.2	0
-45	1067	20.3	0
-45	1067	20.4	0
-45	1067	20.5	0
-45	1067	20.6	0
-45	1067	20.7	0
-45	1067	20.8	0
-45	1067	20.9	0
-45	1067	21	0
-45	1067	21.079765163021	0
-48	1067	0.1	0
-48	1067	0.2	0
-48	1067	0.3	0
-48	1067	0.4	0
-48	1067	0.5	0
-48	1067	0.6	0
-48	1067	0.7	0
-48	1067	0.8	0
-48	1067	0.9	0
-48	1067	1	0
-48	1067	1.1	0
-48	1067	1.2	0
-48	1067	1.3	0
-48	1067	1.4	0
-48	1067	1.5	0
-48	1067	1.6	0
-48	1067	1.7	0
-48	1067	1.8	0
-48	1067	1.9	0
-48	1067	2	0
-48	1067	2.1	0
-48	1067	2.2	0
-48	1067	2.3	0
-48	1067	2.4	0
-48	1067	2.5	0
-48	1067	2.6	0
-48	1067	2.7	0
-48	1067	2.8	0
-48	1067	2.9	0
-48	1067	3	0
-48	1067	3.1	0
-48	1067	3.2	0
-48	1067	3.3	0
-48	1067	3.4	0
-48	1067	3.5	0
-48	1067	3.6	0
-48	1067	3.7	0
-48	1067	3.8	0
-48	1067	3.9	0
-48	1067	4	0
-48	1067	4.1	0
-48	1067	4.2	0
-48	1067	4.3	0
-48	1067	4.4	0
-48	1067	4.5	0
-48	1067	4.6	0
-48	1067	4.7	0
-48	1067	4.8	0
-48	1067	4.9	0
-48	1067	5	0
-48	1067	5.1	0
-48	1067	5.2	0
-48	1067	5.3	0
-48	1067	5.4	0
-48	1067	5.5	0
-48	1067	5.6	0
-48	1067	5.7	0
-48	1067	5.8	0
-48	1067	5.9	0
-48	1067	6	0
-48	1067	6.1	0
-48	1067	6.2	0
-48	1067	6.3	0
-48	1067	6.4	0
-48	1067	6.5	0
-48	1067	6.6	0
-48	1067	6.7	0
-48	1067	6.8	0
-48	1067	6.9	0
-48	1067	7	0
-48	1067	7.1	0
-48	1067	7.2	0
-48	1067	7.3	0
-48	1067	7.4	0
-48	1067	7.5	0
-48	1067	7.6	0
-48	1067	7.7	0
-48	1067	7.8	0
-48	1067	7.9	0
-48	1067	8	0
-48	1067	8.1	0
-48	1067	8.2	0
-48	1067	8.3	0
-48	1067	8.4	0
-48	1067	8.5	0
-48	1067	8.6	0
-48	1067	8.7	0
-48	1067	8.8	0
-48	1067	8.9	0
-48	1067	9	0
-48	1067	9.1	0
-48	1067	9.2	0
-48	1067	9.3	0
-48	1067	9.4	0
-48	1067	9.5	0
-48	1067	9.6	0
-48	1067	9.7	0
-48	1067	9.8	0
-48	1067	9.9	0
-48	1067	10	0
-48	1067	10.1	0
-48	1067	10.2	0
-48	1067	10.3	0
-48	1067	10.4	0
-48	1067	10.5	0
-48	1067	10.6	0
-48	1067	10.7	0
-48	1067	10.8	0
-48	1067	10.9	0
-48	1067	11	0
-48	1067	11.1	0
-48	1067	11.2	0
-48	1067	11.3	0
-48	1067	11.4	0
-48	1067	11.5	0
-48	1067	11.6	0
-48	1067	11.7	0
-48	1067	11.8	0
-48	1067	11.9	0
-48	1067	12	0
-48	1067	12.1	0
-48	1067	12.2	0
-48	1067	12.3	0
-48	1067	12.4	0
-48	1067	12.5	0
-48	1067	12.6	0
-48	1067	12.7	0
-48	1067	12.8	0
-48	1067	12.9	0
-48	1067	13	0
-48	1067	13.1	0
-48	1067	13.2	0
-48	1067	13.3	0
-48	1067	13.4	0
-48	1067	13.5	0
-48	1067	13.6	0
-48	1067	13.7	0
-48	1067	13.8	0
-48	1067	13.9	0
-48	1067	14	0
-48	1067	14.1	0
-48	1067	14.2	0
-48	1067	14.3	0
-48	1067	14.4	0
-48	1067	14.5	0
-48	1067	14.6	0
-48	1067	14.7	0
-48	1067	14.8	0
-48	1067	14.9	0
-48	1067	15	0
-48	1067	15.1	0
-48	1067	15.2	0
-48	1067	15.3	0
-48	1067	15.4	0
-48	1067	15.5	0
-48	1067	15.6	0
-48	1067	15.7	0
-48	1067	15.8	0
-48	1067	15.9	0
-48	1067	16	0
-48	1067	16.1	0
-48	1067	16.2	0
-48	1067	16.3	0
-48	1067	16.4	0
-48	1067	16.5	0
-48	1067	16.6	0
-48	1067	16.7	0
-48	1067	16.8	0
-48	1067	16.9	0
-48	1067	17	0
-48	1067	17.1	0
-48	1067	17.2	0
-48	1067	17.3	0
-48	1067	17.4	0
-48	1067	17.5	0
-48	1067	17.6	0
-48	1067	17.7	0
-48	1067	17.8	0
-48	1067	17.9	0
-48	1067	18	0
-48	1067	18.1	0
-48	1067	18.2	0
-48	1067	18.3	0
-48	1067	18.4	0
-48	1067	18.5	0
-48	1067	18.6	0
-48	1067	18.7	0
-48	1067	18.8	0
-48	1067	18.9	0
-48	1067	19	0
-48	1067	19.1	0
-48	1067	19.2	0
-48	1067	19.3	0
-48	1067	19.4	0
-48	1067	19.5	0
-48	1067	19.6	0
-48	1067	19.7	0
-48	1067	19.8	0
-48	1067	19.9	0
-48	1067	20	0
-48	1067	20.1	0
-48	1067	20.2	0
-48	1067	20.3	0
-48	1067	20.4	0
-48	1067	20.5	0
-48	1067	20.6	0
-48	1067	20.7	0
-48	1067	20.8	0
-48	1067	20.9	0
-48	1067	21	0
-48	1067	21.079765163021	0
+12	0	0	1
+13	0	0	1
+14	0	0	1
+15	0	0	1
+16	0	0	1
+17	0	0	1
+18	0	0	1
+19	0	0	1
+20	0	0	1
+21	0	0	1
+22	0	0	1
+23	0	0	1
+24	0	0	1
+25	0	0	1
+26	0	0	1
+27	0	0	1
+28	0	0	1
+29	0	0	1
 

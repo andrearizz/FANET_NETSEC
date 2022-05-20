@@ -1,0 +1,1935 @@
+file 2721564 1653054656                                         
+version 2
+run SybilAttack-0-20220520-15:50:45-54191
+attr configname SybilAttack
+attr datetime 20220520-15:50:45
+attr experiment SybilAttack
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network FanetSybil
+attr processid 54191
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param *.attacker[*].mobility.typename "\"MassMobility\""
+param *.attacker[*].mobility.changeInterval 1s
+param *.attacker[*].mobility.initialMovementHeading "uniform(0deg, 360deg)"
+param *.attacker[*].mobility.initialMovementElevation "uniform(-90deg, 90deg)"
+param *.attacker[*].mobility.angleDelta uniform(-10deg,10deg)
+param *.attacker[*].mobility.rotationAxisAngle uniform(-10deg,10deg)
+param *.attacker[*].mobility.speed uniform(10mps,20mps)
+param *.attacker[*].mobility.faceForward false
+param *.attacker*.wlan[0].typename "\"AckingWirelessInterface\""
+param *.attacker*.wlan[0].radio.transmitter.communicationRange 400m
+param *.attacker*.wlan[0].radio.displayCommunicationRange true
+param *.host[0].numApps 1
+param *.host[0].app[0].typename "\"UdpBasicApp\""
+param *.host[0].app[0].startTime uniform(1s,5s)
+param *.host[0].app[0].destAddresses "\"host[10]\""
+param *.host[0].app[0].destPort 5000
+param *.host[0].app[0].messageLength 1000B
+param *.host[0].app[0].sendInterval exponential(1s)
+param *.host[0].app[0].packetName "\"UDPdata\""
+param *.host[10].numApps 1
+param *.host[10].app[0].typename "\"UdpSink\""
+param *.host[10].app[0].localPort 5000
+param **.wlan[*].bitrate 24Mbps
+param *.configurator.addStaticRoutes false
+param **.netmaskRoutes "\"\""
+param **.arp.typename "\"GlobalArp\""
+param *.host*.wlan[0].typename "\"AckingWirelessInterface\""
+param *.host*.wlan[0].radio.transmitter.communicationRange 400m
+param *.host*.wlan[0].radio.displayCommunicationRange true
+param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
+param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneImage "\"showcases/desert\""
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneImageSize 5000m
+param *.visualizer.osgVisualizer.sceneVisualizer.axisLength 1000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinX -2000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinY -2000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinZ 0m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxX 3000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxY 3000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxZ 1000m
+param *.visualizer.osgVisualizer.networkNodeVisualizer.displayModuleName false
+param *.visualizer.*.mobilityVisualizer.displayMobility true
+param *.visualizer.*.mobilityVisualizer.displayPositions true
+param *.visualizer.*.mobilityVisualizer.displayOrientations true
+param *.visualizer.*.mobilityVisualizer.displayVelocities true
+param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
+param *.visualizer.*.mobilityVisualizer.animationSpeed 1
+param *.visualizer.*.packetDropVisualizer.displayPacketDrops false
+param *.visualizer.*.packetDropVisualizer.labelFormat "\"%n/reason: %r\""
+param *.visualizer.*.packetDropVisualizer.fadeOutTime 10s
+param **.constraintAreaMinX 0m
+param **.constraintAreaMinY 0m
+param **.constraintAreaMinZ 0m
+param **.constraintAreaMaxX 2500m
+param **.constraintAreaMaxY 2000m
+param **.constraintAreaMaxZ 200m
+param *.visualizer.*.mediumVisualizer.signalPropagationAnimationSpeed 500/3e8
+param *.visualizer.*.mediumVisualizer.signalTransmissionAnimationSpeed 50000/3e8
+param *.visualizer.*.mediumVisualizer.displaySignals false
+param *.visualizer.*.mediumVisualizer.displayTransmissions false
+param *.visualizer.*.mediumVisualizer.displayReceptions false
+param *.visualizer.*.mediumVisualizer.transmissionPlacementPriority 10
+param *.visualizer.*.mediumVisualizer.receptionPlacementPriority 10
+param *.visualizer.*.mediumVisualizer.displaySignals false
+param *.visualizer.*.mediumVisualizer.signalFadingDistance 50m
+param *.visualizer.*.mediumVisualizer.signalRingSize 50m
+param *.visualizer.osgVisualizer.mediumVisualizer.signalShape "\"both\""
+param *.host[*].osgModel "\"3d/drone.ive.100.scale.0,0,90.rot\""
+param *.host[*].mobility.typename "\"MassMobility\""
+param *.host[*].mobility.changeInterval 1s
+param *.host[*].mobility.initialMovementHeading "uniform(0deg, 360deg)"
+param *.host[*].mobility.initialMovementElevation "uniform(-90deg, 90deg)"
+param *.host[*].mobility.angleDelta uniform(-10deg,10deg)
+param *.host[*].mobility.rotationAxisAngle uniform(-10deg,10deg)
+param *.host[*].mobility.speed uniform(10mps,20mps)
+param *.host[*].mobility.faceForward false
+
+vector 0 FanetSybil.host[0].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 1 FanetSybil.host[1].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 2 FanetSybil.host[2].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 3 FanetSybil.host[3].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 4 FanetSybil.host[4].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 5 FanetSybil.host[5].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 6 FanetSybil.host[6].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 7 FanetSybil.host[7].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 8 FanetSybil.host[8].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 9 FanetSybil.host[9].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 10 FanetSybil.host[10].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 11 FanetSybil.host[11].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 12 FanetSybil.host[12].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 13 FanetSybil.host[13].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 14 FanetSybil.host[14].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 15 FanetSybil.host[15].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 16 FanetSybil.host[16].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 17 FanetSybil.host[17].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 18 FanetSybil.host[18].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 19 FanetSybil.host[19].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 20 FanetSybil.host[20].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 21 FanetSybil.host[21].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 22 FanetSybil.host[22].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 23 FanetSybil.host[23].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 24 FanetSybil.host[24].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 25 FanetSybil.host[25].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 26 FanetSybil.host[26].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 27 FanetSybil.host[27].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 28 FanetSybil.host[28].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 29 FanetSybil.host[29].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 30 FanetSybil.host[0].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 31 FanetSybil.host[0].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 32 FanetSybil.host[1].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 33 FanetSybil.host[1].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 34 FanetSybil.host[2].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 35 FanetSybil.host[2].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 36 FanetSybil.host[3].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 37 FanetSybil.host[3].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 38 FanetSybil.host[4].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 39 FanetSybil.host[4].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 40 FanetSybil.host[5].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 41 FanetSybil.host[5].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 42 FanetSybil.host[6].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 43 FanetSybil.host[6].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 44 FanetSybil.host[7].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 45 FanetSybil.host[7].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 46 FanetSybil.host[8].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 47 FanetSybil.host[8].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 48 FanetSybil.host[9].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 49 FanetSybil.host[9].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 50 FanetSybil.host[10].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 51 FanetSybil.host[10].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 52 FanetSybil.host[11].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 53 FanetSybil.host[11].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 54 FanetSybil.host[12].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 55 FanetSybil.host[12].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 56 FanetSybil.host[13].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 57 FanetSybil.host[13].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 58 FanetSybil.host[14].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 59 FanetSybil.host[14].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 60 FanetSybil.host[15].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 61 FanetSybil.host[15].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 62 FanetSybil.host[16].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 63 FanetSybil.host[16].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 64 FanetSybil.host[17].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 65 FanetSybil.host[17].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 66 FanetSybil.host[18].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 67 FanetSybil.host[18].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 68 FanetSybil.host[19].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 69 FanetSybil.host[19].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 70 FanetSybil.host[20].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 71 FanetSybil.host[20].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 72 FanetSybil.host[21].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 73 FanetSybil.host[21].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 74 FanetSybil.host[22].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 75 FanetSybil.host[22].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 76 FanetSybil.host[23].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 77 FanetSybil.host[23].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 78 FanetSybil.host[24].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 79 FanetSybil.host[24].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 80 FanetSybil.host[25].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 81 FanetSybil.host[25].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 82 FanetSybil.host[26].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 83 FanetSybil.host[26].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 84 FanetSybil.host[27].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 85 FanetSybil.host[27].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 86 FanetSybil.host[28].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 87 FanetSybil.host[28].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 88 FanetSybil.host[29].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 89 FanetSybil.host[29].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 90 FanetSybil.host[0].app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 91 FanetSybil.host[0].udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 92 FanetSybil.host[14].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 93 FanetSybil.host[14].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 94 FanetSybil.host[14].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 95 FanetSybil.host[14].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 96 FanetSybil.host[14].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 97 FanetSybil.host[14].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 98 FanetSybil.host[4].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 99 FanetSybil.host[4].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 100 FanetSybil.host[27].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 101 FanetSybil.host[27].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 102 FanetSybil.host[27].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 103 FanetSybil.host[27].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 104 FanetSybil.host[27].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 105 FanetSybil.host[27].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 106 FanetSybil.host[5].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 107 FanetSybil.host[5].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 108 FanetSybil.host[29].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 109 FanetSybil.host[29].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 110 FanetSybil.host[29].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 111 FanetSybil.host[29].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 112 FanetSybil.host[29].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 113 FanetSybil.host[29].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 114 FanetSybil.host[17].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 115 FanetSybil.host[17].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 116 FanetSybil.host[6].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 117 FanetSybil.host[6].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 118 FanetSybil.host[16].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 119 FanetSybil.host[16].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 120 FanetSybil.host[16].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 121 FanetSybil.host[16].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 122 FanetSybil.host[16].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 123 FanetSybil.host[16].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 124 FanetSybil.host[26].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 125 FanetSybil.host[26].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 126 FanetSybil.host[18].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 127 FanetSybil.host[18].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 128 FanetSybil.host[12].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 129 FanetSybil.host[12].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 130 FanetSybil.host[12].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 131 FanetSybil.host[12].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 132 FanetSybil.host[12].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 133 FanetSybil.host[12].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 134 FanetSybil.host[0].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 135 FanetSybil.host[0].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 136 FanetSybil.host[23].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 137 FanetSybil.host[23].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 138 FanetSybil.host[20].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 139 FanetSybil.host[20].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 140 FanetSybil.host[28].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 141 FanetSybil.host[28].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 142 FanetSybil.host[28].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 143 FanetSybil.host[28].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 144 FanetSybil.host[28].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 145 FanetSybil.host[28].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 146 FanetSybil.host[21].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 147 FanetSybil.host[21].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 148 FanetSybil.host[1].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 149 FanetSybil.host[1].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 150 FanetSybil.host[9].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 151 FanetSybil.host[9].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 152 FanetSybil.host[7].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 153 FanetSybil.host[7].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 154 FanetSybil.host[0].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 155 FanetSybil.host[0].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 156 FanetSybil.host[0].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 157 FanetSybil.host[0].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 158 FanetSybil.host[0].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 159 FanetSybil.host[0].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 160 FanetSybil.host[12].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 161 FanetSybil.host[12].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 162 FanetSybil.host[20].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 163 FanetSybil.host[5].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 164 FanetSybil.host[17].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 165 FanetSybil.host[17].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 166 FanetSybil.host[17].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 167 FanetSybil.host[17].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 168 FanetSybil.host[17].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 169 FanetSybil.host[17].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 170 FanetSybil.host[29].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 171 FanetSybil.host[29].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 172 FanetSybil.host[10].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 173 FanetSybil.host[10].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 174 FanetSybil.host[10].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 175 FanetSybil.host[10].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 176 FanetSybil.host[10].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 177 FanetSybil.host[10].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 178 FanetSybil.host[19].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 179 FanetSybil.host[19].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 180 FanetSybil.host[11].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 181 FanetSybil.host[11].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 182 FanetSybil.host[24].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 183 FanetSybil.host[24].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 184 FanetSybil.host[24].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 185 FanetSybil.host[24].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 186 FanetSybil.host[24].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 187 FanetSybil.host[24].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 188 FanetSybil.host[7].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 189 FanetSybil.host[7].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 190 FanetSybil.host[7].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 191 FanetSybil.host[7].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr inte0 FanetSybil.host[4].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 191 FanetSybil.host[4].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 192 FanetSybil.host[4].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 193 FanetSybil.host[4].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+0	41673 24 0 0 0 0 3 0 4 4 16
+1	41697 24 0 0 0 0 3 0 4 4 16
+2	41721 24 0 0 0 0 3 0 4 4 16
+3	41745 24 0 0 0 0 3 0 4 4 16
+4	41769 24 0 0 0 0 3 0 4 4 16
+5	41793 24 0 0 0 0 3 0 4 4 16
+6	41817 24 0 0 0 0 3 0 4 4 16
+7	41841 24 0 0 0 0 3 0 4 4 16
+8	41865 24 0 0 0 0 3 0 4 4 16
+9	41889 24 0 0 0 0 3 0 4 4 16
+10	41913 27 0 0 0 0 3 0 4 4 16
+11	41940 27 0 0 0 0 3 0 4 4 16
+12	41967 27 0 0 0 0 3 0 4 4 16
+13	41994 27 0 0 0 0 3 0 4 4 16
+14	42021 27 0 0 0 0 3 0 4 4 16
+15	42048 27 0 0 0 0 3 0 4 4 16
+16	42075 27 0 0 0 0 3 0 4 4 16
+17	42102 27 0 0 0 0 3 0 4 4 16
+18	42129 27 0 0 0 0 3 0 4 4 16
+19	42156 27 0 0 0 0 3 0 4 4 16
+20	42183 9 0 0 0 0 1 1 1 1 1
+21	42192 61 0 2661 0 10.928468830556 3 1 2 4 6
+22	42253 9 0 0 0 0 1 1 1 1 1
+23	42262 61 0 3092 0 12.151916316383 3 1 2 4 6
+24	42323 9 0 0 0 0 1 1 1 1 1
+25	42332 61 0 3446 0 13.442680107568 3 1 2 4 6
+26	42393 9 0 0 0 0 1 1 1 1 1
+27	42402 61 0 2725 0 11.027656370446 3 1 2 4 6
+28	42463 9 0 0 0 0 1 1 1 1 1
+29	42472 61 0 3560 0 13.579478865162 3 1 2 4 6
+30	42533 59 0 1942 0 8.834438408652 3 1 3 5 11
+31	42592 61 0 2508 0 10.448854440496 3 1 2 4 6
+32	42653 9 0 0 0 0 1 1 1 1 1
+33	42662 61 0 3493 0 13.472540039242 3 1 2 4 6
+34	42723 9 0 0 0 0 1 1 1 1 1
+35	42732 59 0 2118 0 9.236570634552 3 1 2 4 6
+36	42791 61 0 2900 0 11.458964504092 3 1 3 5 11
+37	42852 61 0 2809 0 11.235659630642 3 1 2 4 6
+38	42913 61 0 2810 0 11.235660318641 3 1 3 5 11
+39	42974 61 0 2899 0 11.458963817589 3 1 2 4 6
+40	43035 59 0 2320 0 9.776674638304 3 1 3 5 11
+41	43094 59 0 1990 0 8.843839748901 3 1 2 4 6
+42	43153 110 0 3447 0 13.44268118217 5 1 3 9 21
+43	43263 59 0 2182 0 9.375894766439 3 1 2 4 6
+44	43322 58 0 2183 0 9.375895779427 3 1 3 5 11
+45	43380 59 0 1714 0 7.975368719221 3 1 2 4 6
+46	43439 111 0 2509 0 10.448854673141 5 1 3 9 21
+47	43550 9 0 0 0 0 1 1 1 1 1
+48	43559 61 0 2814 0 11.235660854681 3 1 3 5 11
+49	43620 59 0 1137 0 5.567152423922 3 1 2 4 6
+50	43679 110 0 2904 0 11.458965150936 5 1 3 9 21
+51	43789 9 0 0 0 0 1 1 1 1 1
+52	43798 9 0 0 0 0 1 1 1 1 1
+53	43807 59 0 1624 0 7.726585611839 3 1 2 4 6
+54	43866 61 0 2513 0 10.448855069399 3 1 3 5 11
+55	43927 59 0 1941 0 8.834437879872 3 1 2 4 6
+56	43986 111 0 3300 0 12.917273848862 5 1 3 9 21
+57	44097 59 0 2315 0 9.776673783221 3 1 2 4 6
+58	44156 59 0 2316 0 9.776674514214 3 1 3 5 11
+59	44215 61 0 3299 0 12.917273000952 3 1 2 4 6
+60	44276 335 624 3534 3.195254009217 13.510345833598 12 1000 1000 12000 12000000
+61	44611 335 626 3535 3.195254009217 13.510345833598 12 1008 1008 12096 12192768
+62	44946 26 1116 1116 5.567129757255 5.567129757255 1 40 40 40 1600
+63	44972 26 1116 1116 5.567129757255 5.567129757255 1 40 40 40 1600
+64	44998 50 1116 1116 5.567129757255 5.567129757255 2 0 1 1 1
+65	45048 26 1116 1116 5.567129757255 5.567129757255 1 40 40 40 1600
+66	45074 25 1116 1116 5.567129757255 5.567129757255 1 0 0 0 0
+67	45099 26 1116 1116 5.567129757255 5.567129757255 1 56 56 56 3136
+68	45125 26 1603 1603 7.726562945172 7.726562945172 1 40 40 40 1600
+69	45151 26 1603 1603 7.726562945172 7.726562945172 1 40 40 40 1600
+70	45177 50 1603 1603 7.726562945172 7.726562945172 2 0 1 1 1
+71	45227 26 1603 1603 7.726562945172 7.726562945172 1 40 40 40 1600
+72	45253 25 1603 1603 7.726562945172 7.726562945172 1 0 0 0 0
+73	45278 26 1603 1603 7.726562945172 7.726562945172 1 56 56 56 3136
+74	45304 26 1693 1693 7.975346052554 7.975346052554 1 40 40 40 1600
+75	45330 26 1693 1693 7.975346052554 7.975346052554 1 40 40 40 1600
+76	45356 50 1693 1693 7.975346052554 7.975346052554 2 0 1 1 1
+77	45406 26 1693 1693 7.975346052554 7.975346052554 1 40 40 40 1600
+78	45432 25 1693 1693 7.975346052554 7.975346052554 1 0 0 0 0
+79	45457 26 1693 1693 7.975346052554 7.975346052554 1 56 56 56 3136
+80	45483 52 1716 3448 7.975369708939 13.44268118217 2 56 56 112 6272
+81	45535 52 1716 3448 7.975369708939 13.44268118217 2 40 40 80 3200
+82	45587 26 1920 1920 8.834415213205 8.834415213205 1 40 40 40 1600
+83	45613 26 1920 1920 8.834415213205 8.834415213205 1 40 40 40 1600
+84	45639 50 1920 1920 8.834415213205 8.834415213205 2 0 1 1 1
+85	45689 26 1920 1920 8.834415213205 8.834415213205 1 40 40 40 1600
+86	45715 25 1920 1920 8.834415213205 8.834415213205 1 0 0 0 0
+87	45740 26 1920 1920 8.834415213205 8.834415213205 1 56 56 56 3136
+88	45766 26 1943 1943 8.834438408652 8.834438408652 1 56 56 56 3136
+89	45792 26 1943 1943 8.834438408652 8.834438408652 1 40 40 40 1600
+90	45818 53 1947 2510 8.834438499876 10.448854673141 2 56 56 112 6272
+91	45871 53 1947 2510 8.834438499876 10.448854673141 2 40 40 80 3200
+92	45924 26 1969 1969 8.843817082234 8.843817082234 1 40 40 40 1600
+93	45950 26 1969 1969 8.843817082234 8.843817082234 1 40 40 40 1600
+94	45976 50 1969 1969 8.843817082234 8.843817082234 2 0 1 1 1
+95	46026 26 1969 1969 8.843817082234 8.843817082234 1 40 40 40 1600
+96	46052 25 1969 1969 8.843817082234 8.843817082234 1 0 0 0 0
+97	46077 26 1969 1969 8.843817082234 8.843817082234 1 56 56 56 3136
+98	46103 53 1992 3301 8.843840569982 12.917273848862 2 56 56 112 6272
+99	46156 53 1992 3301 8.843840569982 12.917273848862 2 40 40 80 3200
+100	46209 27 2097 2097 9.236547967885 9.236547967885 1 40 40 40 1600
+101	46236 27 2097 2097 9.236547967885 9.236547967885 1 40 40 40 1600
+102	46263 52 2097 2097 9.236547967885 9.236547967885 2 0 1 1 1
+103	46315 27 2097 2097 9.236547967885 9.236547967885 1 40 40 40 1600
+104	46342 26 2097 2097 9.236547967885 9.236547967885 1 0 0 0 0
+105	46368 27 2097 2097 9.236547967885 9.236547967885 1 56 56 56 3136
+106	46395 27 2161 2161 9.375872099772 9.375872099772 1 40 40 40 1600
+107	46422 27 2161 2161 9.375872099772 9.375872099772 1 40 40 40 1600
+108	46449 52 2161 2161 9.375872099772 9.375872099772 2 0 1 1 1
+109	46501 27 2161 2161 9.375872099772 9.375872099772 1 40 40 40 1600
+110	46528 26 2161 2161 9.375872099772 9.375872099772 1 0 0 0 0
+111	46554 27 2161 2161 9.375872099772 9.375872099772 1 56 56 56 3136
+112	46581 27 2184 2184 9.375895779427 9.375895779427 1 56 56 56 3136
+113	46608 27 2184 2184 9.375895779427 9.375895779427 1 40 40 40 1600
+114	46635 54 2188 2905 9.37589595926 11.458965150936 2 56 56 112 6272
+115	46689 54 2188 2905 9.37589595926 11.458965150936 2 40 40 80 3200
+116	46743 27 2294 2294 9.776651116554 9.776651116554 1 40 40 40 1600
+117	46770 27 2294 2294 9.776651116554 9.776651116554 1 40 40 40 1600
+118	46797 52 2294 2294 9.776651116554 9.776651116554 2 0 1 1 1
+119	46849 27 2294 2294 9.776651116554 9.776651116554 1 40 40 40 1600
+120	46876 26 2294 2294 9.776651116554 9.776651116554 1 0 0 0 0
+121	46902 27 2294 2294 9.776651116554 9.776651116554 1 56 56 56 3136
+122	46929 27 2317 2317 9.776674514214 9.776674514214 1 56 56 56 3136
+123	46956 27 2317 2317 9.776674514214 9.776674514214 1 40 40 40 1600
+124	46983 27 2321 2321 9.776674638304 9.776674638304 1 56 56 56 3136
+125	47010 27 2321 2321 9.776674638304 9.776674638304 1 40 40 40 1600
+126	47037 28 2487 2487 10.448831773829 10.448831773829 1 40 40 40 1600
+127	47065 28 2487 2487 10.448831773829 10.448831773829 1 40 40 40 1600
+128	47093 54 2487 2487 10.448831773829 10.448831773829 2 0 1 1 1
+129	47147 28 2487 2487 10.448831773829 10.448831773829 1 40 40 40 1600
+130	47175 27 2487 2487 10.448831773829 10.448831773829 1 0 0 0 0
+131	47202 28 2487 2487 10.448831773829 10.448831773829 1 56 56 56 3136
+132	47230 28 2514 2514 10.448855069399 10.448855069399 1 56 56 56 3136
+133	47258 28 2514 2514 10.448855069399 10.448855069399 1 40 40 40 1600
+134	47286 28 2640 2640 10.928446163889 10.928446163889 1 40 40 40 1600
+135	47314 28 2640 2640 10.928446163889 10.928446163889 1 40 40 40 1600
+136	47342 54 2640 2640 10.928446163889 10.928446163889 2 0 1 1 1
+137	47396 28 2640 2640 10.928446163889 10.928446163889 1 40 40 40 1600
+138	47424 27 2640 2640 10.928446163889 10.928446163889 1 0 0 0 0
+139	47451 28 2640 2640 10.928446163889 10.928446163889 1 56 56 56 3136
+140	47479 28 2704 2704 11.027633703779 11.027633703779 1 40 40 40 1600
+141	47507 28 2704 2704 11.027633703779 11.027633703779 1 40 40 40 1600
+142	47535 54 2704 2704 11.027633703779 11.027633703779 2 0 1 1 1
+143	47589 28 2704 2704 11.027633703779 11.027633703779 1 40 40 40 1600
+144	47617 27 2704 2704 11.027633703779 11.027633703779 1 0 0 0 0
+145	47644 28 2704 2704 11.027633703779 11.027633703779 1 56 56 56 3136
+146	47672 28 2788 2788 11.235636963975 11.235636963975 1 40 40 40 1600
+147	47700 28 2788 2788 11.235636963975 11.235636963975 1 40 40 40 1600
+148	47728 54 2788 2788 11.235636963975 11.235636963975 2 0 1 1 1
+149	47782 28 2788 2788 11.235636963975 11.235636963975 1 40 40 40 1600
+150	47810 27 2788 2788 11.235636963975 11.235636963975 1 0 0 0 0
+151	47837 28 2788 2788 11.235636963975 11.235636963975 1 56 56 56 3136
+152	47865 28 2811 2811 11.235660318641 11.235660318641 1 56 56 56 3136
+153	47893 28 2811 2811 11.235660318641 11.235660318641 1 40 40 40 1600
+154	47921 28 2815 2815 11.235660854681 11.235660854681 1 56 56 56 3136
+155	47949 28 2815 2815 11.235660854681 11.235660854681 1 40 40 40 1600
+156	47977 28 2878 2878 11.458941150922 11.458941150922 1 40 40 40 1600
+157	48005 28 2878 2878 11.458941150922 11.458941150922 1 40 40 40 1600
+158	48033 54 2878 2878 11.458941150922 11.458941150922 2 0 1 1 1
+159	48087 28 2878 2878 11.458941150922 11.458941150922 1 40 40 40 1600
+160	48115 27 2878 2878 11.458941150922 11.458941150922 1 0 0 0 0
+161	48142 28 2878 2878 11.458941150922 11.458941150922 1 56 56 56 3136
+162	48170 28 2901 2901 11.458964504092 11.458964504092 1 56 56 56 3136
+163	48198 28 2901 2901 11.458964504092 11.458964504092 1 40 40 40 1600
+164	48226 28 3071 3071 12.151893649716 12.151893649716 1 40 40 40 1600
+165	48254 28 3071 3071 12.151893649716 12.151893649716 1 40 40 40 1600
+166	48282 54 3071 3071 12.151893649716 12.151893649716 2 0 1 1 1
+167	48336 28 3071 3071 12.151893649716 12.151893649716 1 40 40 40 1600
+168	48364 27 3071 3071 12.151893649716 12.151893649716 1 0 0 0 0
+169	48391 28 3071 3071 12.151893649716 12.151893649716 1 56 56 56 3136
+170	48419 28 3278 3278 12.917250334285 12.917250334285 1 40 40 40 1600
+171	48447 28 3278 3278 12.917250334285 12.917250334285 1 40 40 40 1600
+172	48475 54 3278 3278 12.917250334285 12.917250334285 2 0 1 1 1
+173	48529 28 3278 3278 12.917250334285 12.917250334285 1 40 40 40 1600
+174	48557 27 3278 3278 12.917250334285 12.917250334285 1 0 0 0 0
+175	48584 28 3278 3278 12.917250334285 12.917250334285 1 56 56 56 3136
+176	48612 28 3425 3425 13.442657440901 13.442657440901 1 40 40 40 1600
+177	48640 28 3425 3425 13.442657440901 13.442657440901 1 40 40 40 1600
+178	48668 54 3425 3425 13.442657440901 13.442657440901 2 0 1 1 1
+179	48722 28 3425 3425 13.442657440901 13.442657440901 1 40 40 40 1600
+180	48750 27 3425 3425 13.442657440901 13.442657440901 1 0 0 0 0
+181	48777 28 3425 3425 13.442657440901 13.442657440901 1 56 56 56 3136
+182	48805 28 3472 3472 13.472517372575 13.472517372575 1 40 40 40 1600
+183	48833 28 3472 3472 13.472517372575 13.472517372575 1 40 40 40 1600
+184	48861 54 3472 3472 13.472517372575 13.472517372575 2 0 1 1 1
+185	48915 28 3472 3472 13.472517372575 13.472517372575 1 40 40 40 1600
+186	48943 27 3472 3472 13.472517372575 13.472517372575 1 0 0 0 0
+187	48970 28 3472 3472 13.472517372575 13.472517372575 1 56 56 56 3136
+188	48998 28 3539 3539 13.579456198495 13.579456198495 1 40 40 40 1600
+189	49026 28 3539 3539 13.579456198495 13.579456198495 1 40 40 40 1600
+190	49054 54 3539 3539 13.579456198495 13.579456198495 2 0 1 1 1
+191	49108 28 3539 3539 13.579456198495 13.579456198495 1 40 40 40 1600
+192	49136 27 3539 3539 13.579456198495 13.579456198495 1 0 0 0 0
+193	49163 28 3539 3539 13.579456198495 13.579456198495 1 56 56 56 3136
+
+etPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 253 FanetSybil.host[3].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 254 FanetSybil.host[3].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 255 FanetSybil.host[3].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 256 FanetSybil.host[3].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 257 FanetSybil.host[22].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 258 FanetSybil.host[22].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 259 FanetSybil.host[8].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 260 FanetSybil.host[8].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 261 FanetSybil.host[8].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 262 FanetSybil.host[8].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 263 FanetSybil.host[8].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 264 FanetSybil.host[8].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 265 FanetSybil.host[9].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 266 FanetSybil.host[9].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 267 FanetSybil.host[9].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 268 FanetSybil.host[9].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 269 FanetSybil.host[9].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 270 FanetSybil.host[9].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 271 FanetSybil.host[23].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, vector(packetBytes)"
+vector 272 FanetSybil.host[1].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 273 FanetSybil.host[1].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 274 FanetSybil.host[1].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 275 FanetSybil.host[1].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 276 FanetSybil.host[1].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 277 FanetSybil.host[1].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 278 FanetSybil.host[19].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 279 FanetSybil.host[19].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 280 FanetSybil.host[19].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 281 FanetSybil.host[19].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 282 FanetSybil.host[19].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 283 FanetSybil.host[19].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 284 FanetSybil.host[20].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 285 FanetSybil.host[20].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 286 FanetSybil.host[20].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 287 FanetSybil.host[20].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 288 FanetSybil.host[20].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 289 FanetSybil.host[20].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 290 FanetSybil.host[26].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 291 FanetSybil.host[26].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 292 FanetSybil.host[26].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 293 FanetSybil.host[26].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 294 FanetSybil.host[26].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 295 FanetSybil.host[26].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 296 FanetSybil.host[2].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 297 FanetSybil.host[2].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 298 FanetSybil.host[2].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 299 FanetSybil.host[2].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 300 FanetSybil.host[2].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 301 FanetSybil.host[2].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 302 FanetSybil.host[6].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 303 FanetSybil.host[6].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 304 FanetSybil.host[6].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 305 FanetSybil.host[6].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 306 FanetSybil.host[6].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 307 FanetSybil.host[6].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 308 FanetSybil.host[4].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 309 FanetSybil.host[4].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 310 FanetSybil.host[4].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 311 FanetSybil.host[4].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 312 FanetSybil.host[4].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 313 FanetSybil.host[4].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 314 FanetSybil.host[14].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 315 FanetSybil.host[14].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 316 FanetSybil.host[24].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 317 FanetSybil.host[24].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 318 FanetSybil.host[0].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, vector(packetBytes)"
+vector 319 FanetSybil.host[0].lo[0].lo rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 320 FanetSybil.host[0].lo[0].lo passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 321 FanetSybil.host[13].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 322 FanetSybil.host[13].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 323 FanetSybil.host[13].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 324 FanetSybil.host[13].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 325 FanetSybil.host[13].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 326 FanetSybil.host[13].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 327 FanetSybil.host[25].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 328 FanetSybil.host[25].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 329 FanetSybil.host[25].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 330 FanetSybil.host[25].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 331 FanetSybil.host[25].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 332 FanetSybil.host[25].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 333 FanetSybil.host[15].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 334 FanetSybil.host[15].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 335 FanetSybil.host[15].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 336 FanetSybil.host[15].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 337 FanetSybil.host[15].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 338 FanetSybil.host[15].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 339 FanetSybil.host[2].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 340 FanetSybil.host[2].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 341 FanetSybil.host[8].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 342 FanetSybil.host[8].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 343 FanetSybil.host[6].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 344 FanetSybil.host[29].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 345 FanetSybil.host[2].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 346 FanetSybil.host[6].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, vector(packetBytes)"
+vector 347 FanetSybil.host[22].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 348 FanetSybil.host[2].wlan[0].mac packetDropIncorrectlyReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, vector(packetBytes)"
+vector 349 FanetSybil.host[6].wlan[0].mac packetDropIncorrectlyReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
+attr title "packet drop: incorrectly received, vector(packetBytes)"
+vector 350 FanetSybil.host[25].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 351 FanetSybil.host[16].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 352 FanetSybil.host[28].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 353 FanetSybil.host[21].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 354 FanetSybil.host[8].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 355 FanetSybil.host[24].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 356 FanetSybil.host[11].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 357 FanetSybil.host[20].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, vector(packetBytes)"
+vector 358 FanetSybil.host[18].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 359 FanetSybil.host[26].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 360 FanetSybil.host[17].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 361 FanetSybil.host[24].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, vector(packetBytes)"
+vector 362 FanetSybil.host[27].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, vector(packetBytes)"
+vector 363 FanetSybil.host[15].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 364 FanetSybil.host[19].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 365 FanetSybil.host[3].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 366 FanetSybil.host[18].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, vector(packetBytes)"
+vector 367 FanetSybil.host[19].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, vector(packetBytes)"
+vector 368 FanetSybil.host[9].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 369 FanetSybil.host[10].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 370 FanetSybil.host[10].udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 371 FanetSybil.host[10].udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed up, vector(count)"
+vector 372 FanetSybil.host[10].app[0] packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 373 FanetSybil.host[10].app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+vector 374 FanetSybil.host[10].app[0] endToEndDelay:vector ETV
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "end-to-end delay, vector"
+attr unit s
+vector 375 FanetSybil.host[10].app[0] rcvdPkSeqNo:vector ETV
+attr interpolationmode none
+attr source appPkSeqNo(packetReceived)
+attr title "received packet sequence number, vector"
+vector 376 FanetSybil.host[9].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsHopLimitReached(packetDropped)
+attr title "packet drop: hop limit reached, vector(packetBytes)"
+vector 377 FanetSybil.host[13].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 378 FanetSybil.host[0].app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+0	79357 24 0 0 0 0 3 0 4 4 16
+1	79381 24 0 0 0 0 3 0 4 4 16
+2	79405 24 0 0 0 0 3 0 4 4 16
+3	79429 24 0 0 0 0 3 0 4 4 16
+4	79453 24 0 0 0 0 3 0 4 4 16
+5	79477 24 0 0 0 0 3 0 4 4 16
+6	79501 24 0 0 0 0 3 0 4 4 16
+7	79525 24 0 0 0 0 3 0 4 4 16
+8	79549 24 0 0 0 0 3 0 4 4 16
+9	79573 24 0 0 0 0 3 0 4 4 16
+10	79597 27 0 0 0 0 3 0 4 4 16
+11	79624 27 0 0 0 0 3 0 4 4 16
+12	79651 27 0 0 0 0 3 0 4 4 16
+13	79678 27 0 0 0 0 3 0 4 4 16
+14	79705 27 0 0 0 0 3 0 4 4 16
+15	79732 27 0 0 0 0 3 0 4 4 16
+16	79759 27 0 0 0 0 3 0 4 4 16
+17	79786 27 0 0 0 0 3 0 4 4 16
+18	79813 27 0 0 0 0 3 0 4 4 16
+19	79840 27 0 0 0 0 3 0 4 4 16
+20	79867 27 0 0 0 0 3 0 4 4 16
+21	79894 27 0 0 0 0 3 0 4 4 16
+22	79921 27 0 0 0 0 3 0 4 4 16
+23	79948 27 0 0 0 0 3 0 4 4 16
+24	79975 27 0 0 0 0 3 0 4 4 16
+25	80002 27 0 0 0 0 3 0 4 4 16
+26	80029 27 0 0 0 0 3 0 4 4 16
+27	80056 27 0 0 0 0 3 0 4 4 16
+28	80083 27 0 0 0 0 3 0 4 4 16
+29	80110 27 0 0 0 0 3 0 4 4 16
+30	80137 95393 0 425336 0 499.827486285149 3363 1 3 6725 16811
+31	175530 45356 0 425504 0 499.930935062113 1599 1 2 2398 3996
+32	220886 5257 0 421250 0 492.973325966502 185 1 3 369 921
+33	226143 2811 0 424943 0 499.058140246802 99 1 2 148 246
+34	228954 18890 0 424771 0 498.974914749655 660 1 3 1319 3295
+35	247844 6311 0 424018 0 497.698318069472 223 1 2 334 556
+36	254155 7556 0 425076 0 499.280133441985 265 1 3 529 1321
+37	261711 2862 0 425433 0 499.900094534412 101 1 2 151 251
+38	264573 4892 0 423085 0 496.194976974847 173 1 3 345 861
+39	269465 2751 0 420285 0 490.923321000907 97 1 2 145 241
+40	272216 23935 0 425505 0 499.930935870052 883 1 3 1765 4411
+41	296151 10078 0 421910 0 494.120687330747 371 1 2 556 926
+42	306229 18248 0 425509 0 499.930936089702 650 1 3 1299 3245
+43	324477 4863 0 422819 0 495.77506005592 173 1 2 259 431
+44	329340 6101 0 419210 0 489.456191241941 215 1 3 429 1071
+45	335441 2795 0 419527 0 490.028394209827 99 1 2 148 246
+46	338236 7755 0 424948 0 499.058141010306 271 1 3 541 1351
+47	345991 3486 0 419594 0 490.08436285951 123 1 2 184 306
+48	349477 10883 0 425080 0 499.28013350922 379 1 3 757 1891
+49	360360 3673 0 422244 0 494.778590151709 129 1 2 193 321
+50	364033 9262 0 424944 0 499.058140713728 325 1 3 649 1621
+51	373295 2797 0 421249 0 492.973325320653 99 1 2 148 246
+52	376092 10853 0 423375 0 496.682651787578 379 1 3 757 1891
+53	386945 3843 0 417351 0 486.379064105583 135 1 2 202 336
+54	390788 33032 0 424502 0 498.518049105701 1207 1 3 2413 6031
+55	423820 11501 0 418713 0 488.55844212058 419 1 2 628 1046
+56	435321 8765 0 422824 0 495.775060937841 307 1 3 613 1531
+57	444086 2622 0 423084 0 496.194976329015 93 1 2 139 231
+58	446708 5101 0 424775 0 498.974914811176 179 1 3 357 891
+59	451809 3030 0 420179 0 490.826398998635 107 1 2 160 266
+60	454839 6064 0 425438 0 499.900095739327 215 1 3 429 1071
+61	460903 2809 0 425075 0 499.280132249136 99 1 2 148 246
+62	463712 6897 0 419528 0 490.028395451561 243 1 3 485 1211
+63	470609 2801 0 419209 0 489.456190011137 99 1 2 148 246
+64	473410 6453 0 425434 0 499.900095726661 227 1 3 453 1131
+65	479863 2742 0 423304 0 496.652647832546 97 1 2 145 241
+66	482605 33489 0 419603 0 490.084364147441 1163 1 3 2325 5811
+67	516094 12396 0 423374 0 496.682650705937 431 1 2 646 1076
+68	528490 29043 0 424783 0 498.974915378997 1009 1 3 2017 5041
+69	557533 9435 0 418586 0 488.337053950546 329 1 2 493 821
+70	566968 60700 0 420658 0 491.463315829345 2143 1 3 4285 10711
+71	627668 12768 0 420907 0 492.07944546654 459 1 2 688 1146
+72	640436 11854 0 425507 0 499.930936070545 415 1 3 829 2071
+73	652290 5630 0 425327 0 499.827485271401 197 1 2 295 491
+74	657920 8079 0 420912 0 492.079446797021 283 1 3 565 1411
+75	665999 4358 0 420657 0 491.463314497982 153 1 2 229 381
+76	670357 21452 0 423305 0 496.652648501271 783 1 3 1565 3911
+77	691809 5095 0 419397 0 489.853371403319 185 1 2 277 461
+78	696904 36827 0 420908 0 492.079446261425 1279 1 3 2557 6391
+79	733731 22069 0 419825 0 490.392187007839 767 1 2 1150 1916
+80	755800 8085 0 424779 0 498.974915231972 285 1 3 569 1421
+81	763885 2862 0 422171 0 494.700385335039 101 1 2 151 251
+82	766747 40634 0 425332 0 499.827486202897 1411 1 3 2821 7051
+83	807381 4479 0 421638 0 493.766833367435 157 1 2 235 391
+84	811860 51683 0 425340 0 499.827486561662 1835 1 3 3669 9171
+85	863543 21700 0 424501 0 498.518048497521 761 1 2 1141 1901
+86	885243 16240 0 424019 0 497.698318553759 567 1 3 1133 2831
+87	901483 5635 0 424770 0 498.974914267332 197 1 2 295 491
+88	907118 19201 0 424506 0 498.518049258131 675 1 3 1349 3371
+89	926319 5843 0 424398 0 498.467337869246 207 1 2 310 516
+90	932162 15496 934 425470 3.195254009217 499.93056972878 494 1000 1000 494000 494000000
+91	947658 15496 936 425471 3.195254009217 499.93056972878 494 1008 1008 497952 501935616
+92	963154 1563 1666 420148 5.567129757255 490.826376331968 53 40 40 2120 84800
+93	964717 1563 1666 420148 5.567129757255 490.826376331968 53 40 40 2120 84800
+94	966280 3020 1666 420148 5.567129757255 490.826376331968 106 0 1 53 53
+95	969300 1563 1666 420148 5.567129757255 490.826376331968 53 40 40 2120 84800
+96	970863 1510 1666 420148 5.567129757255 490.826376331968 53 0 0 0 0
+97	972373 1563 1666 420148 5.567129757255 490.826376331968 53 56 56 2968 166208
+98	973936 2527 1699 423086 5.567152899808 496.194976974847 86 56 56 4816 269696
+99	976463 2527 1699 423086 5.567152899808 496.194976974847 86 40 40 3440 137600
+100	978990 12257 1793 424470 5.710360587109 498.518025830854 380 40 1068 344188 364142512
+101	991247 12257 1793 424470 5.710360587109 498.518025830854 380 40 1068 344188 364142512
+102	1003504 22456 1793 424470 5.710360587109 498.518025830854 760 0 1 380 380
+103	1025960 12257 1793 424470 5.710360587109 498.518025830854 380 40 1068 344188 364142512
+104	1038217 11228 1793 424470 5.710360587109 498.518025830854 380 0 0 0 0
+105	1049445 12257 1793 424470 5.710360587109 498.518025830854 380 56 1084 350268 375253808
+106	1061702 13551 1826 425506 5.710384237775 499.930935870052 441 56 1084 380960 406987104
+107	1075253 6720 1826 425329 5.710384237775 499.827485678478 220 40 1068 141604 147319888
+108	1081973 3226 1890 424367 5.871292969678 498.467315202579 103 40 1068 56548 58255024
+109	1085199 3226 1890 424367 5.871292969678 498.467315202579 103 40 1068 56548 58255024
+110	1088425 6041 1890 424367 5.871292969678 498.467315202579 206 0 2 105 107
+111	1094466 3225 1890 424367 5.871292969678 498.467315202579 103 40 1068 56548 58255024
+112	1097691 3072 1890 424367 5.871292969678 498.467315202579 103 0 0.183255714508 0.422263443033 0.052983296730579
+113	1100763 3225 1890 424367 5.871292969678 498.467315202579 103 56 1084 58196 60090928
+114	1103988 3452 1923 425435 5.871316080497 499.900095726661 113 56 1084 9412 3870128
+115	1107440 3355 1923 425435 5.871316080497 499.900095726661 110 40 40 4400 176000
+116	1110795 10177 1927 425510 5.871316182082 499.930936089702 324 56 1084 236080 249463104
+117	1120972 4529 1927 423090 5.871316182082 496.194977243517 147 40 1068 41860 40101040
+118	1125501 1498 2536 419178 7.726562945172 489.45616734447 49 40 1068 4016 2356448
+119	1126999 1498 2536 419178 7.726562945172 489.45616734447 49 40 1068 4016 2356448
+120	1128497 2890 2536 419178 7.726562945172 489.45616734447 98 0 1 49 49
+121	1131387 1498 2536 419178 7.726562945172 489.45616734447 49 40 1068 4016 2356448
+122	1132885 1445 2536 419178 7.726562945172 489.45616734447 49 0 0 0 0
+123	1134330 1498 2536 419178 7.726562945172 489.45616734447 49 56 1084 4800 2497504
+124	1135828 22921 2569 425333 7.726585874005 499.827486202897 705 56 1084 647344 693923232
+125	1158749 4133 2569 425333 7.726585874005 499.827486202897 133 40 1068 38216 36661568
+126	1162882 18843 2573 419604 7.726586274485 490.084364147441 581 56 1084 511872 547996640
+127	1181725 8841 2573 419604 7.726586274485 490.084364147441 277 40 1068 180700 188382160
+128	1190566 6479 2666 418682 7.975346052554 488.558419453913 209 40 1068 170044 179211856
+129	1197045 6479 2666 418682 7.975346052554 488.558419453913 209 40 1068 170044 179211856
+130	1203524 11907 2666 418682 7.975346052554 488.558419453913 418 0 1 209 209
+131	1215431 6480 2666 418682 7.975346052554 488.558419453913 209 40 1068 170044 179211856
+132	1221911 5993 2666 418682 7.975346052554 488.558419453913 209 0 0.039325691074 0.073823687074 0.0023469993008173
+133	1227904 6480 2666 418682 7.975346052554 488.558419453913 209 56 1084 173388 184706768
+134	1234384 54126 2703 425337 7.975369437195 499.827486285149 1681 56 1084 1653408 1780157536
+135	1288510 13818 2703 425337 7.975369437195 499.827486285149 436 40 1068 300580 312090448
+136	1302328 12114 2707 423306 7.975369884026 496.652648501271 391 56 1084 330968 352941952
+137	1314442 3982 2707 423306 7.975369884026 496.652648501271 130 40 1068 52488 52603104
+138	1318424 34414 2711 420659 7.975369893968 491.463315829345 1071 56 1084 1042704 1121789664
+139	1352838 8662 2711 420659 7.975369893968 491.463315829345 277 40 1068 197148 206606544
+140	1361500 3110 2862 424739 8.373961616307 498.974891600665 98 40 1068 54292 55968976
+141	1364610 3110 2862 424739 8.373961616307 498.974891600665 98 40 1068 54292 55968976
+142	1367720 5828 2862 424739 8.373961616307 498.974891600665 196 0 1 98 98
+143	1373548 3110 2862 424739 8.373961616307 498.974891600665 98 40 1068 54292 55968976
+144	1376658 2953 2862 424739 8.373961616307 498.974891600665 98 0 0.074738875968 0.144722343578 0.0085513645400876
+145	1379611 3110 2862 424739 8.373961616307 498.974891600665 98 56 1084 55860 57731408
+146	1382721 6534 2895 425508 8.373984668695 499.930936070545 207 56 1084 112432 115517280
+147	1389255 4824 2895 424515 8.373984668695 498.518049669711 155 40 1068 54516 53782128
+148	1394079 2804 2899 421251 8.373985067068 492.973325966502 92 56 56 5152 288512
+149	1396883 2804 2899 421251 8.373985067068 492.973325966502 92 40 40 3680 147200
+150	1399687 6033 2903 425081 8.373985090177 499.28013350922 189 56 1084 122636 128331984
+151	1405720 3009 2903 425081 8.373985090177 499.28013350922 97 40 1068 21356 19518608
+152	1408729 3259 2907 419211 8.373985165422 489.456191241941 107 56 56 5992 335552
+153	1411988 3259 2907 419211 8.373985165422 489.456191241941 107 40 40 4280 171200
+154	1415247 25756 3059 425473 8.764662767263 499.93056972878 799 40 1068 797820 849851280
+155	1441003 25756 3059 425473 8.764662767263 499.93056972878 799 40 1068 797820 849851280
+156	1466759 46938 3059 425473 8.764662767263 499.93056972878 1598 0 2 801 803
+157	1513697 25760 3059 425473 8.764662767263 499.93056972878 799 40 1068 797820 849851280
+158	1539457 23743 3059 425473 8.764662767263 499.93056972878 799 0 0.105393975613 1.144215722259 0.07662689240591
+159	1563200 25760 3059 425473 8.764662767263 499.93056972878 799 56 1084 810604 875586064
+160	1588960 18692 3092 424503 8.765028823189 498.518049105701 603 56 1084 534980 572735856
+161	1607652 8431 3092 424503 8.765028823189 498.518049105701 274 40 1068 175824 182749824
+162	1616083 25752 3095 366418 8.765029018684 405.97374715793 794 152 1084 841124 908803472
+163	1641835 6831 3097 425506 8.765029238682 499.930935870052 221 152 1084 235836 255079568
+164	1648666 1463 3157 423273 8.834415213205 496.652625165879 48 40 40 1920 76800
+165	1650129 1463 3157 423273 8.834415213205 496.652625165879 48 40 40 1920 76800
+166	1651592 2830 3157 423273 8.834415213205 496.652625165879 96 0 1 48 48
+167	1654422 1463 3157 423273 8.834415213205 496.652625165879 48 40 40 1920 76800
+168	1655885 1415 3157 423273 8.834415213205 496.652625165879 48 0 0 0 0
+169	1657300 1463 3157 423273 8.834415213205 496.652625165879 48 56 56 2688 150528
+170	1658763 10668 3194 424507 8.834438361433 498.518049258131 337 56 1084 221484 231945040
+171	1669431 5891 3194 424507 8.834438361433 498.518049258131 190 40 1068 60028 58394224
+172	1675322 1492 3226 421218 8.843817082234 492.973302653986 49 40 40 1960 78400
+173	1676814 1492 3226 421218 8.843817082234 492.973302653986 49 40 40 1960 78400
+174	1678306 2886 3226 421218 8.843817082234 492.973302653986 98 0 1 49 49
+175	1681192 1492 3226 421218 8.843817082234 492.973302653986 49 40 40 1960 78400
+176	1682684 1443 3226 421218 8.843817082234 492.973302653986 49 0 0 0 0
+177	1684127 1492 3226 421218 8.843817082234 492.973302653986 49 56 56 2744 153664
+178	1685619 16284 3259 424784 8.843840327257 498.974915378997 504 56 1084 417384 444686112
+179	1701903 7382 3259 424784 8.843840327257 498.974915378997 233 40 1068 125484 129082512
+180	1709285 5938 3263 423376 8.843840446553 496.682651787578 189 56 1084 82640 82647072
+181	1715223 4229 3263 423376 8.843840446553 496.682651787578 137 40 1068 25012 21860656
+182	1719452 12464 3396 419794 8.927847931627 490.392164341172 383 40 1068 356068 377714224
+183	1731916 12464 3396 419794 8.927847931627 490.392164341172 383 40 1068 356068 377714224
+184	1744380 22828 3396 419794 8.927847931627 490.392164341172 766 0 1 383 383
+185	1767208 12464 3396 419794 8.927847931627 490.392164341172 383 40 1068 356068 377714224
+186	1779672 11414 3396 419794 8.927847931627 490.392164341172 383 0 0 0 0
+187	1791086 12464 3396 419794 8.927847931627 490.392164341172 383 56 1084 362196 389206448
+188	1803550 1492 3619 419496 9.236547967885 490.02837154316 49 40 40 1960 78400
+189	1805042 1492 3619 419496 9.236547967885 490.02837154316 49 40 40 1960 78400
+190	1806534 2886 3619 419496 9.236547967885 490.02837154316 98 0 1 49 49
+191	1809420 1492 3619 419496 9.236547967885 490.02837154316 49 40 40 1960 78400
+192	1810912 1443 3619 419496 9.236547967885 490.02837154316 49 0 0 0 0
+193	1812355 1492 3619 419496 9.236547967885 490.02837154316 49 56 56 2744 153664
+194	1813847 9041 3656 424020 9.236571509163 497.698318553759 283 56 1084 197804 208317328
+195	1822888 4828 3656 424020 9.236571509163 497.698318553759 155 40 1068 56572 56060176
+196	1827716 2089 3722 417320 9.375872099772 486.379041438916 67 40 1068 22212 21748656
+197	1829805 2089 3722 417320 9.375872099772 486.379041438916 67 40 1068 22212 21748656
+198	1831894 3968 3722 417320 9.375872099772 486.379041438916 134 0 1 67 67
+199	1835862 2089 3722 417320 9.375872099772 486.379041438916 67 40 1068 22212 21748656
+200	1837951 1997 3722 417320 9.375872099772 486.379041438916 67 0 0.014379205441 0.014379205441 0.00020676154911448
+201	1839948 2089 3722 417320 9.375872099772 486.379041438916 67 56 1084 23284 22476592
+202	1842037 5030 3755 424945 9.37589545674 499.058140713728 162 56 1084 52248 49728672
+203	1847067 4800 3755 424945 9.37589545674 499.058140713728 155 40 1068 42180 40113840
+204	1851867 6949 3915 423343 9.776651116554 496.68262803927 215 40 1068 174492 183794448
+205	1858816 6949 3915 423343 9.776651116554 496.68262803927 215 40 1068 174492 183794448
+206	1865765 12816 3915 423343 9.776651116554 496.68262803927 430 0 1 215 215
+207	1878581 6949 3915 423343 9.776651116554 496.68262803927 215 40 1068 174492 183794448
+208	1885530 6421 3915 423343 9.776651116554 496.68262803927 215 0 0.062753910564 0.062753910564 0.0039380532910745
+209	1891951 6949 3915 423343 9.776651116554 496.68262803927 215 56 1084 177932 189433232
+210	1898900 3702 3952 419529 9.776674542555 490.028395451561 121 56 1084 15000 9754816
+211	1902602 3504 3952 419529 9.776674542555 490.028395451561 115 40 1068 6656 2462048
+212	1906106 2379 3985 420626 9.799771714024 491.463291831315 76 40 1068 30796 30875248
+213	1908485 2379 3985 420626 9.799771714024 491.463291831315 76 40 1068 30796 30875248
+214	1910864 4500 3985 420626 9.799771714024 491.463291831315 152 0 1 76 76
+215	1915364 2381 3985 420626 9.799771714024 491.463291831315 76 40 1068 30796 30875248
+216	1917745 2290 3985 420626 9.799771714024 491.463291831315 76 0 0.066996013919 0.08115749054 0.0046681767516259
+217	1920035 2381 3985 420626 9.799771714024 491.463291831315 76 56 1084 32012 31880176
+218	1922416 4338 4018 424780 9.799794888487 498.974915231972 142 56 1084 16176 9820672
+219	1926754 4075 4018 424780 9.799794888487 498.974915231972 134 40 40 5360 214400
+220	1930829 3245 4022 425439 9.799795257609 499.900095739327 107 56 1084 8048 2679392
+221	1934074 3179 4022 425439 9.799795257609 499.900095739327 105 40 40 4200 168000
+222	1937253 4136 4026 425077 9.799795537642 499.280133441985 132 56 1084 57764 57838032
+223	1941389 2624 4026 425077 9.799795537642 499.280133441985 86 40 1068 6524 3554672
+224	1944013 4778 4030 422825 9.799795604176 495.775060937841 153 56 1084 54828 53216208
+225	1948791 3296 4030 422825 9.799795604176 495.775060937841 108 40 40 4320 172800
+226	1952087 3094 4211 425296 10.288949215319 499.827462604734 98 40 1068 52236 53690928
+227	1955181 3094 4211 425296 10.288949215319 499.827462604734 98 40 1068 52236 53690928
+228	1958275 5804 4211 425296 10.288949215319 499.827462604734 196 0 1 98 98
+229	1964079 3094 4211 425296 10.288949215319 499.827462604734 98 40 1068 52236 53690928
+230	1967173 2954 4211 425296 10.288949215319 499.827462604734 98 0 0.075160397846 0.197075017701 0.011531478007561
+231	1970127 3094 4211 425296 10.288949215319 499.827462604734 98 56 1084 53804 55387568
+232	1973221 5668 4347 421879 10.448831773829 494.12066466408 185 40 1068 139272 146141760
+233	1978889 5668 4347 421879 10.448831773829 494.12066466408 185 40 1068 139272 146141760
+234	1984557 10448 4347 421879 10.448831773829 494.12066466408 370 0 1 185 185
+235	1995005 5668 4347 421879 10.448831773829 494.12066466408 185 40 1068 139272 146141760
+236	2000673 5224 4347 421879 10.448831773829 494.12066466408 185 0 0 0 0
+237	2005897 5668 4347 421879 10.448831773829 494.12066466408 185 56 1084 142232 150645824
+238	2011565 29303 4384 425341 10.448855261689 499.827486561662 917 56 1084 885088 952350560
+239	2040868 13671 4384 425341 10.448855261689 499.827486561662 426 40 1068 355348 375437392
+240	2054539 40308 4525 399645 10.467363664078 455.413941289752 1245 152 1084 1345852 1458336912
+241	2094847 8132 4532 313639 10.467364034837 351.348955231809 261 152 1084 276400 298625952
+242	2102979 10261 4591 384598 10.467729782745 434.009844492744 329 152 1084 354772 384289520
+243	2113240 15632 4727 388504 10.468462153471 437.633421642775 491 152 1084 522924 565432976
+244	2128872 30 6511 6511 10.478347432244 10.478347432244 1 1068 1068 1068 1140624
+245	2128902 2817 6968 419366 10.680445637554 489.853348736652 92 40 1068 49104 50298048
+246	2131719 2817 6968 419366 10.680445637554 489.853348736652 92 40 1068 49104 50298048
+247	2134536 5270 6968 419366 10.680445637554 489.853348736652 184 0 1 92 92
+248	2139806 2817 6968 419366 10.680445637554 489.853348736652 92 40 1068 49104 50298048
+249	2142623 2635 6968 419366 10.680445637554 489.853348736652 92 0 0 0 0
+250	2145258 2817 6968 419366 10.680445637554 489.853348736652 92 56 1084 50576 51892928
+251	2148075 1531 7234 425402 11.027633703779 499.900071867745 50 40 1068 5084 3497072
+252	2149606 1531 7234 425402 11.027633703779 499.900071867745 50 40 1068 5084 3497072
+253	2151137 2950 7234 425402 11.027633703779 499.900071867745 100 0 1 50 50
+254	2154087 1531 7234 425402 11.027633703779 499.900071867745 50 40 1068 5084 3497072
+255	2155618 1475 7234 425402 11.027633703779 499.900071867745 50 0 0 0 0
+256	2157093 1531 7234 425402 11.027633703779 499.900071867745 50 56 1084 5884 3672560
+257	2158624 4402 7275 420913 11.027657544044 492.079446797021 141 56 1084 53128 52006656
+258	2163026 3842 7275 420913 11.027657544044 492.079446797021 124 40 1068 32716 30952048
+259	2166868 1882 7370 419563 11.235636963975 490.084340192843 61 40 1068 12720 11487840
+260	2168750 1882 7370 419563 11.235636963975 490.084340192843 61 40 1068 12720 11487840
+261	2170632 3602 7370 419563 11.235636963975 490.084340192843 122 0 1 61 61
+262	2174234 1882 7370 419563 11.235636963975 490.084340192843 61 40 1068 12720 11487840
+263	2176116 1801 7370 419563 11.235636963975 490.084340192843 61 0 0 0 0
+264	2177917 1882 7370 419563 11.235636963975 490.084340192843 61 56 1084 13696 11910496
+265	2179799 1991 7494 422213 11.458941150922 494.778567485042 64 40 1068 19104 18343680
+266	2181790 1991 7494 422213 11.458941150922 494.778567485042 64 40 1068 19104 18343680
+267	2183781 3788 7494 422213 11.458941150922 494.778567485042 128 0 1 64 64
+268	2187569 1991 7494 422213 11.458941150922 494.778567485042 64 40 1068 19104 18343680
+269	2189560 1894 7494 422213 11.458941150922 494.778567485042 64 0 0 0 0
+270	2191454 1991 7494 422213 11.458941150922 494.778567485042 64 56 1084 20128 18971392
+271	2193445 61 9758 12431 11.813648072244 12.775029421915 2 1068 1068 2136 2281248
+272	2193506 1498 10110 424912 12.151893649716 499.058117580135 49 40 40 1960 78400
+273	2195004 1498 10110 424912 12.151893649716 499.058117580135 49 40 40 1960 78400
+274	2196502 2898 10110 424912 12.151893649716 499.058117580135 98 0 1 49 49
+275	2199400 1498 10110 424912 12.151893649716 499.058117580135 49 40 40 1960 78400
+276	2200898 1449 10110 424912 12.151893649716 499.058117580135 49 0 0 0 0
+277	2202347 1498 10110 424912 12.151893649716 499.058117580135 49 56 56 2744 153664
+278	2203845 5264 12686 418555 12.917250334285 488.337031283879 164 40 1068 119928 125605728
+279	2209109 5264 12686 418555 12.917250334285 488.337031283879 164 40 1068 119928 125605728
+280	2214373 9754 12686 418555 12.917250334285 488.337031283879 328 0 1 164 164
+281	2224127 5264 12686 418555 12.917250334285 488.337031283879 164 40 1068 119928 125605728
+282	2229391 4877 12686 418555 12.917250334285 488.337031283879 164 0 0 0 0
+283	2234268 5264 12686 418555 12.917250334285 488.337031283879 164 56 1084 122552 129485408
+284	2239532 7194 12816 420876 13.121687264647 492.079422799873 229 40 1068 192240 203129568
+285	2246726 7194 12816 420876 13.121687264647 492.079422799873 229 40 1068 192240 203129568
+286	2253920 13214 12816 420876 13.121687264647 492.079422799873 458 0 2 233 237
+287	2267134 7192 12816 420876 13.121687264647 492.079422799873 229 40 1068 192240 203129568
+288	2274326 6696 12816 420876 13.121687264647 492.079422799873 229 0 0.114195891157 0.426330828857 0.038061617880668
+289	2281022 7192 12816 420876 13.121687264647 492.079422799873 229 56 1084 195904 209339872
+290	2288214 2456 12946 421607 13.360787688289 493.766810700768 78 40 1068 36016 36573568
+291	2290670 2456 12946 421607 13.360787688289 493.766810700768 78 40 1068 36016 36573568
+292	2293126 4628 12946 421607 13.360787688289 493.766810700768 156 0 1 78 78
+293	2297754 2456 12946 421607 13.360787688289 493.766810700768 78 40 1068 36016 36573568
+294	2300210 2340 12946 421607 13.360787688289 493.766810700768 78 0 0.055175878569 0.096467295722 0.0047493587063641
+295	2302550 2456 12946 421607 13.360787688289 493.766810700768 78 56 1084 37264 37746048
+296	2305006 3498 13052 423987 13.442657440901 497.698295402805 111 40 1068 69204 71936112
+297	2308504 3498 13052 423987 13.442657440901 497.698295402805 111 40 1068 69204 71936112
+298	2312002 6521 13052 423987 13.442657440901 497.698295402805 222 0 1 111 111
+299	2318523 3497 13052 423987 13.442657440901 497.698295402805 111 40 1068 69204 71936112
+300	2322020 3299 13052 423987 13.442657440901 497.698295402805 111 0 0.083433905881 0.205819875036 0.014574591035268
+301	2325319 3497 13052 423987 13.442657440901 497.698295402805 111 56 1084 70980 74179056
+302	2328816 2671 13116 422788 13.472517372575 495.775037389253 86 40 1068 38488 38881312
+303	2331487 2671 13116 422788 13.472517372575 495.775037389253 86 40 1068 38488 38881312
+304	2334158 5032 13116 422788 13.472517372575 495.775037389253 172 0 1 86 86
+305	2339190 2671 13116 422788 13.472517372575 495.775037389253 86 40 1068 38488 38881312
+306	2341861 2529 13116 422788 13.472517372575 495.775037389253 86 0 0.087773590254 0.087773590254 0.0077042031460771
+307	2344390 2671 13116 422788 13.472517372575 495.775037389253 86 56 1084 39864 40134944
+308	2347061 1465 13216 420254 13.579456198495 490.92329833424 48 40 40 1920 76800
+309	2348526 1465 13216 420254 13.579456198495 490.92329833424 48 40 40 1920 76800
+310	2349991 2834 13216 420254 13.579456198495 490.92329833424 96 0 1 48 48
+311	2352825 1465 13216 420254 13.579456198495 490.92329833424 48 40 40 1920 76800
+312	2354290 1417 13216 420254 13.579456198495 490.92329833424 48 0 0 0 0
+313	2355707 1465 13216 420254 13.579456198495 490.92329833424 48 56 56 2688 150528
+314	2357172 2724 13249 424776 13.579479170009 498.974914811176 89 56 56 4984 279104
+315	2359896 2724 13249 424776 13.579479170009 498.974914811176 89 40 40 3560 142400
+316	2362620 20745 13253 420909 13.579480139797 492.079446261425 639 56 1084 580556 622149264
+317	2383365 14087 13253 420909 13.579480139797 492.079446261425 436 40 1068 362848 383409664
+318	2397452 538 15407 305017 13.734572808335 344.807483175427 17 1068 1068 18156 19390608
+319	2397990 504 15409 305019 13.734572808335 344.807483175427 17 96 96 1632 156672
+320	2398494 504 15409 305019 13.734572808335 344.807483175427 17 96 96 1632 156672
+321	2398998 1397 15535 423053 13.917730017565 496.194953662348 46 40 40 1840 73600
+322	2400395 1397 15535 423053 13.917730017565 496.194953662348 46 40 40 1840 73600
+323	2401792 2702 15535 423053 13.917730017565 496.194953662348 92 0 1 46 46
+324	2404494 1397 15535 423053 13.917730017565 496.194953662348 46 40 40 1840 73600
+325	2405891 1351 15535 423053 13.917730017565 496.194953662348 46 0 0 0 0
+326	2407242 1397 15535 423053 13.917730017565 496.194953662348 46 56 56 2576 144256
+327	2408639 1528 15695 422140 14.255966332275 494.700362668372 50 40 40 2000 80000
+328	2410167 1528 15695 422140 14.255966332275 494.700362668372 50 40 40 2000 80000
+329	2411695 2956 15695 422140 14.255966332275 494.700362668372 100 0 1 50 50
+330	2414651 1528 15695 422140 14.255966332275 494.700362668372 50 40 40 2000 80000
+331	2416179 1478 15695 422140 14.255966332275 494.700362668372 50 0 0 0 0
+332	2417657 1528 15695 422140 14.255966332275 494.700362668372 50 56 56 2800 156800
+333	2419185 1497 20155 425044 14.636627640575 499.280109582469 49 40 40 1960 78400
+334	2420682 1497 20155 425044 14.636627640575 499.280109582469 49 40 40 1960 78400
+335	2422179 2896 20155 425044 14.636627640575 499.280109582469 98 0 1 49 49
+336	2425075 1497 20155 425044 14.636627640575 499.280109582469 49 40 40 1960 78400
+337	2426572 1448 20155 425044 14.636627640575 499.280109582469 49 0 0 0 0
+338	2428020 1497 20155 425044 14.636627640575 499.280109582469 49 56 56 2744 153664
+339	2429517 10519 56398 424772 46.407493096891 498.974914749655 329 56 1084 244584 258854144
+340	2440036 5387 56398 424772 46.407493096891 498.974914749655 172 40 1068 71644 72033712
+341	2445423 4214 57869 424949 49.004883103616 499.058141010306 135 56 1084 44568 42612480
+342	2449637 3360 57869 424949 49.004883103616 499.058141010306 109 40 1068 14640 11564640
+343	2452997 5615 69655 425510 68.875041572352 499.930936089702 176 1084 1084 190784 206809856
+344	2458612 4777 76425 399643 79.783343269458 455.413941289426 147 152 1084 158416 171581280
+345	2463389 5099 81365 378099 83.436497598346 423.91554759664 156 1084 1084 169104 183308736
+346	2468488 31 83378 83378 83.447854749107 83.447854749107 1 1068 1068 1068 1140624
+347	2468519 560 106446 370681 115.832465719257 413.631289391917 17 1084 1084 18428 19975952
+348	2469079 33 108344 108344 115.842715578304 115.842715578304 1 1084 1084 1084 1175056
+349	2469112 33 108346 108346 115.842715681078 115.842715681078 1 1084 1084 1084 1175056
+350	2469145 263 109545 370685 117.316895986626 413.631289811256 8 1084 1084 8672 9400448
+351	2469408 198 117884 120592 131.014664908631 133.762418021275 6 1084 1084 6504 7050336
+352	2469606 4213 129102 399647 147.619701884712 455.413941388746 128 1084 1084 138752 150407168
+353	2473819 1710 161693 425508 202.659646060839 499.930936070545 52 152 1084 55436 59950960
+354	2475529 854 162542 229278 204.052964424702 293.03840818963 26 1084 1084 28184 30551456
+355	2476383 6658 167119 337499 209.999945853506 383.367086931003 203 152 1084 210732 227016848
+356	2483041 1709 169021 244132 212.51873650873 313.166574141217 52 152 1084 55436 59950960
+357	2484750 33 202465 202465 256.785022019665 256.785022019665 1 1068 1068 1068 1140624
+358	2484783 10002 217328 375539 276.911882969763 420.530799813164 304 152 1084 326740 353761168
+359	2494785 18788 225744 313508 288.195721229426 351.348222658637 572 152 1084 607000 656004704
+360	2513573 97 244121 244253 313.16657377583 313.167305792456 3 1084 1084 3252 3525168
+361	2513670 163 247938 334151 315.857812705789 382.012644027569 5 1068 1068 5340 5703120
+362	2513833 329 250965 273964 317.238176037854 323.404152178478 10 1068 1068 10680 11406240
+363	2514162 66 287158 287548 334.149972040071 334.591905255519 2 1084 1084 2168 2350112
+364	2514228 8902 303031 412065 344.796495754577 476.707155990401 271 152 1084 288172 311528464
+365	2523130 1512 315885 349326 353.625078913801 393.03919414216 46 1084 1084 49864 54052576
+366	2524642 130 336878 347291 382.987863893751 390.241095841314 4 1068 1068 4272 4562496
+367	2524772 99 355170 359890 398.036593003669 398.731519303911 3 1068 1068 3204 3421872
+368	2524871 3024 361104 403400 401.002525564625 461.9005015377 92 1084 1084 99728 108105152
+369	2527895 230 367706 390569 408.15460463808 441.344409901814 7 1084 1084 7588 8225392
+370	2528125 1151 367764 408953 408.154970437707 470.688303894965 35 1008 1008 35280 35562240
+371	2529276 1072 367764 408953 408.154970437707 470.688303894965 35 1 35 630 14910
+372	2530348 1151 367765 408954 408.154970437707 470.688303894965 35 1000 1000 35000 35000000
+373	2531499 93033 367765 425568 0.1 500 5000 0 160000 2800000 262400000000
+374	2624532 1498 367765 408954 408.154970437707 470.688303894965 35 0.000366543985 0.001099120759 0.019791632589 1.2894009890786e-05
+375	2626030 1116 367765 408954 408.154970437707 470.688303894965 35 411 465 15572 6936554
+376	2627146 33 388438 388438 437.633365982615 437.633365982615 1 1068 1068 1068 1140624
+377	2627179 1482 390265 419730 441.035292259686 490.219058686623 45 1084 1084 48780 52877520
+378	2628661 92902 425568 425568 0.1 500 5000 0 0 0 0
+

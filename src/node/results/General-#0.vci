@@ -1,15 +1,15 @@
-file 25276 1652201296                                           
+file 10271 1653052186                                           
 version 2
-run General-0-20220510-18:41:56-94479
+run General-0-20220520-15:09:19-53477
 attr configname General
-attr datetime 20220510-18:41:56
+attr datetime 20220520-15:09:19
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network Fanet
-attr processid 94479
+attr processid 53477
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -17,23 +17,24 @@ attr runnumber 0
 attr seedset 0
 param *.host[0].numApps 1
 param *.host[0].app[0].typename "\"UdpBasicApp\""
-param *.host[0].app[0].destAddresses "\"host[2]\""
+param *.host[0].app[0].startTime uniform(1s,5s)
+param *.host[0].app[0].destAddresses "\"host[10]\""
 param *.host[0].app[0].destPort 5000
 param *.host[0].app[0].messageLength 1000B
 param *.host[0].app[0].sendInterval exponential(1s)
 param *.host[0].app[0].packetName "\"UDPdata\""
-param *.host[2].numApps 1
-param *.host[2].app[0].typename "\"UdpSink\""
-param *.host[2].app[0].localPort 5000
+param *.host[10].numApps 1
+param *.host[10].app[0].typename "\"UdpSink\""
+param *.host[10].app[0].localPort 5000
 param **.wlan[*].bitrate 24Mbps
 param *.configurator.addStaticRoutes false
 param **.netmaskRoutes "\"\""
 param **.arp.typename "\"GlobalArp\""
 param *.host*.wlan[0].typename "\"AckingWirelessInterface\""
-param *.host*.wlan[0].radio.transmitter.communicationRange 450m
+param *.host*.wlan[0].radio.transmitter.communicationRange 400m
 param *.host*.wlan[0].radio.displayCommunicationRange true
 param *.attacker*.wlan[0].typename "\"AckingWirelessInterface\""
-param *.attacker*.wlan[0].radio.transmitter.communicationRange 450m
+param *.attacker*.wlan[0].radio.transmitter.communicationRange 400m
 param *.attacker*.wlan[0].radio.displayCommunicationRange true
 param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
 param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
@@ -53,23 +54,23 @@ param *.visualizer.*.mobilityVisualizer.displayOrientations true
 param *.visualizer.*.mobilityVisualizer.displayVelocities true
 param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
 param *.visualizer.*.mobilityVisualizer.animationSpeed 1
-param *.visualizer.*.packetDropVisualizer.displayPacketDrops true
+param *.visualizer.*.packetDropVisualizer.displayPacketDrops false
 param *.visualizer.*.packetDropVisualizer.labelFormat "\"%n/reason: %r\""
 param *.visualizer.*.packetDropVisualizer.fadeOutTime 10s
 param **.constraintAreaMinX 0m
 param **.constraintAreaMinY 0m
 param **.constraintAreaMinZ 0m
-param **.constraintAreaMaxX 1000m
-param **.constraintAreaMaxY 1000m
-param **.constraintAreaMaxZ 1000m
+param **.constraintAreaMaxX 2500m
+param **.constraintAreaMaxY 2000m
+param **.constraintAreaMaxZ 200m
 param *.visualizer.*.mediumVisualizer.signalPropagationAnimationSpeed 500/3e8
 param *.visualizer.*.mediumVisualizer.signalTransmissionAnimationSpeed 50000/3e8
-param *.visualizer.*.mediumVisualizer.displaySignals true
-param *.visualizer.*.mediumVisualizer.displayTransmissions true
-param *.visualizer.*.mediumVisualizer.displayReceptions true
+param *.visualizer.*.mediumVisualizer.displaySignals false
+param *.visualizer.*.mediumVisualizer.displayTransmissions false
+param *.visualizer.*.mediumVisualizer.displayReceptions false
 param *.visualizer.*.mediumVisualizer.transmissionPlacementPriority 10
 param *.visualizer.*.mediumVisualizer.receptionPlacementPriority 10
-param *.visualizer.*.mediumVisualizer.displaySignals true
+param *.visualizer.*.mediumVisualizer.displaySignals false
 param *.visualizer.*.mediumVisualizer.signalFadingDistance 50m
 param *.visualizer.*.mediumVisualizer.signalRingSize 50m
 param *.visualizer.osgVisualizer.mediumVisualizer.signalShape "\"both\""
@@ -103,245 +104,142 @@ vector 2 Fanet.host[2].wlan[0].radio radioMode:vector ETV
 attr interpolationmode sample-hold
 attr source radioModeChanged
 attr title "Radio mode, vector"
-vector 3 Fanet.attacker[0].wlan[0].radio radioMode:vector ETV
+vector 3 Fanet.host[3].wlan[0].radio radioMode:vector ETV
 attr interpolationmode sample-hold
 attr source radioModeChanged
 attr title "Radio mode, vector"
-vector 4 Fanet.host[0].wlan[0].radio receptionState:vector ETV
+vector 4 Fanet.host[4].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 5 Fanet.host[5].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 6 Fanet.host[6].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 7 Fanet.host[7].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 8 Fanet.host[8].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 9 Fanet.host[9].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 10 Fanet.host[0].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 5 Fanet.host[0].wlan[0].radio transmissionState:vector ETV
+vector 11 Fanet.host[0].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 6 Fanet.host[1].wlan[0].radio receptionState:vector ETV
+vector 12 Fanet.host[1].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 7 Fanet.host[1].wlan[0].radio transmissionState:vector ETV
+vector 13 Fanet.host[1].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 8 Fanet.host[2].wlan[0].radio receptionState:vector ETV
+vector 14 Fanet.host[2].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 9 Fanet.host[2].wlan[0].radio transmissionState:vector ETV
+vector 15 Fanet.host[2].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 10 Fanet.attacker[0].wlan[0].radio receptionState:vector ETV
+vector 16 Fanet.host[3].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 11 Fanet.attacker[0].wlan[0].radio transmissionState:vector ETV
+vector 17 Fanet.host[3].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 12 Fanet.host[0].app[0] packetSent:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSent
-attr title "packets sent, vector(packetBytes)"
-vector 13 Fanet.host[0].udp packetSent:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSent
-attr title "packets sent, vector(packetBytes)"
-0	7035 24 0 0 0 0 3 0 4 4 16
-1	7059 24 0 0 0 0 3 0 4 4 16
-2	7083 24 0 0 0 0 3 0 4 4 16
-3	7107 24 0 0 0 0 3 0 4 4 16
-4	7131 8 0 0 0 0 1 1 1 1 1
-5	7139 8 0 0 0 0 1 1 1 1 1
-6	7147 8 0 0 0 0 1 1 1 1 1
-7	7155 8 0 0 0 0 1 1 1 1 1
-8	7163 8 0 0 0 0 1 1 1 1 1
-9	7171 8 0 0 0 0 1 1 1 1 1
-10	7179 9 0 0 0 0 1 1 1 1 1
-11	7188 9 0 0 0 0 1 1 1 1 1
-12	7197 159 32 256 0.795874504566 5.971327050801 6 1000 1000 6000 6000000
-13	7356 159 34 257 0.795874504566 5.971327050801 6 1008 1008 6048 6096384
-12	7515 27 391 391 9.286239330729 9.286239330729 1 1000 1000 1000 1000000
-13	7542 27 392 392 9.286239330729 9.286239330729 1 1008 1008 1008 1016064
-vector 14 Fanet.host[0].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromUpper
-attr title "packets received from higher layer, vector(packetBytes)"
-vector 15 Fanet.host[0].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet pushed, vector(packetBytes)"
-vector 16 Fanet.host[0].wlan[0].mac.queue queueLength:vector ETV
+vector 18 Fanet.host[4].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
-attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
-attr title "queue length, vector"
-vector 17 Fanet.host[0].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet popped, vector(packetBytes)"
-vector 18 Fanet.host[0].wlan[0].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr source queueingTime(packetPopped)
-attr title "queueing times, vector"
-attr unit s
-vector 19 Fanet.host[0].wlan[0].mac sentDownPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToLower
-attr title "packets sent to lower layer, vector(packetBytes)"
-vector 20 Fanet.host[2].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromLower
-attr title "packets received from lower layer, vector(packetBytes)"
-vector 21 Fanet.host[2].wlan[0].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToUpper
-attr title "packets passed to higher layer, vector(packetBytes)"
-vector 22 Fanet.attacker[0].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromUpper
-attr title "packets received from higher layer, vector(packetBytes)"
-vector 23 Fanet.attacker[0].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet pushed, vector(packetBytes)"
-vector 24 Fanet.attacker[0].wlan[0].mac.queue queueLength:vector ETV
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 19 Fanet.host[4].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
-attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
-attr title "queue length, vector"
-vector 25 Fanet.attacker[0].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet popped, vector(packetBytes)"
-vector 26 Fanet.attacker[0].wlan[0].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr source queueingTime(packetPopped)
-attr title "queueing times, vector"
-attr unit s
-vector 27 Fanet.attacker[0].wlan[0].mac sentDownPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToLower
-attr title "packets sent to lower layer, vector(packetBytes)"
-vector 28 Fanet.host[1].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromUpper
-attr title "packets received from higher layer, vector(packetBytes)"
-vector 29 Fanet.host[1].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet pushed, vector(packetBytes)"
-vector 30 Fanet.host[1].wlan[0].mac.queue queueLength:vector ETV
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 20 Fanet.host[5].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
-attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
-attr title "queue length, vector"
-vector 31 Fanet.host[1].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet popped, vector(packetBytes)"
-vector 32 Fanet.host[1].wlan[0].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr source queueingTime(packetPopped)
-attr title "queueing times, vector"
-attr unit s
-vector 33 Fanet.host[1].wlan[0].mac sentDownPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToLower
-attr title "packets sent to lower layer, vector(packetBytes)"
-vector 34 Fanet.host[2].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromUpper
-attr title "packets received from higher layer, vector(packetBytes)"
-vector 35 Fanet.host[2].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet pushed, vector(packetBytes)"
-vector 36 Fanet.host[2].wlan[0].mac.queue queueLength:vector ETV
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 21 Fanet.host[5].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
-attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
-attr title "queue length, vector"
-vector 37 Fanet.host[2].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
-attr interpolationmode none
-attr title "packet popped, vector(packetBytes)"
-vector 38 Fanet.host[2].wlan[0].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr source queueingTime(packetPopped)
-attr title "queueing times, vector"
-attr unit s
-vector 39 Fanet.host[2].wlan[0].mac sentDownPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToLower
-attr title "packets sent to lower layer, vector(packetBytes)"
-vector 40 Fanet.host[0].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromLower
-attr title "packets received from lower layer, vector(packetBytes)"
-vector 41 Fanet.host[0].wlan[0].mac passedUpPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToUpper
-attr title "packets passed to higher layer, vector(packetBytes)"
-vector 42 Fanet.host[2].udp packetReceived:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceived
-attr title "packets received, vector(packetBytes)"
-vector 43 Fanet.host[2].udp passedUpPk:vector(count) ETV
-attr interpolationmode none
-attr source packetSentToUpper
-attr title "packets passed up, vector(count)"
-vector 44 Fanet.host[2].app[0] packetReceived:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceived
-attr title "packets received, vector(packetBytes)"
-vector 45 Fanet.host[2].app[0] throughput:vector ETV
-attr source throughput(packetReceived)
-attr title "throughput, vector"
-attr unit bps
-vector 46 Fanet.host[2].app[0] endToEndDelay:vector ETV
-attr interpolationmode none
-attr source dataAge(packetReceived)
-attr title "end-to-end delay, vector"
-attr unit s
-vector 47 Fanet.host[2].app[0] rcvdPkSeqNo:vector ETV
-attr interpolationmode none
-attr source appPkSeqNo(packetReceived)
-attr title "received packet sequence number, vector"
-4	13879 96 614 946 13.442658577948 19.153042148653 4 1 3 8 20
-5	13975 385 468 1014 10.928446163889 20.073786971027 16 1 2 24 40
-7	14360 97 546 1067 12.151893649716 21.07976424801 4 1 2 6 10
-8	14457 336 469 974 10.928447159795 19.432079267329 14 1 3 28 70
-9	14793 95 613 945 13.442657440901 19.153040694677 4 1 2 6 10
-11	14888 50 487 491 11.027633703779 11.027656370446 2 1 2 3 5
-12	14938 276 414 1006 9.769841435677 20.073421637694 10 1000 1000 10000 10000000
-13	15214 276 415 1007 9.769841435677 20.073421637694 10 1008 1008 10080 10160640
-14	15490 223 467 1009 10.928446163889 20.073421637694 8 40 1068 7516 7985968
-15	15713 223 467 1009 10.928446163889 20.073421637694 8 40 1068 7516 7985968
-16	15936 402 467 1009 10.928446163889 20.073421637694 16 0 1 8 8
-17	16338 223 467 1009 10.928446163889 20.073421637694 8 40 1068 7516 7985968
-18	16561 201 467 1009 10.928446163889 20.073421637694 8 0 0 0 0
-19	16762 223 467 1009 10.928446163889 20.073421637694 8 56 1084 7644 8228528
-20	16985 194 474 975 10.928469826462 19.432079267329 7 56 1084 6560 7053472
-21	17179 194 474 975 10.928469826462 19.432079267329 7 40 1068 6448 6845344
-22	17373 26 486 486 11.027633703779 11.027633703779 1 40 40 40 1600
-23	17399 26 486 486 11.027633703779 11.027633703779 1 40 40 40 1600
-24	17425 50 486 486 11.027633703779 11.027633703779 2 0 1 1 1
-25	17475 26 486 486 11.027633703779 11.027633703779 1 40 40 40 1600
-26	17501 25 486 486 11.027633703779 11.027633703779 1 0 0 0 0
-27	17526 26 486 486 11.027633703779 11.027633703779 1 56 56 56 3136
-28	17552 53 545 1062 12.151893649716 21.079741581343 2 40 40 80 3200
-29	17605 53 545 1062 12.151893649716 21.079741581343 2 40 40 80 3200
-30	17658 102 545 1062 12.151893649716 21.079741581343 4 0 1 2 2
-31	17760 53 545 1062 12.151893649716 21.079741581343 2 40 40 80 3200
-32	17813 51 545 1062 12.151893649716 21.079741581343 2 0 0 0 0
-33	17864 53 545 1062 12.151893649716 21.079741581343 2 56 56 112 6272
-34	17917 51 612 940 13.442657440901 19.15301802801 2 40 40 80 3200
-35	17968 51 612 940 13.442657440901 19.15301802801 2 40 40 80 3200
-36	18019 98 612 940 13.442657440901 19.15301802801 4 0 1 2 2
-37	18117 51 612 940 13.442657440901 19.15301802801 2 40 40 80 3200
-38	18168 49 612 940 13.442657440901 19.15301802801 2 0 0 0 0
-39	18217 51 612 940 13.442657440901 19.15301802801 2 56 56 112 6272
-40	18268 52 619 947 13.442681244615 19.153042148653 2 56 56 112 6272
-41	18320 52 619 947 13.442681244615 19.153042148653 2 40 40 80 3200
-42	18372 168 657 977 13.986906175466 19.432079267329 6 1008 1008 6048 6096384
-43	18540 150 657 977 13.986906175466 19.432079267329 6 1 6 21 91
-44	18690 168 658 978 13.986906175466 19.432079267329 6 1000 1000 6000 6000000
-45	18858 2596 658 978 0.1 19.4 194 0 160000 400000 44800000000
-46	21454 226 658 978 13.986906175466 19.432079267329 6 0.000366504991 0.000366802313 0.002199616648 8.0638563832381e-07
-47	21680 156 658 978 13.986906175466 19.432079267329 6 10 15 75 955
-vector 48 Fanet.host[0].app[0] throughput:vector ETV
-attr source throughput(packetReceived)
-attr title "throughput, vector"
-attr unit bps
-45	21974 266 1067 1067 19.5 21.079765163021 17 0 80000 80000 6400000000
-48	22240 3035 1067 1067 0.1 21.079765163021 211 0 0 0 0
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 22 Fanet.host[6].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 23 Fanet.host[6].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 24 Fanet.host[7].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 25 Fanet.host[7].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 26 Fanet.host[8].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 27 Fanet.host[8].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 28 Fanet.host[9].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 29 Fanet.host[9].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+0	9850 24 0 0 0 0 3 0 4 4 16
+1	9874 24 0 0 0 0 3 0 4 4 16
+2	9898 24 0 0 0 0 3 0 4 4 16
+3	9922 24 0 0 0 0 3 0 4 4 16
+4	9946 24 0 0 0 0 3 0 4 4 16
+5	9970 24 0 0 0 0 3 0 4 4 16
+6	9994 24 0 0 0 0 3 0 4 4 16
+7	10018 24 0 0 0 0 3 0 4 4 16
+8	10042 24 0 0 0 0 3 0 4 4 16
+9	10066 24 0 0 0 0 3 0 4 4 16
+10	10090 9 0 0 0 0 1 1 1 1 1
+11	10099 9 0 0 0 0 1 1 1 1 1
+12	10108 9 0 0 0 0 1 1 1 1 1
+13	10117 9 0 0 0 0 1 1 1 1 1
+14	10126 9 0 0 0 0 1 1 1 1 1
+15	10135 9 0 0 0 0 1 1 1 1 1
+16	10144 9 0 0 0 0 1 1 1 1 1
+17	10153 9 0 0 0 0 1 1 1 1 1
+18	10162 9 0 0 0 0 1 1 1 1 1
+19	10171 9 0 0 0 0 1 1 1 1 1
+20	10180 9 0 0 0 0 1 1 1 1 1
+21	10189 9 0 0 0 0 1 1 1 1 1
+22	10198 9 0 0 0 0 1 1 1 1 1
+23	10207 9 0 0 0 0 1 1 1 1 1
+24	10216 9 0 0 0 0 1 1 1 1 1
+25	10225 9 0 0 0 0 1 1 1 1 1
+26	10234 9 0 0 0 0 1 1 1 1 1
+27	10243 9 0 0 0 0 1 1 1 1 1
+28	10252 9 0 0 0 0 1 1 1 1 1
+29	10261 9 0 0 0 0 1 1 1 1 1
 

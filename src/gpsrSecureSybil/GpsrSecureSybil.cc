@@ -18,10 +18,7 @@
 //
 
 #include <algorithm>
-#include <string>
-#include <cstring>
-#include <sstream>
-#include <iostream>
+
 #include "inet/common/INETUtils.h"
 #include "inet/common/IProtocolRegistrationListener.h"
 #include "inet/common/ModuleAccess.h"
@@ -34,8 +31,7 @@
 #include "inet/networklayer/common/L3Tools.h"
 #include "inet/networklayer/common/NextHopAddressTag_m.h"
 #include "inet/networklayer/contract/IInterfaceTable.h"
-#include "inet/networklayer/common/L3AddressResolver.h"
-#include "GpsrSybil.h"
+#include "GpsrSecureSybil.h"
 
 #ifdef WITH_IPv4
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
@@ -53,18 +49,18 @@
 namespace inet {
 namespace sec {
 
-Define_Module(GpsrSybil);
+Define_Module(GpsrSecureSybil);
 
 static inline double determinant(double a1, double a2, double b1, double b2)
 {
     return a1 * b2 - a2 * b1;
 }
 
-GpsrSybil::GpsrSybil()
+GpsrSecureSybil::GpsrSecureSybil()
 {
 }
 
-GpsrSybil::~GpsrSybil()
+GpsrSecureSybil::~GpsrSecureSybil()
 {
     cancelAndDelete(beaconTimer);
     cancelAndDelete(purgeNeighborsTimer);
@@ -74,7 +70,7 @@ GpsrSybil::~GpsrSybil()
 // module interface
 //
 
-void GpsrSybil::initialize(int stage)
+void GpsrSecureSybil::initialize(int stage)
 {
     if (stage == INITSTAGE_ROUTING_PROTOCOLS)
         addressType = getSelfAddress().getAddressType();
@@ -82,7 +78,7 @@ void GpsrSybil::initialize(int stage)
     RoutingProtocolBase::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL) {
-        // GpsrSybil parameters
+        // GpsrSecureSybil parameters
         const char *planarizationModeString = par("planarizationMode");
         if (!strcmp(planarizationModeString, ""))
             planarizationMode = GPSR_NO_PLANARIZATION;
@@ -111,7 +107,6 @@ void GpsrSybil::initialize(int stage)
         positionByteLength = par("positionByteLength");
         // KLUDGE: implement position registry protocol
         globalPositionTable.clear();
-
     }
     else if (stage == INITSTAGE_ROUTING_PROTOCOLS) {
         registerService(Protocol::manet, nullptr, gate("ipIn"));
@@ -122,7 +117,7 @@ void GpsrSybil::initialize(int stage)
     }
 }
 
-void GpsrSybil::handleMessageWhenUp(cMessage *message)
+void GpsrSecureSybil::handleMessageWhenUp(cMessage *message)
 {
     if (message->isSelfMessage())
         processSelfMessage(message);
@@ -134,7 +129,7 @@ void GpsrSybil::handleMessageWhenUp(cMessage *message)
 // handling messages
 //
 
-void GpsrSybil::processSelfMessage(cMessage *message)
+void GpsrSecureSybil::processSelfMessage(cMessage *message)
 {
     if (message == beaconTimer)
         processBeaconTimer();
@@ -144,7 +139,7 @@ void GpsrSybil::processSelfMessage(cMessage *message)
         throw cRuntimeError("Unknown self message");
 }
 
-void GpsrSybil::processMessage(cMessage *message)
+void GpsrSecureSybil::processMessage(cMessage *message)
 {
     if (auto pk = dynamic_cast<Packet *>(message))
         processUdpPacket(pk);
@@ -156,32 +151,29 @@ void GpsrSybil::processMessage(cMessage *message)
 // beacon timers
 //
 
-void GpsrSybil::scheduleBeaconTimer()
+void GpsrSecureSybil::scheduleBeaconTimer()
 {
     EV_DEBUG << "Scheduling beacon timer" << endl;
     scheduleAt(simTime() + beaconInterval + uniform(-1, 1) * maxJitter, beaconTimer);
 }
 
-void GpsrSybil::processBeaconTimer()
+void GpsrSecureSybil::processBeaconTimer()
 {
     EV_DEBUG << "Processing beacon timer" << endl;
-    const char* selfAddressStr = getSelfAddress().toIpv4().str().c_str();
     const L3Address selfAddress = getSelfAddress();
     if (!selfAddress.isUnspecified()) {
-        sendBeacon(createBeaconSybil(("host["+std::to_string(rand() % 25) + "]").c_str()));
-        //sendBeacon(createBeaconSybil(("host["+std::to_string(2) + "]").c_str()));
+        sendBeacon(createBeacon());
         storeSelfPositionInGlobalRegistry();
     }
     scheduleBeaconTimer();
     schedulePurgeNeighborsTimer();
 }
 
-
 //
 // handling purge neighbors timers
 //
 
-void GpsrSybil::schedulePurgeNeighborsTimer()
+void GpsrSecureSybil::schedulePurgeNeighborsTimer()
 {
     EV_DEBUG << "Scheduling purge neighbors timer" << endl;
     simtime_t nextExpiration = getNextNeighborExpiration();
@@ -201,7 +193,7 @@ void GpsrSybil::schedulePurgeNeighborsTimer()
     }
 }
 
-void GpsrSybil::processPurgeNeighborsTimer()
+void GpsrSecureSybil::processPurgeNeighborsTimer()
 {
     EV_DEBUG << "Processing purge neighbors timer" << endl;
     purgeNeighbors();
@@ -212,12 +204,12 @@ void GpsrSybil::processPurgeNeighborsTimer()
 // handling UDP packets
 //
 
-void GpsrSybil::sendUdpPacket(Packet *packet)
+void GpsrSecureSybil::sendUdpPacket(Packet *packet)
 {
     send(packet, "ipOut");
 }
 
-void GpsrSybil::processUdpPacket(Packet *packet)
+void GpsrSecureSybil::processUdpPacket(Packet *packet)
 {
     packet->popAtFront<UdpHeader>();
     processBeacon(packet);
@@ -228,20 +220,19 @@ void GpsrSybil::processUdpPacket(Packet *packet)
 // handling beacons
 //
 
-const Ptr<GpsrBeacon> GpsrSybil::createBeaconSybil(const char* addressStr)
+const Ptr<GpsrBeacon> GpsrSecureSybil::createBeacon()
 {
     const auto& beacon = makeShared<GpsrBeacon>();
-    //beacon->setAddress(getSelfAddress());
-    beacon->setAddress(resolver.resolve(addressStr));
+    beacon->setAddress(getSelfAddress());
     beacon->setPosition(mobility->getCurrentPosition());
     beacon->setChunkLength(B(getSelfAddress().getAddressType()->getAddressByteLength() + positionByteLength));
     return beacon;
 }
 
-void GpsrSybil::sendBeacon(const Ptr<GpsrBeacon>& beacon)
+void GpsrSecureSybil::sendBeacon(const Ptr<GpsrBeacon>& beacon)
 {
-    EV_INFO << "Sending sybil beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
-    Packet *udpPacket = new Packet("GPSRSybilBeacon");
+    EV_INFO << "Sending beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
+    Packet *udpPacket = new Packet("GPSRBeacon");
     udpPacket->insertAtBack(beacon);
     auto udpHeader = makeShared<UdpHeader>();
     udpHeader->setSourcePort(GPSR_UDP_PORT);
@@ -257,18 +248,19 @@ void GpsrSybil::sendBeacon(const Ptr<GpsrBeacon>& beacon)
     sendUdpPacket(udpPacket);
 }
 
-void GpsrSybil::processBeacon(Packet *packet)
+void GpsrSecureSybil::processBeacon(Packet *packet)
 {
     const auto& beacon = packet->peekAtFront<GpsrBeacon>();
     EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
     neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
+    EV_INFO << "Processing neighborPositionTable: address = " << neighborPositionTable << endl;
     delete packet;
 }
 //
 // handling packets
 //
 
-GpsrOption* GpsrSybil::createGpsrOption(L3Address destination)
+GpsrOption* GpsrSecureSybil::createGpsrOption(L3Address destination)
 {
     GpsrOption *gpsrOption = new GpsrOption();
     gpsrOption->setRoutingMode(GPSR_GREEDY_ROUTING);
@@ -277,7 +269,7 @@ GpsrOption* GpsrSybil::createGpsrOption(L3Address destination)
     return gpsrOption;
 }
 
-int GpsrSybil::computeOptionLength(GpsrOption *option)
+int GpsrSecureSybil::computeOptionLength(GpsrOption *option)
 {
     // routingMode
     int routingModeBytes = 1;
@@ -295,7 +287,7 @@ int GpsrSybil::computeOptionLength(GpsrOption *option)
 // configuration
 //
 
-void GpsrSybil::configureInterfaces()
+void GpsrSecureSybil::configureInterfaces()
 {
     // join multicast groups
     cPatternMatcher interfaceMatcher(interfaces, false, true, false);
@@ -311,28 +303,30 @@ void GpsrSybil::configureInterfaces()
 //
 
 // KLUDGE: implement position registry protocol
-PositionTable GpsrSybil::globalPositionTable;
+PositionTable GpsrSecureSybil::globalPositionTable;
 
-Coord GpsrSybil::lookupPositionInGlobalRegistry(const L3Address& address) const
+Coord GpsrSecureSybil::lookupPositionInGlobalRegistry(const L3Address& address) const
 {
     // KLUDGE: implement position registry protocol
-    return globalPositionTable.getPosition(address);
+    Coord position = globalPositionTable.getPosition(address);
+    EV_INFO << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << position << address;
+    return position;
 }
 
-void GpsrSybil::storePositionInGlobalRegistry(const L3Address& address, const Coord& position) const
+void GpsrSecureSybil::storePositionInGlobalRegistry(const L3Address& address, const Coord& position) const
 {
     // KLUDGE: implement position registry protocol
     globalPositionTable.setPosition(address, position);
 }
 
-void GpsrSybil::storeSelfPositionInGlobalRegistry() const
+void GpsrSecureSybil::storeSelfPositionInGlobalRegistry() const
 {
     auto selfAddress = getSelfAddress();
     if (!selfAddress.isUnspecified())
         storePositionInGlobalRegistry(selfAddress, mobility->getCurrentPosition());
 }
 
-Coord GpsrSybil::computeIntersectionInsideLineSegments(Coord& begin1, Coord& end1, Coord& begin2, Coord& end2) const
+Coord GpsrSecureSybil::computeIntersectionInsideLineSegments(Coord& begin1, Coord& end1, Coord& begin2, Coord& end2) const
 {
     // NOTE: we must explicitly avoid computing the intersection points inside due to double instability
     if (begin1 == begin2 || begin1 == end2 || end1 == begin2 || end1 == end2)
@@ -359,7 +353,7 @@ Coord GpsrSybil::computeIntersectionInsideLineSegments(Coord& begin1, Coord& end
     }
 }
 
-Coord GpsrSybil::getNeighborPosition(const L3Address& address) const
+Coord GpsrSecureSybil::getNeighborPosition(const L3Address& address) const
 {
     return neighborPositionTable.getPosition(address);
 }
@@ -368,7 +362,7 @@ Coord GpsrSybil::getNeighborPosition(const L3Address& address) const
 // angle
 //
 
-double GpsrSybil::getVectorAngle(Coord vector) const
+double GpsrSecureSybil::getVectorAngle(Coord vector) const
 {
     ASSERT(vector != Coord::ZERO);
     double angle = atan2(-vector.y, vector.x);
@@ -377,7 +371,7 @@ double GpsrSybil::getVectorAngle(Coord vector) const
     return angle;
 }
 
-double GpsrSybil::getNeighborAngle(const L3Address& address) const
+double GpsrSecureSybil::getNeighborAngle(const L3Address& address) const
 {
     return getVectorAngle(getNeighborPosition(address) - mobility->getCurrentPosition());
 }
@@ -386,12 +380,12 @@ double GpsrSybil::getNeighborAngle(const L3Address& address) const
 // address
 //
 
-std::string GpsrSybil::getHostName() const
+std::string GpsrSecureSybil::getHostName() const
 {
     return host->getFullName();
 }
 
-L3Address GpsrSybil::getSelfAddress() const
+L3Address GpsrSecureSybil::getSelfAddress() const
 {
     //TODO choose self address based on a new 'interfaces' parameter
     L3Address ret = routingTable->getRouterIdAsGeneric();
@@ -411,7 +405,7 @@ L3Address GpsrSybil::getSelfAddress() const
     return ret;
 }
 
-L3Address GpsrSybil::getSenderNeighborAddress(const Ptr<const NetworkHeaderBase>& networkHeader) const
+L3Address GpsrSecureSybil::getSenderNeighborAddress(const Ptr<const NetworkHeaderBase>& networkHeader) const
 {
     const GpsrOption *gpsrOption = getGpsrOptionFromNetworkDatagram(networkHeader);
     return gpsrOption->getSenderAddress();
@@ -421,7 +415,7 @@ L3Address GpsrSybil::getSenderNeighborAddress(const Ptr<const NetworkHeaderBase>
 // neighbor
 //
 
-simtime_t GpsrSybil::getNextNeighborExpiration()
+simtime_t GpsrSecureSybil::getNextNeighborExpiration()
 {
     simtime_t oldestPosition = neighborPositionTable.getOldestPosition();
     if (oldestPosition == SimTime::getMaxTime())
@@ -430,12 +424,12 @@ simtime_t GpsrSybil::getNextNeighborExpiration()
         return oldestPosition + neighborValidityInterval;
 }
 
-void GpsrSybil::purgeNeighbors()
+void GpsrSecureSybil::purgeNeighbors()
 {
     neighborPositionTable.removeOldPositions(simTime() - neighborValidityInterval);
 }
 
-std::vector<L3Address> GpsrSybil::getPlanarNeighbors() const
+std::vector<L3Address> GpsrSecureSybil::getPlanarNeighbors() const
 {
     std::vector<L3Address> planarNeighbors;
     std::vector<L3Address> neighborAddresses = neighborPositionTable.getAddresses();
@@ -477,7 +471,7 @@ std::vector<L3Address> GpsrSybil::getPlanarNeighbors() const
     return planarNeighbors;
 }
 
-std::vector<L3Address> GpsrSybil::getPlanarNeighborsCounterClockwise(double startAngle) const
+std::vector<L3Address> GpsrSecureSybil::getPlanarNeighborsCounterClockwise(double startAngle) const
 {
     std::vector<L3Address> neighborAddresses = getPlanarNeighbors();
     std::sort(neighborAddresses.begin(), neighborAddresses.end(), [&](const L3Address& address1, const L3Address& address2) {
@@ -497,7 +491,7 @@ std::vector<L3Address> GpsrSybil::getPlanarNeighborsCounterClockwise(double star
 // next hop
 //
 
-L3Address GpsrSybil::findNextHop(const L3Address& destination, GpsrOption *gpsrOption)
+L3Address GpsrSecureSybil::findNextHop(const L3Address& destination, GpsrOption *gpsrOption)
 {
     switch (gpsrOption->getRoutingMode()) {
         case GPSR_GREEDY_ROUTING: return findGreedyRoutingNextHop(destination, gpsrOption);
@@ -506,7 +500,7 @@ L3Address GpsrSybil::findNextHop(const L3Address& destination, GpsrOption *gpsrO
     }
 }
 
-L3Address GpsrSybil::findGreedyRoutingNextHop(const L3Address& destination, GpsrOption *gpsrOption)
+L3Address GpsrSecureSybil::findGreedyRoutingNextHop(const L3Address& destination, GpsrOption *gpsrOption)
 {
     EV_DEBUG << "Finding next hop using greedy routing: destination = " << destination << endl;
     L3Address selfAddress = getSelfAddress();
@@ -538,7 +532,7 @@ L3Address GpsrSybil::findGreedyRoutingNextHop(const L3Address& destination, Gpsr
         return bestNeighbor;
 }
 
-L3Address GpsrSybil::findPerimeterRoutingNextHop(const L3Address& destination, GpsrOption *gpsrOption)
+L3Address GpsrSecureSybil::findPerimeterRoutingNextHop(const L3Address& destination, GpsrOption *gpsrOption)
 {
     EV_DEBUG << "Finding next hop using perimeter routing: destination = " << destination << endl;
     L3Address selfAddress = getSelfAddress();
@@ -601,7 +595,7 @@ L3Address GpsrSybil::findPerimeterRoutingNextHop(const L3Address& destination, G
 // routing
 //
 
-INetfilter::IHook::Result GpsrSybil::routeDatagram(Packet *datagram, GpsrOption *gpsrOption)
+INetfilter::IHook::Result GpsrSecureSybil::routeDatagram(Packet *datagram, GpsrOption *gpsrOption)
 {
     const auto& networkHeader = getNetworkProtocolHeader(datagram);
     const L3Address& source = networkHeader->getSourceAddress();
@@ -624,7 +618,7 @@ INetfilter::IHook::Result GpsrSybil::routeDatagram(Packet *datagram, GpsrOption 
     }
 }
 
-void GpsrSybil::setGpsrOptionOnNetworkDatagram(Packet *packet, const Ptr<const NetworkHeaderBase>& networkHeader, GpsrOption *gpsrOption)
+void GpsrSecureSybil::setGpsrOptionOnNetworkDatagram(Packet *packet, const Ptr<const NetworkHeaderBase>& networkHeader, GpsrOption *gpsrOption)
 {
     packet->trimFront();
 #ifdef WITH_IPv4
@@ -677,7 +671,7 @@ void GpsrSybil::setGpsrOptionOnNetworkDatagram(Packet *packet, const Ptr<const N
     }
 }
 
-const GpsrOption *GpsrSybil::findGpsrOptionInNetworkDatagram(const Ptr<const NetworkHeaderBase>& networkHeader) const
+const GpsrOption *GpsrSecureSybil::findGpsrOptionInNetworkDatagram(const Ptr<const NetworkHeaderBase>& networkHeader) const
 {
     const GpsrOption *gpsrOption = nullptr;
 
@@ -711,7 +705,7 @@ const GpsrOption *GpsrSybil::findGpsrOptionInNetworkDatagram(const Ptr<const Net
     return gpsrOption;
 }
 
-GpsrOption *GpsrSybil::findGpsrOptionInNetworkDatagramForUpdate(const Ptr<NetworkHeaderBase>& networkHeader)
+GpsrOption *GpsrSecureSybil::findGpsrOptionInNetworkDatagramForUpdate(const Ptr<NetworkHeaderBase>& networkHeader)
 {
     GpsrOption *gpsrOption = nullptr;
 
@@ -745,19 +739,19 @@ GpsrOption *GpsrSybil::findGpsrOptionInNetworkDatagramForUpdate(const Ptr<Networ
     return gpsrOption;
 }
 
-const GpsrOption *GpsrSybil::getGpsrOptionFromNetworkDatagram(const Ptr<const NetworkHeaderBase>& networkHeader) const
+const GpsrOption *GpsrSecureSybil::getGpsrOptionFromNetworkDatagram(const Ptr<const NetworkHeaderBase>& networkHeader) const
 {
     const GpsrOption *gpsrOption = findGpsrOptionInNetworkDatagram(networkHeader);
     if (gpsrOption == nullptr)
-        throw cRuntimeError("GpsrSybil option not found in datagram!");
+        throw cRuntimeError("GpsrSecureSybil option not found in datagram!");
     return gpsrOption;
 }
 
-GpsrOption *GpsrSybil::getGpsrOptionFromNetworkDatagramForUpdate(const Ptr<NetworkHeaderBase>& networkHeader)
+GpsrOption *GpsrSecureSybil::getGpsrOptionFromNetworkDatagramForUpdate(const Ptr<NetworkHeaderBase>& networkHeader)
 {
     GpsrOption *gpsrOption = findGpsrOptionInNetworkDatagramForUpdate(networkHeader);
     if (gpsrOption == nullptr)
-        throw cRuntimeError("GpsrSybil option not found in datagram!");
+        throw cRuntimeError("GpsrSecureSybil option not found in datagram!");
     return gpsrOption;
 }
 
@@ -765,7 +759,7 @@ GpsrOption *GpsrSybil::getGpsrOptionFromNetworkDatagramForUpdate(const Ptr<Netwo
 // netfilter
 //
 
-INetfilter::IHook::Result GpsrSybil::datagramPreRoutingHook(Packet *datagram)
+INetfilter::IHook::Result GpsrSecureSybil::datagramPreRoutingHook(Packet *datagram)
 {
     Enter_Method("datagramPreRoutingHook");
     const auto& networkHeader = getNetworkProtocolHeader(datagram);
@@ -779,7 +773,7 @@ INetfilter::IHook::Result GpsrSybil::datagramPreRoutingHook(Packet *datagram)
     }
 }
 
-INetfilter::IHook::Result GpsrSybil::datagramLocalOutHook(Packet *packet)
+INetfilter::IHook::Result GpsrSecureSybil::datagramLocalOutHook(Packet *packet)
 {
     Enter_Method("datagramLocalOutHook");
     const auto& networkHeader = getNetworkProtocolHeader(packet);
@@ -797,14 +791,14 @@ INetfilter::IHook::Result GpsrSybil::datagramLocalOutHook(Packet *packet)
 // lifecycle
 //
 
-void GpsrSybil::handleStartOperation(LifecycleOperation *operation)
+void GpsrSecureSybil::handleStartOperation(LifecycleOperation *operation)
 {
     configureInterfaces();
     storeSelfPositionInGlobalRegistry();
     scheduleBeaconTimer();
 }
 
-void GpsrSybil::handleStopOperation(LifecycleOperation *operation)
+void GpsrSecureSybil::handleStopOperation(LifecycleOperation *operation)
 {
     // TODO: send a beacon to remove ourself from peers neighbor position table
     neighborPositionTable.clear();
@@ -812,7 +806,7 @@ void GpsrSybil::handleStopOperation(LifecycleOperation *operation)
     cancelEvent(purgeNeighborsTimer);
 }
 
-void GpsrSybil::handleCrashOperation(LifecycleOperation *operation)
+void GpsrSecureSybil::handleCrashOperation(LifecycleOperation *operation)
 {
     neighborPositionTable.clear();
     cancelEvent(beaconTimer);
@@ -823,7 +817,7 @@ void GpsrSybil::handleCrashOperation(LifecycleOperation *operation)
 // notification
 //
 
-void GpsrSybil::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj, cObject *details)
+void GpsrSecureSybil::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj, cObject *details)
 {
     Enter_Method("receiveChangeNotification");
     if (signalID == linkBrokenSignal) {
