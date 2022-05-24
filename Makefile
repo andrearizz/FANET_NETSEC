@@ -1,5 +1,6 @@
 all: checkmakefiles
 	cd src && $(MAKE)
+	
 
 clean: checkmakefiles
 	cd src && $(MAKE) clean
@@ -21,3 +22,5 @@ checkmakefiles:
 	echo; \
 	exit 1; \
 	fi
+
+	

@@ -2,7 +2,7 @@
 # OMNeT++/OMNEST Makefile for progetto2
 #
 # This file was generated with the command:
-#  opp_makemake -f --deep -O out -KINET4_PROJ=../../inet4 -DINET_IMPORT -I. -I$$\(INET4_PROJ\)/src -L$$\(INET4_PROJ\)/src -lINET$$\(D\)
+#  opp_makemake -f --deep -O out -KINET4_PROJ=../../inet4 -DINET_IMPORT -I. -I$$\(INET4_PROJ\)/src -L$$\(INET4_PROJ\)/src -lcryptopp -lINET$$\(D\)
 #
 
 # Name of target to be created (-o option)
@@ -26,7 +26,7 @@ INCLUDE_PATH = -I. -I$(INET4_PROJ)/src
 EXTRA_OBJS =
 
 # Additional libraries (-L, -l options)
-LIBS = $(LDFLAG_LIBPATH)$(INET4_PROJ)/src  -lINET$(D)
+LIBS = $(LDFLAG_LIBPATH)$(INET4_PROJ)/src  -lcryptopp -lINET$(D)
 
 # Output directory
 PROJECT_OUTPUT_DIR = ../out
@@ -34,11 +34,18 @@ PROJECTRELATIVE_PATH = src
 O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc, .msg and .sm files
-OBJS = $O/gpsr/Gpsr.o $O/gpsr/PositionTable.o $O/gpsrSecureSybil/GpsrSecureSybil.o $O/gpsrSybil/GpsrSybil.o $O/gpsr/Gpsr_m.o
+OBJS = \
+    $O/gpsr/Gpsr.o \
+    $O/gpsr/PositionTable.o \
+    $O/gpsrSecureSybil/GpsrSecureSybil.o \
+    $O/gpsrSybil/GpsrSybil.o \
+    $O/gpsr/Gpsr_m.o \
+    $O/gpsrSecureSybil/Gpsr_m.o
 
 # Message files
 MSGFILES = \
-    gpsr/Gpsr.msg
+    gpsr/Gpsr.msg \
+    gpsrSecureSybil/Gpsr.msg
 
 # SM files
 SMFILES =

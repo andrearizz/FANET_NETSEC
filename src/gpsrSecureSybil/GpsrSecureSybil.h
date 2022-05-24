@@ -28,9 +28,19 @@
 #include "inet/networklayer/contract/INetfilter.h"
 #include "inet/networklayer/contract/IRoutingTable.h"
 #include "inet/routing/base/RoutingProtocolBase.h"
-#include "gpsr/Gpsr_m.h"
 #include "gpsr/PositionTable.h"
 #include "inet/transportlayer/udp/UdpHeader_m.h"
+
+#include "cryptopp/rsa.h"
+#include "cryptopp/osrng.h"
+#include "cryptopp/files.h"
+#include "cryptopp/queue.h"
+#include "cryptopp/base64.h"
+
+#include "Gpsr_m.h"
+
+using namespace CryptoPP;
+using namespace std;
 
 namespace inet {
 namespace sec {
@@ -66,7 +76,6 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
     IRoutingTable *routingTable = nullptr;    // TODO: delete when necessary functions are moved to interface table
     INetfilter *networkProtocol = nullptr;
     static PositionTable globalPositionTable;    // KLUDGE: implement position registry protocol
-
     // packet size
     int positionByteLength = -1;
 
@@ -79,11 +88,16 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
     GpsrSecureSybil();
     virtual ~GpsrSecureSybil();
 
+    void generatePrivateKey(CryptoPP::RSA::PrivateKey privateKey);
+    void generatePublicKey(CryptoPP::RSA::PrivateKey privateKey);
+    string sign(string content);
+
   protected:
     // module interface
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
     void initialize(int stage) override;
     void handleMessageWhenUp(cMessage *message) override;
+
 
   private:
     // handling messages

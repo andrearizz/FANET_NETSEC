@@ -1,0 +1,956 @@
+version 2
+run SecureSybil-0-20220524-20:07:51-18407
+attr configname SecureSybil
+attr datetime 20220524-20:07:51
+attr experiment SecureSybil
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network FanetSecureSybil
+attr processid 18407
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param *.attacker[*].mobility.typename "\"MassMobility\""
+param *.attacker[*].mobility.changeInterval 1s
+param *.attacker[*].mobility.initialMovementHeading "uniform(0deg, 360deg)"
+param *.attacker[*].mobility.initialMovementElevation "uniform(-90deg, 90deg)"
+param *.attacker[*].mobility.angleDelta uniform(-10deg,10deg)
+param *.attacker[*].mobility.rotationAxisAngle uniform(-10deg,10deg)
+param *.attacker[*].mobility.speed uniform(10mps,20mps)
+param *.attacker[*].mobility.faceForward false
+param *.attacker*.wlan[0].typename "\"AckingWirelessInterface\""
+param *.attacker*.wlan[0].radio.transmitter.communicationRange 400m
+param *.attacker*.wlan[0].radio.displayCommunicationRange true
+param *.host[0].numApps 1
+param *.host[0].app[0].typename "\"UdpBasicApp\""
+param *.host[0].app[0].startTime uniform(1s,5s)
+param *.host[0].app[0].destAddresses "\"host[1]\""
+param *.host[0].app[0].destPort 5000
+param *.host[0].app[0].messageLength 1000B
+param *.host[0].app[0].sendInterval exponential(1s)
+param *.host[0].app[0].packetName "\"UDPdata\""
+param *.host[1].numApps 1
+param *.host[1].app[0].typename "\"UdpSink\""
+param *.host[1].app[0].localPort 5000
+param **.wlan[*].bitrate 24Mbps
+param *.configurator.addStaticRoutes false
+param **.netmaskRoutes "\"\""
+param **.arp.typename "\"GlobalArp\""
+param *.host*.wlan[0].typename "\"AckingWirelessInterface\""
+param *.host*.wlan[0].radio.transmitter.communicationRange 400m
+param *.host*.wlan[0].radio.displayCommunicationRange true
+param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
+param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneImage "\"showcases/desert\""
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneImageSize 5000m
+param *.visualizer.osgVisualizer.sceneVisualizer.axisLength 1000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinX -2000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinY -2000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinZ 0m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxX 3000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxY 3000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxZ 1000m
+param *.visualizer.osgVisualizer.networkNodeVisualizer.displayModuleName false
+param *.visualizer.*.mobilityVisualizer.displayMobility true
+param *.visualizer.*.mobilityVisualizer.displayPositions true
+param *.visualizer.*.mobilityVisualizer.displayOrientations true
+param *.visualizer.*.mobilityVisualizer.displayVelocities true
+param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
+param *.visualizer.*.mobilityVisualizer.animationSpeed 1
+param *.visualizer.*.packetDropVisualizer.displayPacketDrops false
+param *.visualizer.*.packetDropVisualizer.labelFormat "\"%n/reason: %r\""
+param *.visualizer.*.packetDropVisualizer.fadeOutTime 10s
+param **.constraintAreaMinX 0m
+param **.constraintAreaMinY 0m
+param **.constraintAreaMinZ 0m
+param **.constraintAreaMaxX 2500m
+param **.constraintAreaMaxY 2000m
+param **.constraintAreaMaxZ 200m
+param *.visualizer.*.mediumVisualizer.signalPropagationAnimationSpeed 500/3e8
+param *.visualizer.*.mediumVisualizer.signalTransmissionAnimationSpeed 50000/3e8
+param *.visualizer.*.mediumVisualizer.displaySignals false
+param *.visualizer.*.mediumVisualizer.displayTransmissions false
+param *.visualizer.*.mediumVisualizer.displayReceptions false
+param *.visualizer.*.mediumVisualizer.transmissionPlacementPriority 10
+param *.visualizer.*.mediumVisualizer.receptionPlacementPriority 10
+param *.visualizer.*.mediumVisualizer.displaySignals false
+param *.visualizer.*.mediumVisualizer.signalFadingDistance 50m
+param *.visualizer.*.mediumVisualizer.signalRingSize 50m
+param *.visualizer.osgVisualizer.mediumVisualizer.signalShape "\"both\""
+param *.host[*].osgModel "\"3d/drone.ive.100.scale.0,0,90.rot\""
+param *.host[*].mobility.typename "\"MassMobility\""
+param *.host[*].mobility.changeInterval 1s
+param *.host[*].mobility.initialMovementHeading "uniform(0deg, 360deg)"
+param *.host[*].mobility.initialMovementElevation "uniform(-90deg, 90deg)"
+param *.host[*].mobility.angleDelta uniform(-10deg,10deg)
+param *.host[*].mobility.rotationAxisAngle uniform(-10deg,10deg)
+param *.host[*].mobility.speed uniform(10mps,20mps)
+param *.host[*].mobility.faceForward false
+
+vector 0 FanetSecureSybil.host[0].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 1 FanetSecureSybil.host[1].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 2 FanetSecureSybil.host[0].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 3 FanetSecureSybil.host[0].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 4 FanetSecureSybil.host[1].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 5 FanetSecureSybil.host[1].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 6 FanetSecureSybil.host[0].app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 7 FanetSecureSybil.host[0].udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 8 FanetSecureSybil.host[0].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 9 FanetSecureSybil.host[0].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 10 FanetSecureSybil.host[0].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 11 FanetSecureSybil.host[0].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 12 FanetSecureSybil.host[0].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 13 FanetSecureSybil.host[0].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 14 FanetSecureSybil.host[1].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 15 FanetSecureSybil.host[1].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 16 FanetSecureSybil.host[1].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 17 FanetSecureSybil.host[1].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 18 FanetSecureSybil.host[1].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 19 FanetSecureSybil.host[1].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+0	0	0	0
+0	0	0	0
+0	0	0	4
+1	0	0	0
+1	0	0	0
+1	0	0	4
+2	0	0	1
+3	0	0	1
+3	247	10.928446163889	2
+3	249	10.928468830556	1
+3	441	18.655009109061	2
+3	443	18.655031775728	1
+3	788	33.226560652256	2
+4	0	0	1
+5	0	0	1
+5	279	12.151893649716	2
+5	281	12.151916316383	1
+5	501	20.986308862921	2
+5	503	20.986331529588	1
+6	66	3.195254009217	1000
+6	90	4.118477140688	1000
+6	109	4.90567828067	1000
+6	122	5.45672676734	1000
+6	145	6.494886068004	1000
+6	160	7.070405264887	1000
+6	207	9.293929686923	1000
+6	294	12.608841966851	1000
+6	327	14.177738084474	1000
+6	346	14.930412197787	1000
+6	365	15.769845050687	1000
+6	420	18.368099136536	1000
+6	425	18.441784492001	1000
+6	430	18.532945518125	1000
+6	433	18.553371106524	1000
+6	480	20.340858769963	1000
+6	485	20.492089623628	1000
+6	538	22.53298183954	1000
+6	573	24.138221396602	1000
+6	588	24.757150856229	1000
+6	621	26.273686830219	1000
+6	626	26.399561239657	1000
+6	651	27.420993114006	1000
+6	656	27.575722794506	1000
+6	717	30.470143272493	1000
+6	736	31.207970564249	1000
+6	749	31.743536284477	1000
+6	758	32.05081663663	1000
+7	68	3.195254009217	1008
+7	91	4.118477140688	1008
+7	110	4.90567828067	1008
+7	123	5.45672676734	1008
+7	146	6.494886068004	1008
+7	161	7.070405264887	1008
+7	208	9.293929686923	1008
+7	295	12.608841966851	1008
+7	328	14.177738084474	1008
+7	347	14.930412197787	1008
+7	366	15.769845050687	1008
+7	421	18.368099136536	1008
+7	426	18.441784492001	1008
+7	431	18.532945518125	1008
+7	434	18.553371106524	1008
+7	481	20.340858769963	1008
+7	486	20.492089623628	1008
+7	539	22.53298183954	1008
+7	574	24.138221396602	1008
+7	589	24.757150856229	1008
+7	622	26.273686830219	1008
+7	627	26.399561239657	1008
+7	652	27.420993114006	1008
+7	657	27.575722794506	1008
+7	718	30.470143272493	1008
+7	737	31.207970564249	1008
+7	750	31.743536284477	1008
+7	759	32.05081663663	1008
+8	246	10.928446163889	40
+8	440	18.655009109061	40
+8	787	33.226560652256	40
+9	246	10.928446163889	40
+9	440	18.655009109061	40
+9	787	33.226560652256	40
+10	246	10.928446163889	1
+10	246	10.928446163889	0
+10	440	18.655009109061	1
+10	440	18.655009109061	0
+10	787	33.226560652256	1
+10	787	33.226560652256	0
+11	246	10.928446163889	40
+11	440	18.655009109061	40
+11	787	33.226560652256	40
+12	246	10.928446163889	0
+12	440	18.655009109061	0
+12	787	33.226560652256	0
+13	246	10.928446163889	56
+13	440	18.655009109061	56
+13	787	33.226560652256	56
+14	278	12.151893649716	40
+14	500	20.986308862921	40
+15	278	12.151893649716	40
+15	500	20.986308862921	40
+16	278	12.151893649716	1
+16	278	12.151893649716	0
+16	500	20.986308862921	1
+16	500	20.986308862921	0
+17	278	12.151893649716	40
+17	500	20.986308862921	40
+18	278	12.151893649716	0
+18	500	20.986308862921	0
+19	278	12.151893649716	56
+19	500	20.986308862921	56
+vector 20 FanetSecureSybil.host[0].app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+vector 21 FanetSecureSybil.host[1].app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+20	789	0.1	0
+20	789	0.2	0
+20	789	0.3	0
+20	789	0.4	0
+20	789	0.5	0
+20	789	0.6	0
+20	789	0.7	0
+20	789	0.8	0
+20	789	0.9	0
+20	789	1	0
+20	789	1.1	0
+20	789	1.2	0
+20	789	1.3	0
+20	789	1.4	0
+20	789	1.5	0
+20	789	1.6	0
+20	789	1.7	0
+20	789	1.8	0
+20	789	1.9	0
+20	789	2	0
+20	789	2.1	0
+20	789	2.2	0
+20	789	2.3	0
+20	789	2.4	0
+20	789	2.5	0
+20	789	2.6	0
+20	789	2.7	0
+20	789	2.8	0
+20	789	2.9	0
+20	789	3	0
+20	789	3.1	0
+20	789	3.2	0
+20	789	3.3	0
+20	789	3.4	0
+20	789	3.5	0
+20	789	3.6	0
+20	789	3.7	0
+20	789	3.8	0
+20	789	3.9	0
+20	789	4	0
+20	789	4.1	0
+20	789	4.2	0
+20	789	4.3	0
+20	789	4.4	0
+20	789	4.5	0
+20	789	4.6	0
+20	789	4.7	0
+20	789	4.8	0
+20	789	4.9	0
+20	789	5	0
+20	789	5.1	0
+20	789	5.2	0
+20	789	5.3	0
+20	789	5.4	0
+20	789	5.5	0
+20	789	5.6	0
+20	789	5.7	0
+20	789	5.8	0
+20	789	5.9	0
+20	789	6	0
+20	789	6.1	0
+20	789	6.2	0
+20	789	6.3	0
+20	789	6.4	0
+20	789	6.5	0
+20	789	6.6	0
+20	789	6.7	0
+20	789	6.8	0
+20	789	6.9	0
+20	789	7	0
+20	789	7.1	0
+20	789	7.2	0
+20	789	7.3	0
+20	789	7.4	0
+20	789	7.5	0
+20	789	7.6	0
+20	789	7.7	0
+20	789	7.8	0
+20	789	7.9	0
+20	789	8	0
+20	789	8.1	0
+20	789	8.2	0
+20	789	8.3	0
+20	789	8.4	0
+20	789	8.5	0
+20	789	8.6	0
+20	789	8.7	0
+20	789	8.8	0
+20	789	8.9	0
+20	789	9	0
+20	789	9.1	0
+20	789	9.2	0
+20	789	9.3	0
+20	789	9.4	0
+20	789	9.5	0
+20	789	9.6	0
+20	789	9.7	0
+20	789	9.8	0
+20	789	9.9	0
+20	789	10	0
+20	789	10.1	0
+20	789	10.2	0
+20	789	10.3	0
+20	789	10.4	0
+20	789	10.5	0
+20	789	10.6	0
+20	789	10.7	0
+20	789	10.8	0
+20	789	10.9	0
+20	789	11	0
+20	789	11.1	0
+20	789	11.2	0
+20	789	11.3	0
+20	789	11.4	0
+20	789	11.5	0
+20	789	11.6	0
+20	789	11.7	0
+20	789	11.8	0
+20	789	11.9	0
+20	789	12	0
+20	789	12.1	0
+20	789	12.2	0
+20	789	12.3	0
+20	789	12.4	0
+20	789	12.5	0
+20	789	12.6	0
+20	789	12.7	0
+20	789	12.8	0
+20	789	12.9	0
+20	789	13	0
+20	789	13.1	0
+20	789	13.2	0
+20	789	13.3	0
+20	789	13.4	0
+20	789	13.5	0
+20	789	13.6	0
+20	789	13.7	0
+20	789	13.8	0
+20	789	13.9	0
+20	789	14	0
+20	789	14.1	0
+20	789	14.2	0
+20	789	14.3	0
+20	789	14.4	0
+20	789	14.5	0
+20	789	14.6	0
+20	789	14.7	0
+20	789	14.8	0
+20	789	14.9	0
+20	789	15	0
+20	789	15.1	0
+20	789	15.2	0
+20	789	15.3	0
+20	789	15.4	0
+20	789	15.5	0
+20	789	15.6	0
+20	789	15.7	0
+20	789	15.8	0
+20	789	15.9	0
+20	789	16	0
+20	789	16.1	0
+20	789	16.2	0
+20	789	16.3	0
+20	789	16.4	0
+20	789	16.5	0
+20	789	16.6	0
+20	789	16.7	0
+20	789	16.8	0
+20	789	16.9	0
+20	789	17	0
+20	789	17.1	0
+20	789	17.2	0
+20	789	17.3	0
+20	789	17.4	0
+20	789	17.5	0
+20	789	17.6	0
+20	789	17.7	0
+20	789	17.8	0
+20	789	17.9	0
+20	789	18	0
+20	789	18.1	0
+20	789	18.2	0
+20	789	18.3	0
+20	789	18.4	0
+20	789	18.5	0
+20	789	18.6	0
+20	789	18.7	0
+20	789	18.8	0
+20	789	18.9	0
+20	789	19	0
+20	789	19.1	0
+20	789	19.2	0
+20	789	19.3	0
+20	789	19.4	0
+20	789	19.5	0
+20	789	19.6	0
+20	789	19.7	0
+20	789	19.8	0
+20	789	19.9	0
+20	789	20	0
+20	789	20.1	0
+20	789	20.2	0
+20	789	20.3	0
+20	789	20.4	0
+20	789	20.5	0
+20	789	20.6	0
+20	789	20.7	0
+20	789	20.8	0
+20	789	20.9	0
+20	789	21	0
+20	789	21.1	0
+20	789	21.2	0
+20	789	21.3	0
+20	789	21.4	0
+20	789	21.5	0
+20	789	21.6	0
+20	789	21.7	0
+20	789	21.8	0
+20	789	21.9	0
+20	789	22	0
+20	789	22.1	0
+20	789	22.2	0
+20	789	22.3	0
+20	789	22.4	0
+20	789	22.5	0
+20	789	22.6	0
+20	789	22.7	0
+20	789	22.8	0
+20	789	22.9	0
+20	789	23	0
+20	789	23.1	0
+20	789	23.2	0
+20	789	23.3	0
+20	789	23.4	0
+20	789	23.5	0
+20	789	23.6	0
+20	789	23.7	0
+20	789	23.8	0
+20	789	23.9	0
+20	789	24	0
+20	789	24.1	0
+20	789	24.2	0
+20	789	24.3	0
+20	789	24.4	0
+20	789	24.5	0
+20	789	24.6	0
+20	789	24.7	0
+20	789	24.8	0
+20	789	24.9	0
+20	789	25	0
+20	789	25.1	0
+20	789	25.2	0
+20	789	25.3	0
+20	789	25.4	0
+20	789	25.5	0
+20	789	25.6	0
+20	789	25.7	0
+20	789	25.8	0
+20	789	25.9	0
+20	789	26	0
+20	789	26.1	0
+20	789	26.2	0
+20	789	26.3	0
+20	789	26.4	0
+20	789	26.5	0
+20	789	26.6	0
+20	789	26.7	0
+20	789	26.8	0
+20	789	26.9	0
+20	789	27	0
+20	789	27.1	0
+20	789	27.2	0
+20	789	27.3	0
+20	789	27.4	0
+20	789	27.5	0
+20	789	27.6	0
+20	789	27.7	0
+20	789	27.8	0
+20	789	27.9	0
+20	789	28	0
+20	789	28.1	0
+20	789	28.2	0
+20	789	28.3	0
+20	789	28.4	0
+20	789	28.5	0
+20	789	28.6	0
+20	789	28.7	0
+20	789	28.8	0
+20	789	28.9	0
+20	789	29	0
+20	789	29.1	0
+20	789	29.2	0
+20	789	29.3	0
+20	789	29.4	0
+20	789	29.5	0
+20	789	29.6	0
+20	789	29.7	0
+20	789	29.8	0
+20	789	29.9	0
+20	789	30	0
+20	789	30.1	0
+20	789	30.2	0
+20	789	30.3	0
+20	789	30.4	0
+20	789	30.5	0
+20	789	30.6	0
+20	789	30.7	0
+20	789	30.8	0
+20	789	30.9	0
+20	789	31	0
+20	789	31.1	0
+20	789	31.2	0
+20	789	31.3	0
+20	789	31.4	0
+20	789	31.5	0
+20	789	31.6	0
+20	789	31.7	0
+20	789	31.8	0
+20	789	31.9	0
+20	789	32	0
+20	789	32.1	0
+20	789	32.2	0
+20	789	32.3	0
+20	789	32.4	0
+20	789	32.5	0
+20	789	32.6	0
+20	789	32.7	0
+20	789	32.8	0
+20	789	32.9	0
+20	789	33	0
+20	789	33.1	0
+20	789	33.2	0
+20	789	33.226574400852	0
+21	789	0.1	0
+21	789	0.2	0
+21	789	0.3	0
+21	789	0.4	0
+21	789	0.5	0
+21	789	0.6	0
+21	789	0.7	0
+21	789	0.8	0
+21	789	0.9	0
+21	789	1	0
+21	789	1.1	0
+21	789	1.2	0
+21	789	1.3	0
+21	789	1.4	0
+21	789	1.5	0
+21	789	1.6	0
+21	789	1.7	0
+21	789	1.8	0
+21	789	1.9	0
+21	789	2	0
+21	789	2.1	0
+21	789	2.2	0
+21	789	2.3	0
+21	789	2.4	0
+21	789	2.5	0
+21	789	2.6	0
+21	789	2.7	0
+21	789	2.8	0
+21	789	2.9	0
+21	789	3	0
+21	789	3.1	0
+21	789	3.2	0
+21	789	3.3	0
+21	789	3.4	0
+21	789	3.5	0
+21	789	3.6	0
+21	789	3.7	0
+21	789	3.8	0
+21	789	3.9	0
+21	789	4	0
+21	789	4.1	0
+21	789	4.2	0
+21	789	4.3	0
+21	789	4.4	0
+21	789	4.5	0
+21	789	4.6	0
+21	789	4.7	0
+21	789	4.8	0
+21	789	4.9	0
+21	789	5	0
+21	789	5.1	0
+21	789	5.2	0
+21	789	5.3	0
+21	789	5.4	0
+21	789	5.5	0
+21	789	5.6	0
+21	789	5.7	0
+21	789	5.8	0
+21	789	5.9	0
+21	789	6	0
+21	789	6.1	0
+21	789	6.2	0
+21	789	6.3	0
+21	789	6.4	0
+21	789	6.5	0
+21	789	6.6	0
+21	789	6.7	0
+21	789	6.8	0
+21	789	6.9	0
+21	789	7	0
+21	789	7.1	0
+21	789	7.2	0
+21	789	7.3	0
+21	789	7.4	0
+21	789	7.5	0
+21	789	7.6	0
+21	789	7.7	0
+21	789	7.8	0
+21	789	7.9	0
+21	789	8	0
+21	789	8.1	0
+21	789	8.2	0
+21	789	8.3	0
+21	789	8.4	0
+21	789	8.5	0
+21	789	8.6	0
+21	789	8.7	0
+21	789	8.8	0
+21	789	8.9	0
+21	789	9	0
+21	789	9.1	0
+21	789	9.2	0
+21	789	9.3	0
+21	789	9.4	0
+21	789	9.5	0
+21	789	9.6	0
+21	789	9.7	0
+21	789	9.8	0
+21	789	9.9	0
+21	789	10	0
+21	789	10.1	0
+21	789	10.2	0
+21	789	10.3	0
+21	789	10.4	0
+21	789	10.5	0
+21	789	10.6	0
+21	789	10.7	0
+21	789	10.8	0
+21	789	10.9	0
+21	789	11	0
+21	789	11.1	0
+21	789	11.2	0
+21	789	11.3	0
+21	789	11.4	0
+21	789	11.5	0
+21	789	11.6	0
+21	789	11.7	0
+21	789	11.8	0
+21	789	11.9	0
+21	789	12	0
+21	789	12.1	0
+21	789	12.2	0
+21	789	12.3	0
+21	789	12.4	0
+21	789	12.5	0
+21	789	12.6	0
+21	789	12.7	0
+21	789	12.8	0
+21	789	12.9	0
+21	789	13	0
+21	789	13.1	0
+21	789	13.2	0
+21	789	13.3	0
+21	789	13.4	0
+21	789	13.5	0
+21	789	13.6	0
+21	789	13.7	0
+21	789	13.8	0
+21	789	13.9	0
+21	789	14	0
+21	789	14.1	0
+21	789	14.2	0
+21	789	14.3	0
+21	789	14.4	0
+21	789	14.5	0
+21	789	14.6	0
+21	789	14.7	0
+21	789	14.8	0
+21	789	14.9	0
+21	789	15	0
+21	789	15.1	0
+21	789	15.2	0
+21	789	15.3	0
+21	789	15.4	0
+21	789	15.5	0
+21	789	15.6	0
+21	789	15.7	0
+21	789	15.8	0
+21	789	15.9	0
+21	789	16	0
+21	789	16.1	0
+21	789	16.2	0
+21	789	16.3	0
+21	789	16.4	0
+21	789	16.5	0
+21	789	16.6	0
+21	789	16.7	0
+21	789	16.8	0
+21	789	16.9	0
+21	789	17	0
+21	789	17.1	0
+21	789	17.2	0
+21	789	17.3	0
+21	789	17.4	0
+21	789	17.5	0
+21	789	17.6	0
+21	789	17.7	0
+21	789	17.8	0
+21	789	17.9	0
+21	789	18	0
+21	789	18.1	0
+21	789	18.2	0
+21	789	18.3	0
+21	789	18.4	0
+21	789	18.5	0
+21	789	18.6	0
+21	789	18.7	0
+21	789	18.8	0
+21	789	18.9	0
+21	789	19	0
+21	789	19.1	0
+21	789	19.2	0
+21	789	19.3	0
+21	789	19.4	0
+21	789	19.5	0
+21	789	19.6	0
+21	789	19.7	0
+21	789	19.8	0
+21	789	19.9	0
+21	789	20	0
+21	789	20.1	0
+21	789	20.2	0
+21	789	20.3	0
+21	789	20.4	0
+21	789	20.5	0
+21	789	20.6	0
+21	789	20.7	0
+21	789	20.8	0
+21	789	20.9	0
+21	789	21	0
+21	789	21.1	0
+21	789	21.2	0
+21	789	21.3	0
+21	789	21.4	0
+21	789	21.5	0
+21	789	21.6	0
+21	789	21.7	0
+21	789	21.8	0
+21	789	21.9	0
+21	789	22	0
+21	789	22.1	0
+21	789	22.2	0
+21	789	22.3	0
+21	789	22.4	0
+21	789	22.5	0
+21	789	22.6	0
+21	789	22.7	0
+21	789	22.8	0
+21	789	22.9	0
+21	789	23	0
+21	789	23.1	0
+21	789	23.2	0
+21	789	23.3	0
+21	789	23.4	0
+21	789	23.5	0
+21	789	23.6	0
+21	789	23.7	0
+21	789	23.8	0
+21	789	23.9	0
+21	789	24	0
+21	789	24.1	0
+21	789	24.2	0
+21	789	24.3	0
+21	789	24.4	0
+21	789	24.5	0
+21	789	24.6	0
+21	789	24.7	0
+21	789	24.8	0
+21	789	24.9	0
+21	789	25	0
+21	789	25.1	0
+21	789	25.2	0
+21	789	25.3	0
+21	789	25.4	0
+21	789	25.5	0
+21	789	25.6	0
+21	789	25.7	0
+21	789	25.8	0
+21	789	25.9	0
+21	789	26	0
+21	789	26.1	0
+21	789	26.2	0
+21	789	26.3	0
+21	789	26.4	0
+21	789	26.5	0
+21	789	26.6	0
+21	789	26.7	0
+21	789	26.8	0
+21	789	26.9	0
+21	789	27	0
+21	789	27.1	0
+21	789	27.2	0
+21	789	27.3	0
+21	789	27.4	0
+21	789	27.5	0
+21	789	27.6	0
+21	789	27.7	0
+21	789	27.8	0
+21	789	27.9	0
+21	789	28	0
+21	789	28.1	0
+21	789	28.2	0
+21	789	28.3	0
+21	789	28.4	0
+21	789	28.5	0
+21	789	28.6	0
+21	789	28.7	0
+21	789	28.8	0
+21	789	28.9	0
+21	789	29	0
+21	789	29.1	0
+21	789	29.2	0
+21	789	29.3	0
+21	789	29.4	0
+21	789	29.5	0
+21	789	29.6	0
+21	789	29.7	0
+21	789	29.8	0
+21	789	29.9	0
+21	789	30	0
+21	789	30.1	0
+21	789	30.2	0
+21	789	30.3	0
+21	789	30.4	0
+21	789	30.5	0
+21	789	30.6	0
+21	789	30.7	0
+21	789	30.8	0
+21	789	30.9	0
+21	789	31	0
+21	789	31.1	0
+21	789	31.2	0
+21	789	31.3	0
+21	789	31.4	0
+21	789	31.5	0
+21	789	31.6	0
+21	789	31.7	0
+21	789	31.8	0
+21	789	31.9	0
+21	789	32	0
+21	789	32.1	0
+21	789	32.2	0
+21	789	32.3	0
+21	789	32.4	0
+21	789	32.5	0
+21	789	32.6	0
+21	789	32.7	0
+21	789	32.8	0
+21	789	32.9	0
+21	789	33	0
+21	789	33.1	0
+21	789	33.2	0
+21	789	33.226574400852	0
+

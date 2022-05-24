@@ -71,13 +71,60 @@
   ../../inet4/src/inet/networklayer/contract/IRoute.h \
   ../../inet4/src/inet/routing/base/RoutingProtocolBase.h \
   ../../inet4/src/inet/common/lifecycle/OperationalBase.h \
-  ../../inet4/src/inet/common/lifecycle/ILifecycle.h gpsr/Gpsr_m.h \
-  ../../inet4/src/inet/common/TlvOptions_m.h \
-  ../../inet4/src/inet/common/geometry/Geometry_m.h gpsr/GpsrDefs.h \
+  ../../inet4/src/inet/common/lifecycle/ILifecycle.h \
   gpsr/PositionTable.h \
   ../../inet4/src/inet/transportlayer/udp/UdpHeader_m.h \
   ../../inet4/src/inet/transportlayer/common/CrcMode_m.h \
   ../../inet4/src/inet/transportlayer/contract/TransportHeaderBase_m.h \
+  /usr/local/include/cryptopp/rsa.h \
+  /usr/local/include/cryptopp/cryptlib.h \
+  /usr/local/include/cryptopp/config.h \
+  /usr/local/include/cryptopp/config_align.h \
+  /usr/local/include/cryptopp/config_asm.h \
+  /usr/local/include/cryptopp/config_os.h \
+  /usr/local/include/cryptopp/config_ver.h \
+  /usr/local/include/cryptopp/config_cpu.h \
+  /usr/local/include/cryptopp/config_cxx.h \
+  /usr/local/include/cryptopp/config_dll.h \
+  /usr/local/include/cryptopp/config_int.h \
+  /usr/local/include/cryptopp/config_ns.h \
+  /usr/local/include/cryptopp/config_misc.h \
+  /usr/local/include/cryptopp/stdcpp.h \
+  /usr/local/include/cryptopp/trap.h \
+  /usr/local/include/cryptopp/pubkey.h \
+  /usr/local/include/cryptopp/integer.h \
+  /usr/local/include/cryptopp/secblock.h \
+  /usr/local/include/cryptopp/allocate.h \
+  /usr/local/include/cryptopp/misc.h \
+  /usr/local/include/cryptopp/secblockfwd.h \
+  /usr/local/include/cryptopp/smartptr.h \
+  /usr/local/include/cryptopp/algebra.h \
+  /usr/local/include/cryptopp/modarith.h \
+  /usr/local/include/cryptopp/filters.h \
+  /usr/local/include/cryptopp/simple.h \
+  /usr/local/include/cryptopp/queue.h \
+  /usr/local/include/cryptopp/algparam.h \
+  /usr/local/include/cryptopp/eprecomp.h \
+  /usr/local/include/cryptopp/fips140.h \
+  /usr/local/include/cryptopp/argnames.h \
+  /usr/local/include/cryptopp/pkcspad.h \
+  /usr/local/include/cryptopp/hashfwd.h \
+  /usr/local/include/cryptopp/oaep.h /usr/local/include/cryptopp/sha.h \
+  /usr/local/include/cryptopp/iterhash.h \
+  /usr/local/include/cryptopp/emsa2.h /usr/local/include/cryptopp/asn.h \
+  /usr/local/include/cryptopp/osrng.h \
+  /usr/local/include/cryptopp/randpool.h \
+  /usr/local/include/cryptopp/aes.h \
+  /usr/local/include/cryptopp/rijndael.h \
+  /usr/local/include/cryptopp/seckey.h \
+  /usr/local/include/cryptopp/hkdf.h /usr/local/include/cryptopp/hmac.h \
+  /usr/local/include/cryptopp/rng.h /usr/local/include/cryptopp/files.h \
+  /usr/local/include/cryptopp/base64.h \
+  /usr/local/include/cryptopp/basecode.h \
+  gpsrSecureSybil/GpsrSecureSybil_m.h \
+  ../../inet4/src/inet/common/TlvOptions_m.h \
+  ../../inet4/src/inet/common/geometry/Geometry_m.h \
+  ../../inet4/src/inet/routing/gpsr/GpsrDefs.h \
   ../../inet4/src/inet/networklayer/ipv4/Ipv4Header_m.h \
   ../../inet4/src/inet/networklayer/contract/ipv4/Ipv4Address_m.h \
   ../../inet4/src/inet/common/ProtocolGroup.h \
@@ -235,14 +282,6 @@ gpsrSecureSybil/GpsrSecureSybil.h:
 
 ../../inet4/src/inet/common/lifecycle/ILifecycle.h:
 
-gpsr/Gpsr_m.h:
-
-../../inet4/src/inet/common/TlvOptions_m.h:
-
-../../inet4/src/inet/common/geometry/Geometry_m.h:
-
-gpsr/GpsrDefs.h:
-
 gpsr/PositionTable.h:
 
 ../../inet4/src/inet/transportlayer/udp/UdpHeader_m.h:
@@ -250,6 +289,112 @@ gpsr/PositionTable.h:
 ../../inet4/src/inet/transportlayer/common/CrcMode_m.h:
 
 ../../inet4/src/inet/transportlayer/contract/TransportHeaderBase_m.h:
+
+/usr/local/include/cryptopp/rsa.h:
+
+/usr/local/include/cryptopp/cryptlib.h:
+
+/usr/local/include/cryptopp/config.h:
+
+/usr/local/include/cryptopp/config_align.h:
+
+/usr/local/include/cryptopp/config_asm.h:
+
+/usr/local/include/cryptopp/config_os.h:
+
+/usr/local/include/cryptopp/config_ver.h:
+
+/usr/local/include/cryptopp/config_cpu.h:
+
+/usr/local/include/cryptopp/config_cxx.h:
+
+/usr/local/include/cryptopp/config_dll.h:
+
+/usr/local/include/cryptopp/config_int.h:
+
+/usr/local/include/cryptopp/config_ns.h:
+
+/usr/local/include/cryptopp/config_misc.h:
+
+/usr/local/include/cryptopp/stdcpp.h:
+
+/usr/local/include/cryptopp/trap.h:
+
+/usr/local/include/cryptopp/pubkey.h:
+
+/usr/local/include/cryptopp/integer.h:
+
+/usr/local/include/cryptopp/secblock.h:
+
+/usr/local/include/cryptopp/allocate.h:
+
+/usr/local/include/cryptopp/misc.h:
+
+/usr/local/include/cryptopp/secblockfwd.h:
+
+/usr/local/include/cryptopp/smartptr.h:
+
+/usr/local/include/cryptopp/algebra.h:
+
+/usr/local/include/cryptopp/modarith.h:
+
+/usr/local/include/cryptopp/filters.h:
+
+/usr/local/include/cryptopp/simple.h:
+
+/usr/local/include/cryptopp/queue.h:
+
+/usr/local/include/cryptopp/algparam.h:
+
+/usr/local/include/cryptopp/eprecomp.h:
+
+/usr/local/include/cryptopp/fips140.h:
+
+/usr/local/include/cryptopp/argnames.h:
+
+/usr/local/include/cryptopp/pkcspad.h:
+
+/usr/local/include/cryptopp/hashfwd.h:
+
+/usr/local/include/cryptopp/oaep.h:
+
+/usr/local/include/cryptopp/sha.h:
+
+/usr/local/include/cryptopp/iterhash.h:
+
+/usr/local/include/cryptopp/emsa2.h:
+
+/usr/local/include/cryptopp/asn.h:
+
+/usr/local/include/cryptopp/osrng.h:
+
+/usr/local/include/cryptopp/randpool.h:
+
+/usr/local/include/cryptopp/aes.h:
+
+/usr/local/include/cryptopp/rijndael.h:
+
+/usr/local/include/cryptopp/seckey.h:
+
+/usr/local/include/cryptopp/hkdf.h:
+
+/usr/local/include/cryptopp/hmac.h:
+
+/usr/local/include/cryptopp/rng.h:
+
+/usr/local/include/cryptopp/files.h:
+
+/usr/local/include/cryptopp/base64.h:
+
+/usr/local/include/cryptopp/basecode.h:
+
+gpsrSecureSybil/GpsrSecureSybil_m.h:
+
+../../inet4/src/inet/common/TlvOptions_m.h:
+
+../../inet4/src/inet/common/geometry/Geometry_m.h:
+
+../../inet4/src/inet/routing/gpsr/GpsrDefs.h:
 
 ../../inet4/src/inet/networklayer/ipv4/Ipv4Header_m.h:
 

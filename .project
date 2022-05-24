@@ -3,7 +3,6 @@
 	<name>progetto2</name>
 	<comment></comment>
 	<projects>
-		<project>cryptopp</project>
 		<project>inet4</project>
 	</projects>
 	<buildSpec>

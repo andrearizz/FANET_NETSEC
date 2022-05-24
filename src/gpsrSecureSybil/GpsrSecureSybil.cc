@@ -19,6 +19,12 @@
 
 #include <algorithm>
 
+#include <string>
+#include <cstring>
+#include <sstream>
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 #include "inet/common/INETUtils.h"
 #include "inet/common/IProtocolRegistrationListener.h"
 #include "inet/common/ModuleAccess.h"
@@ -32,6 +38,13 @@
 #include "inet/networklayer/common/NextHopAddressTag_m.h"
 #include "inet/networklayer/contract/IInterfaceTable.h"
 #include "GpsrSecureSybil.h"
+#include "cryptopp/rsa.h"
+#include "cryptopp/osrng.h"
+#include "cryptopp/files.h"
+#include "cryptopp/queue.h"
+#include "cryptopp/base64.h"
+using namespace CryptoPP;
+using namespace std;
 
 #ifdef WITH_IPv4
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
@@ -48,6 +61,7 @@
 
 namespace inet {
 namespace sec {
+
 
 Define_Module(GpsrSecureSybil);
 
@@ -70,8 +84,63 @@ GpsrSecureSybil::~GpsrSecureSybil()
 // module interface
 //
 
+
+/*
+CryptoPP::RSA::PrivateKey privateKey;
+
+void GpsrSecureSybil::generatePrivateKey(CryptoPP::RSA::PrivateKey privateKey){
+    srand(420);
+    CryptoPP::AutoSeededRandomPool rng;
+    privateKey.GenerateRandomWithKeySize(rng, 3072);
+}
+
+
+void Save(const std::string& filename, const CryptoPP::BufferedTransformation& bt)
+{
+    CryptoPP::FileSink file(filename.c_str());
+
+    bt.CopyTo(file);
+    file.MessageEnd();
+}
+
+void SavePublicKey(const std::string& filename, const CryptoPP::RSA::PublicKey& key)
+{
+    CryptoPP::ByteQueue queue;
+    key.Save(queue);
+
+    Save(filename, queue);
+}
+
+void GpsrSecureSybil::generatePublicKey(CryptoPP::RSA::PrivateKey privateKey){
+    CryptoPP::RSA::PublicKey rsaPublic(privateKey);
+    std::string filename = getSelfAddress().toIpv4().str();
+    SavePublicKey(filename, rsaPublic);
+
+}
+*/
+
+/*
+void generateKeyPair() {
+    AutoSeededRandomPool rng;
+    InvertibleRSAFunction privkey;
+    privkey.Initialize(rng, 1024);
+
+    Base64Encoder privkeysink(new FileSink("private_" + getSelfAddress().toIpv4().str() + ".txt"));
+    privkey.DEREncode(privkeysink);
+    privkeysink.MessageEnd();
+
+    RSAFunction pubkey(privkey);
+
+    Base64Encoder pubkeysink(new FileSink("public_" + getSelfAddress().toIpv4().str() + ".txt"));
+    pubkey.DEREncode(pubkeysink);
+    pubkeysink.MessageEnd();
+
+}
+*/
+
 void GpsrSecureSybil::initialize(int stage)
 {
+    //EV_INFO << "KEY: " + privateKey << endl;
     if (stage == INITSTAGE_ROUTING_PROTOCOLS)
         addressType = getSelfAddress().getAddressType();
 
@@ -115,6 +184,27 @@ void GpsrSecureSybil::initialize(int stage)
         networkProtocol->registerHook(0, this);
         WATCH(neighborPositionTable);
     }
+
+    // generatePrivateKey(privateKey);
+    // generatePublicKey(privateKey);
+
+    AutoSeededRandomPool rng;
+    InvertibleRSAFunction privkey;
+    privkey.Initialize(rng, 1024);
+
+    string prvKey = "privateKey/" + getSelfAddress().toIpv4().str();
+    const char* ipPrivate = prvKey.c_str();
+    Base64Encoder privkeysink(new FileSink(ipPrivate));
+    privkey.DEREncode(privkeysink);
+    privkeysink.MessageEnd();
+
+    RSAFunction pubkey(privkey);
+
+    string pubKey = "publicKey/" + getSelfAddress().toIpv4().str();
+    const char* ipPublic = pubKey.c_str();
+    Base64Encoder pubkeysink(new FileSink(ipPublic));
+    pubkey.DEREncode(pubkeysink);
+    pubkeysink.MessageEnd();
 }
 
 void GpsrSecureSybil::handleMessageWhenUp(cMessage *message)
@@ -220,12 +310,45 @@ void GpsrSecureSybil::processUdpPacket(Packet *packet)
 // handling beacons
 //
 
+string GpsrSecureSybil::sign(string content) {
+    AutoSeededRandomPool rng;
+
+    CryptoPP::ByteQueue bytes;
+
+    string prvKey = "privateKey/" + getSelfAddress().toIpv4().str();
+    const char* ipPrivate = prvKey.c_str();
+    FileSource file(ipPrivate, true, new Base64Decoder);
+    file.TransferTo(bytes);
+    bytes.MessageEnd();
+    RSA::PrivateKey privateKey;
+    privateKey.Load(bytes);
+
+    RSASSA_PKCS1v15_SHA_Signer privkey(privateKey);
+    // SecByteBlock sbbSignature(privkey.SignatureLength());
+    byte* signature = new byte[privkey.SignatureLength()];
+    size_t length = privkey.SignMessage(rng, (const byte*) content.c_str(), content.length(), signature);
+
+    int len = length;
+    string sig(reinterpret_cast<const char *>(signature), length);
+
+    string messageBase64;
+
+    StringSource ss(sig, true, new Base64Encoder(new StringSink(messageBase64)));
+
+    return messageBase64;
+
+}
+
 const Ptr<GpsrBeacon> GpsrSecureSybil::createBeacon()
 {
     const auto& beacon = makeShared<GpsrBeacon>();
     beacon->setAddress(getSelfAddress());
     beacon->setPosition(mobility->getCurrentPosition());
-    beacon->setChunkLength(B(getSelfAddress().getAddressType()->getAddressByteLength() + positionByteLength));
+    string content = beacon -> getAddress().str() + " " + beacon -> getPosition().str();
+    string signature = sign(content);
+    beacon -> setSignature(signature);
+    beacon->setChunkLength(B(getSelfAddress().getAddressType()->getAddressByteLength() + positionByteLength + signature.length()));
+
     return beacon;
 }
 
@@ -251,7 +374,7 @@ void GpsrSecureSybil::sendBeacon(const Ptr<GpsrBeacon>& beacon)
 void GpsrSecureSybil::processBeacon(Packet *packet)
 {
     const auto& beacon = packet->peekAtFront<GpsrBeacon>();
-    EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
+    EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << ", signature = " << beacon -> getSignature() << endl;
     neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
     EV_INFO << "Processing neighborPositionTable: address = " << neighborPositionTable << endl;
     delete packet;
@@ -309,7 +432,7 @@ Coord GpsrSecureSybil::lookupPositionInGlobalRegistry(const L3Address& address) 
 {
     // KLUDGE: implement position registry protocol
     Coord position = globalPositionTable.getPosition(address);
-    EV_INFO << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << position << address;
+    EV_INFO << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << position << address << endl;
     return position;
 }
 
@@ -827,4 +950,3 @@ void GpsrSecureSybil::receiveSignal(cComponent *source, simsignal_t signalID, cO
 }
 } //sec
 } // namespace inet
-
