@@ -527,6 +527,332 @@ void *GpsrBeaconDescriptor::getFieldStructValuePointer(void *object, int field, 
     }
 }
 
+Register_Class(GpsrBeaconSecure)
+
+GpsrBeaconSecure::GpsrBeaconSecure() : ::inet::FieldsChunk()
+{
+}
+
+GpsrBeaconSecure::GpsrBeaconSecure(const GpsrBeaconSecure& other) : ::inet::FieldsChunk(other)
+{
+    copy(other);
+}
+
+GpsrBeaconSecure::~GpsrBeaconSecure()
+{
+}
+
+GpsrBeaconSecure& GpsrBeaconSecure::operator=(const GpsrBeaconSecure& other)
+{
+    if (this == &other) return *this;
+    ::inet::FieldsChunk::operator=(other);
+    copy(other);
+    return *this;
+}
+
+void GpsrBeaconSecure::copy(const GpsrBeaconSecure& other)
+{
+    this->address = other.address;
+    this->position = other.position;
+    this->signature = other.signature;
+}
+
+void GpsrBeaconSecure::parsimPack(omnetpp::cCommBuffer *b) const
+{
+    ::inet::FieldsChunk::parsimPack(b);
+    doParsimPacking(b,this->address);
+    doParsimPacking(b,this->position);
+    doParsimPacking(b,this->signature);
+}
+
+void GpsrBeaconSecure::parsimUnpack(omnetpp::cCommBuffer *b)
+{
+    ::inet::FieldsChunk::parsimUnpack(b);
+    doParsimUnpacking(b,this->address);
+    doParsimUnpacking(b,this->position);
+    doParsimUnpacking(b,this->signature);
+}
+
+const L3Address& GpsrBeaconSecure::getAddress() const
+{
+    return this->address;
+}
+
+void GpsrBeaconSecure::setAddress(const L3Address& address)
+{
+    handleChange();
+    this->address = address;
+}
+
+const Coord& GpsrBeaconSecure::getPosition() const
+{
+    return this->position;
+}
+
+void GpsrBeaconSecure::setPosition(const Coord& position)
+{
+    handleChange();
+    this->position = position;
+}
+
+const char * GpsrBeaconSecure::getSignature() const
+{
+    return this->signature.c_str();
+}
+
+void GpsrBeaconSecure::setSignature(const char * signature)
+{
+    handleChange();
+    this->signature = signature;
+}
+
+class GpsrBeaconSecureDescriptor : public omnetpp::cClassDescriptor
+{
+  private:
+    mutable const char **propertynames;
+    enum FieldConstants {
+        FIELD_address,
+        FIELD_position,
+        FIELD_signature,
+    };
+  public:
+    GpsrBeaconSecureDescriptor();
+    virtual ~GpsrBeaconSecureDescriptor();
+
+    virtual bool doesSupport(omnetpp::cObject *obj) const override;
+    virtual const char **getPropertyNames() const override;
+    virtual const char *getProperty(const char *propertyname) const override;
+    virtual int getFieldCount() const override;
+    virtual const char *getFieldName(int field) const override;
+    virtual int findField(const char *fieldName) const override;
+    virtual unsigned int getFieldTypeFlags(int field) const override;
+    virtual const char *getFieldTypeString(int field) const override;
+    virtual const char **getFieldPropertyNames(int field) const override;
+    virtual const char *getFieldProperty(int field, const char *propertyname) const override;
+    virtual int getFieldArraySize(void *object, int field) const override;
+
+    virtual const char *getFieldDynamicTypeString(void *object, int field, int i) const override;
+    virtual std::string getFieldValueAsString(void *object, int field, int i) const override;
+    virtual bool setFieldValueAsString(void *object, int field, int i, const char *value) const override;
+
+    virtual const char *getFieldStructName(int field) const override;
+    virtual void *getFieldStructValuePointer(void *object, int field, int i) const override;
+};
+
+Register_ClassDescriptor(GpsrBeaconSecureDescriptor)
+
+GpsrBeaconSecureDescriptor::GpsrBeaconSecureDescriptor() : omnetpp::cClassDescriptor(omnetpp::opp_typename(typeid(inet::GpsrBeaconSecure)), "inet::FieldsChunk")
+{
+    propertynames = nullptr;
+}
+
+GpsrBeaconSecureDescriptor::~GpsrBeaconSecureDescriptor()
+{
+    delete[] propertynames;
+}
+
+bool GpsrBeaconSecureDescriptor::doesSupport(omnetpp::cObject *obj) const
+{
+    return dynamic_cast<GpsrBeaconSecure *>(obj)!=nullptr;
+}
+
+const char **GpsrBeaconSecureDescriptor::getPropertyNames() const
+{
+    if (!propertynames) {
+        static const char *names[] = {  nullptr };
+        omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+        const char **basenames = basedesc ? basedesc->getPropertyNames() : nullptr;
+        propertynames = mergeLists(basenames, names);
+    }
+    return propertynames;
+}
+
+const char *GpsrBeaconSecureDescriptor::getProperty(const char *propertyname) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? basedesc->getProperty(propertyname) : nullptr;
+}
+
+int GpsrBeaconSecureDescriptor::getFieldCount() const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    return basedesc ? 3+basedesc->getFieldCount() : 3;
+}
+
+unsigned int GpsrBeaconSecureDescriptor::getFieldTypeFlags(int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldTypeFlags(field);
+        field -= basedesc->getFieldCount();
+    }
+    static unsigned int fieldTypeFlags[] = {
+        0,    // FIELD_address
+        FD_ISCOMPOUND,    // FIELD_position
+        FD_ISEDITABLE,    // FIELD_signature
+    };
+    return (field >= 0 && field < 3) ? fieldTypeFlags[field] : 0;
+}
+
+const char *GpsrBeaconSecureDescriptor::getFieldName(int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldName(field);
+        field -= basedesc->getFieldCount();
+    }
+    static const char *fieldNames[] = {
+        "address",
+        "position",
+        "signature",
+    };
+    return (field >= 0 && field < 3) ? fieldNames[field] : nullptr;
+}
+
+int GpsrBeaconSecureDescriptor::findField(const char *fieldName) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    int base = basedesc ? basedesc->getFieldCount() : 0;
+    if (fieldName[0] == 'a' && strcmp(fieldName, "address") == 0) return base+0;
+    if (fieldName[0] == 'p' && strcmp(fieldName, "position") == 0) return base+1;
+    if (fieldName[0] == 's' && strcmp(fieldName, "signature") == 0) return base+2;
+    return basedesc ? basedesc->findField(fieldName) : -1;
+}
+
+const char *GpsrBeaconSecureDescriptor::getFieldTypeString(int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldTypeString(field);
+        field -= basedesc->getFieldCount();
+    }
+    static const char *fieldTypeStrings[] = {
+        "inet::L3Address",    // FIELD_address
+        "inet::Coord",    // FIELD_position
+        "string",    // FIELD_signature
+    };
+    return (field >= 0 && field < 3) ? fieldTypeStrings[field] : nullptr;
+}
+
+const char **GpsrBeaconSecureDescriptor::getFieldPropertyNames(int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldPropertyNames(field);
+        field -= basedesc->getFieldCount();
+    }
+    switch (field) {
+        default: return nullptr;
+    }
+}
+
+const char *GpsrBeaconSecureDescriptor::getFieldProperty(int field, const char *propertyname) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldProperty(field, propertyname);
+        field -= basedesc->getFieldCount();
+    }
+    switch (field) {
+        default: return nullptr;
+    }
+}
+
+int GpsrBeaconSecureDescriptor::getFieldArraySize(void *object, int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldArraySize(object, field);
+        field -= basedesc->getFieldCount();
+    }
+    GpsrBeaconSecure *pp = (GpsrBeaconSecure *)object; (void)pp;
+    switch (field) {
+        default: return 0;
+    }
+}
+
+const char *GpsrBeaconSecureDescriptor::getFieldDynamicTypeString(void *object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldDynamicTypeString(object,field,i);
+        field -= basedesc->getFieldCount();
+    }
+    GpsrBeaconSecure *pp = (GpsrBeaconSecure *)object; (void)pp;
+    switch (field) {
+        default: return nullptr;
+    }
+}
+
+std::string GpsrBeaconSecureDescriptor::getFieldValueAsString(void *object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldValueAsString(object,field,i);
+        field -= basedesc->getFieldCount();
+    }
+    GpsrBeaconSecure *pp = (GpsrBeaconSecure *)object; (void)pp;
+    switch (field) {
+        case FIELD_address: return pp->getAddress().str();
+        case FIELD_position: {std::stringstream out; out << pp->getPosition(); return out.str();}
+        case FIELD_signature: return oppstring2string(pp->getSignature());
+        default: return "";
+    }
+}
+
+bool GpsrBeaconSecureDescriptor::setFieldValueAsString(void *object, int field, int i, const char *value) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->setFieldValueAsString(object,field,i,value);
+        field -= basedesc->getFieldCount();
+    }
+    GpsrBeaconSecure *pp = (GpsrBeaconSecure *)object; (void)pp;
+    switch (field) {
+        case FIELD_signature: pp->setSignature((value)); return true;
+        default: return false;
+    }
+}
+
+const char *GpsrBeaconSecureDescriptor::getFieldStructName(int field) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldStructName(field);
+        field -= basedesc->getFieldCount();
+    }
+    switch (field) {
+        case FIELD_position: return omnetpp::opp_typename(typeid(Coord));
+        default: return nullptr;
+    };
+}
+
+void *GpsrBeaconSecureDescriptor::getFieldStructValuePointer(void *object, int field, int i) const
+{
+    omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
+    if (basedesc) {
+        if (field < basedesc->getFieldCount())
+            return basedesc->getFieldStructValuePointer(object, field, i);
+        field -= basedesc->getFieldCount();
+    }
+    GpsrBeaconSecure *pp = (GpsrBeaconSecure *)object; (void)pp;
+    switch (field) {
+        case FIELD_address: return toVoidPtr(&pp->getAddress()); break;
+        case FIELD_position: return toVoidPtr(&pp->getPosition()); break;
+        default: return nullptr;
+    }
+}
+
 Register_Class(GpsrOption)
 
 GpsrOption::GpsrOption() : ::inet::TlvOptionBase()

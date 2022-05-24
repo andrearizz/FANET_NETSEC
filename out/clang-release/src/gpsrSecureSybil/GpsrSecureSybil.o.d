@@ -120,11 +120,9 @@
   /usr/local/include/cryptopp/hkdf.h /usr/local/include/cryptopp/hmac.h \
   /usr/local/include/cryptopp/rng.h /usr/local/include/cryptopp/files.h \
   /usr/local/include/cryptopp/base64.h \
-  /usr/local/include/cryptopp/basecode.h \
-  gpsrSecureSybil/GpsrSecureSybil_m.h \
+  /usr/local/include/cryptopp/basecode.h gpsr/Gpsr_m.h \
   ../../inet4/src/inet/common/TlvOptions_m.h \
-  ../../inet4/src/inet/common/geometry/Geometry_m.h \
-  ../../inet4/src/inet/routing/gpsr/GpsrDefs.h \
+  ../../inet4/src/inet/common/geometry/Geometry_m.h gpsr/GpsrDefs.h \
   ../../inet4/src/inet/networklayer/ipv4/Ipv4Header_m.h \
   ../../inet4/src/inet/networklayer/contract/ipv4/Ipv4Address_m.h \
   ../../inet4/src/inet/common/ProtocolGroup.h \
@@ -388,13 +386,13 @@ gpsr/PositionTable.h:
 
 /usr/local/include/cryptopp/basecode.h:
 
-gpsrSecureSybil/GpsrSecureSybil_m.h:
+gpsr/Gpsr_m.h:
 
 ../../inet4/src/inet/common/TlvOptions_m.h:
 
 ../../inet4/src/inet/common/geometry/Geometry_m.h:
 
-../../inet4/src/inet/routing/gpsr/GpsrDefs.h:
+gpsr/GpsrDefs.h:
 
 ../../inet4/src/inet/networklayer/ipv4/Ipv4Header_m.h:
 

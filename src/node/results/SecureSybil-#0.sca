@@ -1,14 +1,14 @@
 version 2
-run SecureSybil-0-20220524-20:07:51-18407
+run SecureSybil-0-20220524-22:30:09-21872
 attr configname SecureSybil
-attr datetime 20220524-20:07:51
+attr datetime 20220524-22:30:09
 attr experiment SecureSybil
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network FanetSecureSybil
-attr processid 18407
+attr processid 21872
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -107,14 +107,14 @@ scalar FanetSecureSybil.host[0].lo[0].lo passedUpPk:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed to higher layer, sum(packetBytes)"
-scalar FanetSecureSybil.host[0].wlan[0].mac.queue packetPopped:count 3
+scalar FanetSecureSybil.host[0].wlan[0].mac.queue packetPopped:count 2
 attr interpolationmode none
 attr title "packet popped, count"
-scalar FanetSecureSybil.host[0].wlan[0].mac.queue packetPopped:sum(packetBytes) 120
+scalar FanetSecureSybil.host[0].wlan[0].mac.queue packetPopped:sum(packetBytes) 430
 attr interpolationmode none
 attr title "packet popped, sum(packetBytes)"
 statistic FanetSecureSybil.host[0].wlan[0].mac.queue queueingTime:histogram
-field count 3
+field count 2
 field mean 0
 field stddev 0
 field min 0
@@ -151,7 +151,7 @@ bin	-0.08	0
 bin	-0.06	0
 bin	-0.04	0
 bin	-0.02	0
-bin	0	3
+bin	0	2
 bin	0.02	0
 bin	0.04	0
 bin	0.06	0
@@ -185,10 +185,10 @@ scalar FanetSecureSybil.host[0].wlan[0].mac.queue queueLength:timeavg 0
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, timeavg"
-scalar FanetSecureSybil.host[0].wlan[0].mac.queue packetPushed:count 3
+scalar FanetSecureSybil.host[0].wlan[0].mac.queue packetPushed:count 2
 attr interpolationmode none
 attr title "packet pushed, count"
-scalar FanetSecureSybil.host[0].wlan[0].mac.queue packetPushed:sum(packetBytes) 120
+scalar FanetSecureSybil.host[0].wlan[0].mac.queue packetPushed:sum(packetBytes) 430
 attr interpolationmode none
 attr title "packet pushed, sum(packetBytes)"
 scalar FanetSecureSybil.host[0].wlan[0].mac.queue packetDropQueueOverflow:count 0
@@ -213,19 +213,19 @@ scalar FanetSecureSybil.host[0].wlan[0].mac rcvdPkFromLl:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetReceivedFromLower
 attr title "packets received from lower layer, sum(packetBytes)"
-scalar FanetSecureSybil.host[0].wlan[0].mac sentDownPk:count 3
+scalar FanetSecureSybil.host[0].wlan[0].mac sentDownPk:count 2
 attr interpolationmode none
 attr source packetSentToLower
 attr title "packets sent to lower layer, count"
-scalar FanetSecureSybil.host[0].wlan[0].mac sentDownPk:sum(packetBytes) 168
+scalar FanetSecureSybil.host[0].wlan[0].mac sentDownPk:sum(packetBytes) 462
 attr interpolationmode none
 attr source packetSentToLower
 attr title "packets sent to lower layer, sum(packetBytes)"
-scalar FanetSecureSybil.host[0].wlan[0].mac rcvdPkFromHl:count 3
+scalar FanetSecureSybil.host[0].wlan[0].mac rcvdPkFromHl:count 2
 attr interpolationmode none
 attr source packetReceivedFromUpper
 attr title "packets received from higher layer, count"
-scalar FanetSecureSybil.host[0].wlan[0].mac rcvdPkFromHl:sum(packetBytes) 120
+scalar FanetSecureSybil.host[0].wlan[0].mac rcvdPkFromHl:sum(packetBytes) 430
 attr interpolationmode none
 attr source packetReceivedFromUpper
 attr title "packets received from higher layer, sum(packetBytes)"
@@ -273,7 +273,7 @@ scalar FanetSecureSybil.host[0].wlan[0].radio receptionState:count 1
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, count"
-scalar FanetSecureSybil.host[0].wlan[0].radio transmissionState:count 6
+scalar FanetSecureSybil.host[0].wlan[0].radio transmissionState:count 4
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, count"
@@ -385,11 +385,11 @@ scalar FanetSecureSybil.host[0].udp packetReceived:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetReceived
 attr title "packets received, sum(packetBytes)"
-scalar FanetSecureSybil.host[0].udp packetSent:count 28
+scalar FanetSecureSybil.host[0].udp packetSent:count 15
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, count"
-scalar FanetSecureSybil.host[0].udp packetSent:sum(packetBytes) 28224
+scalar FanetSecureSybil.host[0].udp packetSent:sum(packetBytes) 15120
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, sum(packetBytes)"
@@ -405,7 +405,7 @@ scalar FanetSecureSybil.host[0].udp droppedPkBadChecksum:count 0
 attr interpolationmode none
 attr source packetDropReasonIsIncorrectlyReceived(packetDropped)
 attr title "packets dropped (checksum error), count"
-scalar FanetSecureSybil.host[0].app[0] "packets sent" 28
+scalar FanetSecureSybil.host[0].app[0] "packets sent" 15
 scalar FanetSecureSybil.host[0].app[0] "packets received" 0
 scalar FanetSecureSybil.host[0].app[0] packetReceived:count 0
 attr interpolationmode none
@@ -427,11 +427,11 @@ attr interpolationmode none
 attr source dataAge(packetReceived)
 attr title "received packet lifetime, stats"
 attr unit s
-scalar FanetSecureSybil.host[0].app[0] packetSent:count 28
+scalar FanetSecureSybil.host[0].app[0] packetSent:count 15
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, count"
-scalar FanetSecureSybil.host[0].app[0] packetSent:sum(packetBytes) 28000
+scalar FanetSecureSybil.host[0].app[0] packetSent:sum(packetBytes) 15000
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, sum(packetBytes)"
@@ -451,16 +451,16 @@ scalar FanetSecureSybil.host[1].lo[0].lo passedUpPk:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed to higher layer, sum(packetBytes)"
-scalar FanetSecureSybil.host[1].wlan[0].mac.queue packetPopped:count 2
+scalar FanetSecureSybil.host[1].wlan[0].mac.queue packetPopped:count 1
 attr interpolationmode none
 attr title "packet popped, count"
-scalar FanetSecureSybil.host[1].wlan[0].mac.queue packetPopped:sum(packetBytes) 80
+scalar FanetSecureSybil.host[1].wlan[0].mac.queue packetPopped:sum(packetBytes) 215
 attr interpolationmode none
 attr title "packet popped, sum(packetBytes)"
 statistic FanetSecureSybil.host[1].wlan[0].mac.queue queueingTime:histogram
-field count 2
+field count 1
 field mean 0
-field stddev 0
+field stddev nan
 field min 0
 field max 0
 field sum 0
@@ -495,7 +495,7 @@ bin	-0.08	0
 bin	-0.06	0
 bin	-0.04	0
 bin	-0.02	0
-bin	0	2
+bin	0	1
 bin	0.02	0
 bin	0.04	0
 bin	0.06	0
@@ -529,10 +529,10 @@ scalar FanetSecureSybil.host[1].wlan[0].mac.queue queueLength:timeavg 0
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, timeavg"
-scalar FanetSecureSybil.host[1].wlan[0].mac.queue packetPushed:count 2
+scalar FanetSecureSybil.host[1].wlan[0].mac.queue packetPushed:count 1
 attr interpolationmode none
 attr title "packet pushed, count"
-scalar FanetSecureSybil.host[1].wlan[0].mac.queue packetPushed:sum(packetBytes) 80
+scalar FanetSecureSybil.host[1].wlan[0].mac.queue packetPushed:sum(packetBytes) 215
 attr interpolationmode none
 attr title "packet pushed, sum(packetBytes)"
 scalar FanetSecureSybil.host[1].wlan[0].mac.queue packetDropQueueOverflow:count 0
@@ -557,19 +557,19 @@ scalar FanetSecureSybil.host[1].wlan[0].mac rcvdPkFromLl:sum(packetBytes) 0
 attr interpolationmode none
 attr source packetReceivedFromLower
 attr title "packets received from lower layer, sum(packetBytes)"
-scalar FanetSecureSybil.host[1].wlan[0].mac sentDownPk:count 2
+scalar FanetSecureSybil.host[1].wlan[0].mac sentDownPk:count 1
 attr interpolationmode none
 attr source packetSentToLower
 attr title "packets sent to lower layer, count"
-scalar FanetSecureSybil.host[1].wlan[0].mac sentDownPk:sum(packetBytes) 112
+scalar FanetSecureSybil.host[1].wlan[0].mac sentDownPk:sum(packetBytes) 231
 attr interpolationmode none
 attr source packetSentToLower
 attr title "packets sent to lower layer, sum(packetBytes)"
-scalar FanetSecureSybil.host[1].wlan[0].mac rcvdPkFromHl:count 2
+scalar FanetSecureSybil.host[1].wlan[0].mac rcvdPkFromHl:count 1
 attr interpolationmode none
 attr source packetReceivedFromUpper
 attr title "packets received from higher layer, count"
-scalar FanetSecureSybil.host[1].wlan[0].mac rcvdPkFromHl:sum(packetBytes) 80
+scalar FanetSecureSybil.host[1].wlan[0].mac rcvdPkFromHl:sum(packetBytes) 215
 attr interpolationmode none
 attr source packetReceivedFromUpper
 attr title "packets received from higher layer, sum(packetBytes)"
@@ -617,7 +617,7 @@ scalar FanetSecureSybil.host[1].wlan[0].radio receptionState:count 1
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, count"
-scalar FanetSecureSybil.host[1].wlan[0].radio transmissionState:count 5
+scalar FanetSecureSybil.host[1].wlan[0].radio transmissionState:count 3
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, count"
@@ -772,13 +772,13 @@ attr unit s
 bin	-inf	0
 bin	0	0
 bin	1	0
-scalar FanetSecureSybil.radioMedium.propagation "Arrival computation count" 5
-scalar FanetSecureSybil.radioMedium "transmission count" 5
-scalar FanetSecureSybil.radioMedium "signal send count" 5
-scalar FanetSecureSybil.radioMedium "reception computation count" 5
-scalar FanetSecureSybil.radioMedium "interference computation count" 25
+scalar FanetSecureSybil.radioMedium.propagation "Arrival computation count" 3
+scalar FanetSecureSybil.radioMedium "transmission count" 3
+scalar FanetSecureSybil.radioMedium "signal send count" 3
+scalar FanetSecureSybil.radioMedium "reception computation count" 2
+scalar FanetSecureSybil.radioMedium "interference computation count" 13
 scalar FanetSecureSybil.radioMedium "reception decision computation count" 0
-scalar FanetSecureSybil.radioMedium "listening decision computation count" 20
+scalar FanetSecureSybil.radioMedium "listening decision computation count" 11
 scalar FanetSecureSybil.radioMedium "reception cache hit" 75
 attr unit %
 scalar FanetSecureSybil.radioMedium "interference cache hit" nan

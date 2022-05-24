@@ -20,6 +20,7 @@
 namespace inet {
 
 class GpsrBeacon;
+class GpsrBeaconSecure;
 class GpsrOption;
 } // namespace inet
 
@@ -41,7 +42,7 @@ class GpsrOption;
 namespace inet {
 
 /**
- * Enum generated from <tt>gpsr/Gpsr.msg:32</tt> by nedtool.
+ * Enum generated from <tt>gpsr/Gpsr.msg:33</tt> by nedtool.
  * <pre>
  * enum GpsrForwardingMode
  * {
@@ -56,7 +57,7 @@ enum GpsrForwardingMode {
 };
 
 /**
- * Enum generated from <tt>gpsr/Gpsr.msg:37</tt> by nedtool.
+ * Enum generated from <tt>gpsr/Gpsr.msg:38</tt> by nedtool.
  * <pre>
  * enum GpsrPlanarizationMode
  * {
@@ -73,7 +74,7 @@ enum GpsrPlanarizationMode {
 };
 
 /**
- * Class generated from <tt>gpsr/Gpsr.msg:48</tt> by nedtool.
+ * Class generated from <tt>gpsr/Gpsr.msg:49</tt> by nedtool.
  * <pre>
  * //
  * // The GPSR beacon packet is sent periodically by all GPSR routers to notify
@@ -122,7 +123,56 @@ inline void doParsimPacking(omnetpp::cCommBuffer *b, const GpsrBeacon& obj) {obj
 inline void doParsimUnpacking(omnetpp::cCommBuffer *b, GpsrBeacon& obj) {obj.parsimUnpack(b);}
 
 /**
- * Class generated from <tt>gpsr/Gpsr.msg:60</tt> by nedtool.
+ * Class generated from <tt>gpsr/Gpsr.msg:55</tt> by nedtool.
+ * <pre>
+ * class GpsrBeaconSecure extends FieldsChunk
+ * {
+ *     L3Address address;
+ *     Coord position;
+ *     string signature;
+ * 
+ * }
+ * </pre>
+ */
+class GpsrBeaconSecure : public ::inet::FieldsChunk
+{
+  protected:
+    L3Address address;
+    Coord position;
+    omnetpp::opp_string signature;
+
+  private:
+    void copy(const GpsrBeaconSecure& other);
+
+  protected:
+    // protected and unimplemented operator==(), to prevent accidental usage
+    bool operator==(const GpsrBeaconSecure&);
+
+  public:
+    GpsrBeaconSecure();
+    GpsrBeaconSecure(const GpsrBeaconSecure& other);
+    virtual ~GpsrBeaconSecure();
+    GpsrBeaconSecure& operator=(const GpsrBeaconSecure& other);
+    virtual GpsrBeaconSecure *dup() const override {return new GpsrBeaconSecure(*this);}
+    virtual void parsimPack(omnetpp::cCommBuffer *b) const override;
+    virtual void parsimUnpack(omnetpp::cCommBuffer *b) override;
+
+    // field getter/setter methods
+    virtual const L3Address& getAddress() const;
+    virtual L3Address& getAddressForUpdate() { handleChange();return const_cast<L3Address&>(const_cast<GpsrBeaconSecure*>(this)->getAddress());}
+    virtual void setAddress(const L3Address& address);
+    virtual const Coord& getPosition() const;
+    virtual Coord& getPositionForUpdate() { handleChange();return const_cast<Coord&>(const_cast<GpsrBeaconSecure*>(this)->getPosition());}
+    virtual void setPosition(const Coord& position);
+    virtual const char * getSignature() const;
+    virtual void setSignature(const char * signature);
+};
+
+inline void doParsimPacking(omnetpp::cCommBuffer *b, const GpsrBeaconSecure& obj) {obj.parsimPack(b);}
+inline void doParsimUnpacking(omnetpp::cCommBuffer *b, GpsrBeaconSecure& obj) {obj.parsimUnpack(b);}
+
+/**
+ * Class generated from <tt>gpsr/Gpsr.msg:69</tt> by nedtool.
  * <pre>
  * //
  * // The GPSROption is used to add extra routing information for network datagrams.

@@ -29,6 +29,7 @@ cplusplus {{
 
 namespace inet;
 
+
 enum GpsrForwardingMode {
     GPSR_GREEDY_ROUTING = 1;
     GPSR_PERIMETER_ROUTING = 2;
@@ -49,6 +50,14 @@ class GpsrBeacon extends FieldsChunk
     L3Address address;
     Coord position;
 
+}
+
+class GpsrBeaconSecure extends FieldsChunk {
+    
+    L3Address address;
+    Coord position;
+    string signature;
+    
 }
 
 //

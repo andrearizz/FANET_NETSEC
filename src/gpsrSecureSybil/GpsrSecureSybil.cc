@@ -339,23 +339,23 @@ string GpsrSecureSybil::sign(string content) {
 
 }
 
-const Ptr<GpsrBeacon> GpsrSecureSybil::createBeacon()
+const Ptr<GpsrBeaconSecure> GpsrSecureSybil::createBeacon()
 {
-    const auto& beacon = makeShared<GpsrBeacon>();
+    const auto& beacon = makeShared<GpsrBeaconSecure>();
     beacon->setAddress(getSelfAddress());
     beacon->setPosition(mobility->getCurrentPosition());
     string content = beacon -> getAddress().str() + " " + beacon -> getPosition().str();
     string signature = sign(content);
-    beacon -> setSignature(signature);
+    beacon -> setSignature(signature.c_str());
     beacon->setChunkLength(B(getSelfAddress().getAddressType()->getAddressByteLength() + positionByteLength + signature.length()));
 
     return beacon;
 }
 
-void GpsrSecureSybil::sendBeacon(const Ptr<GpsrBeacon>& beacon)
+void GpsrSecureSybil::sendBeacon(const Ptr<GpsrBeaconSecure>& beacon)
 {
     EV_INFO << "Sending beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
-    Packet *udpPacket = new Packet("GPSRBeacon");
+    Packet *udpPacket = new Packet("GpsrBeaconSecure");
     udpPacket->insertAtBack(beacon);
     auto udpHeader = makeShared<UdpHeader>();
     udpHeader->setSourcePort(GPSR_UDP_PORT);
@@ -373,7 +373,7 @@ void GpsrSecureSybil::sendBeacon(const Ptr<GpsrBeacon>& beacon)
 
 void GpsrSecureSybil::processBeacon(Packet *packet)
 {
-    const auto& beacon = packet->peekAtFront<GpsrBeacon>();
+    const auto& beacon = packet->peekAtFront<GpsrBeaconSecure>();
     EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << ", signature = " << beacon -> getSignature() << endl;
     neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
     EV_INFO << "Processing neighborPositionTable: address = " << neighborPositionTable << endl;

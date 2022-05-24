@@ -37,7 +37,7 @@
 #include "cryptopp/queue.h"
 #include "cryptopp/base64.h"
 
-#include "Gpsr_m.h"
+#include "gpsr/Gpsr_m.h"
 
 using namespace CryptoPP;
 using namespace std;
@@ -117,8 +117,8 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
     void processUdpPacket(Packet *packet);
 
     // handling beacons
-    const Ptr<GpsrBeacon> createBeacon();
-    void sendBeacon(const Ptr<GpsrBeacon>& beacon);
+    const Ptr<GpsrBeaconSecure> createBeacon();
+    void sendBeacon(const Ptr<GpsrBeaconSecure>& beacon);
     void processBeacon(Packet *packet);
 
     // handling packets
