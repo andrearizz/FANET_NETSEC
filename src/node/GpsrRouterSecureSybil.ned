@@ -15,7 +15,7 @@
 
 package progetto2.node;
 import inet.node.inet.AdhocHost;
-import progetto2.gpsrSecureSybil.GpsrSecureSybil;
+import progetto2.host.gpsrSecureSybil.GpsrSecureSybil;
 
 module GpsrRouterSecureSybil extends AdhocHost
 {

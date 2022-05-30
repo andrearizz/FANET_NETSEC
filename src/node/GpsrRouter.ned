@@ -16,7 +16,7 @@
 package progetto2.node;
 
 import inet.node.inet.AdhocHost;
-import progetto2.gpsr.Gpsr;
+import progetto2.host.gpsr.Gpsr;
 
 module GpsrRouter extends AdhocHost
 {

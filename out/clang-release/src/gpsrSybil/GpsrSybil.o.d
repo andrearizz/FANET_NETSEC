@@ -71,10 +71,10 @@
   ../../inet4/src/inet/common/stlutils.h \
   ../../inet4/src/inet/routing/base/RoutingProtocolBase.h \
   ../../inet4/src/inet/common/lifecycle/OperationalBase.h \
-  ../../inet4/src/inet/common/lifecycle/ILifecycle.h gpsr/Gpsr_m.h \
-  ../../inet4/src/inet/common/TlvOptions_m.h \
+  ../../inet4/src/inet/common/lifecycle/ILifecycle.h \
+  gpsrSybil/../gpsr/Gpsr_m.h ../../inet4/src/inet/common/TlvOptions_m.h \
   ../../inet4/src/inet/common/geometry/Geometry_m.h gpsr/GpsrDefs.h \
-  gpsr/PositionTable.h \
+  gpsrSybil/../gpsr/PositionTable.h \
   ../../inet4/src/inet/transportlayer/udp/UdpHeader_m.h \
   ../../inet4/src/inet/transportlayer/common/CrcMode_m.h \
   ../../inet4/src/inet/transportlayer/contract/TransportHeaderBase_m.h \
@@ -237,7 +237,7 @@ gpsrSybil/GpsrSybil.h:
 
 ../../inet4/src/inet/common/lifecycle/ILifecycle.h:
 
-gpsr/Gpsr_m.h:
+gpsrSybil/../gpsr/Gpsr_m.h:
 
 ../../inet4/src/inet/common/TlvOptions_m.h:
 
@@ -245,7 +245,7 @@ gpsr/Gpsr_m.h:
 
 gpsr/GpsrDefs.h:
 
-gpsr/PositionTable.h:
+gpsrSybil/../gpsr/PositionTable.h:
 
 ../../inet4/src/inet/transportlayer/udp/UdpHeader_m.h:
 

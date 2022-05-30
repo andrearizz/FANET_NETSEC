@@ -23,7 +23,19 @@ import inet.visualizer.integrated.IntegratedVisualizer;
 network Fanet
 {
     parameters:
+		
+        @figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
 
+        @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
+        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+		
+		
+		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
+        @statistic[packetSent](source=host[0].app[0].packetSent; record=figure(count); targetFigure=sntPkText);
+		
+		
+		
+		
         int numHosts;        
 
 
@@ -50,7 +62,16 @@ network FanetSybil
 {
     
     parameters:
+		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
 
+        @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
+        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+		
+		
+		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
+        @statistic[packetSent](source=host[0].app[0].packetSent; record=figure(count); targetFigure=sntPkText);
+        
+        
         int numHosts;
         int numAttackers;
 
@@ -75,9 +96,60 @@ network FanetSybil
         }
    
 }
+
+network FanetSybilNormale
+{
+    
+    parameters:
+		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
+
+        @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
+        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+		
+		
+		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
+        @statistic[packetSent](source=host[0].app[0].packetSent; record=figure(count); targetFigure=sntPkText);
+        
+        
+        int numHosts;
+        int numAttackers;
+
+
+    submodules:
+
+        visualizer: IntegratedVisualizer {
+            @display("p=100,50");
+        }
+
+        host[numHosts]: Drone;
+        
+        attacker[numAttackers]: SybilNormale;
+        
+       
+        configurator: Ipv4NetworkConfigurator {
+            @display("p=98,250");
+        }
+
+        radioMedium: <default("UnitDiskRadioMedium")> like IRadioMedium {
+            @display("p=100,147");
+        }
+   
+}
+
+
+
+
 network FanetSecureSybil
 {    
     parameters:
+		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
+
+        @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
+        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+		
+		
+		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
+        @statistic[packetSent](source=host[0].app[0].packetSent; record=figure(count); targetFigure=sntPkText);
 
         int numHosts;
         int numAttackers;
@@ -101,4 +173,83 @@ network FanetSecureSybil
         radioMedium: <default("UnitDiskRadioMedium")> like IRadioMedium {
             @display("p=100,147");
         }
+        
+}
+
+network FanetCoordinateNormale
+{
+    
+    parameters:
+		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
+
+        @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
+        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+		
+		
+		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
+        @statistic[packetSent](source=host[0].app[0].packetSent; record=figure(count); targetFigure=sntPkText);
+        
+        
+        int numHosts;
+        int numAttackers;
+
+
+    submodules:
+
+        visualizer: IntegratedVisualizer {
+            @display("p=100,50");
+        }
+
+        host[numHosts]: Drone;
+        
+        attacker[numAttackers]: CoordAttackerNormale;
+        
+       
+        configurator: Ipv4NetworkConfigurator {
+            @display("p=98,250");
+        }
+
+        radioMedium: <default("UnitDiskRadioMedium")> like IRadioMedium {
+            @display("p=100,147");
+        }
+   
+}
+
+network FanetCoordinate
+{
+    
+    parameters:
+		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
+
+        @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
+        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+		
+		
+		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
+        @statistic[packetSent](source=host[0].app[0].packetSent; record=figure(count); targetFigure=sntPkText);
+        
+        
+        int numHosts;
+        int numAttackers;
+
+
+    submodules:
+
+        visualizer: IntegratedVisualizer {
+            @display("p=100,50");
+        }
+
+        host[numHosts]: SecureSybil;
+        
+        attacker[numAttackers]: CoordAttacker;
+        
+       
+        configurator: Ipv4NetworkConfigurator {
+            @display("p=98,250");
+        }
+
+        radioMedium: <default("UnitDiskRadioMedium")> like IRadioMedium {
+            @display("p=100,147");
+        }
+   
 }
