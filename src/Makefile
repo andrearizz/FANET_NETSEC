@@ -37,6 +37,7 @@ O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 OBJS = \
     $O/attacker/gpsrCoordinate/GpsrCoordinate.o \
     $O/attacker/gpsrCoordinateNormale/GpsrCoordinateNormale.o \
+    $O/attacker/gpsrGrayHole/GpsrGrayHole.o \
     $O/attacker/gpsrSybil/GpsrSybil.o \
     $O/attacker/gpsrSybilNormale/GpsrSybilNormale.o \
     $O/host/gpsr/Gpsr.o \

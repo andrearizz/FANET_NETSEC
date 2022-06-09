@@ -141,9 +141,9 @@ void Gpsr::processSelfMessage(cMessage *message)
 
 void Gpsr::processMessage(cMessage *message)
 {
-    if (auto pk = dynamic_cast<Packet *>(message))
+    if (auto pk = dynamic_cast<Packet *>(message)) {
         processUdpPacket(pk);
-    else
+    } else
         throw cRuntimeError("Unknown message");
 }
 

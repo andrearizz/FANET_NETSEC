@@ -1,0 +1,263 @@
+file 13755 1654694728                                           
+version 2
+run FanetGrayHole-0-20220607-23:23:01-16284
+attr configname FanetGrayHole
+attr datetime 20220607-23:23:01
+attr experiment FanetGrayHole
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network FanetGrayHole
+attr processid 16284
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+param *.host[0].numApps 1
+param *.host[0].app[0].typename "\"UdpBasicApp\""
+param *.host[0].app[0].startTime 11s
+param *.host[0].app[0].destAddresses "\"host[1]\""
+param *.host[0].app[0].destPort 5000
+param *.host[0].app[0].messageLength 1000B
+param *.host[0].app[0].sendInterval exponential(1s)
+param *.host[0].app[0].packetName "\"UDPdata\""
+param *.host[1].numApps 1
+param *.host[1].app[0].typename "\"UdpSink\""
+param *.host[1].app[0].localPort 5000
+param **.wlan[*].bitrate 24Mbps
+param *.configurator.addStaticRoutes false
+param **.netmaskRoutes "\"\""
+param **.arp.typename "\"GlobalArp\""
+param *.host*.wlan[0].typename "\"AckingWirelessInterface\""
+param *.host*.wlan[0].radio.transmitter.communicationRange 2000m
+param *.host*.wlan[0].radio.displayCommunicationRange true
+param *.visualizer.osgVisualizer.typename "\"IntegratedOsgVisualizer\""
+param *.visualizer.osgVisualizer.sceneVisualizer.clearColor "\"skyblue\""
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneImage "\"showcases/desert\""
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneImageSize 5000m
+param *.visualizer.osgVisualizer.sceneVisualizer.axisLength 1000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinX -2000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinY -2000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMinZ 0m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxX 3000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxY 3000m
+param *.visualizer.osgVisualizer.sceneVisualizer.sceneMaxZ 1000m
+param *.visualizer.osgVisualizer.networkNodeVisualizer.displayModuleName false
+param *.visualizer.*.mobilityVisualizer.displayMobility true
+param *.visualizer.*.mobilityVisualizer.displayPositions true
+param *.visualizer.*.mobilityVisualizer.displayOrientations true
+param *.visualizer.*.mobilityVisualizer.displayVelocities true
+param *.visualizer.*.mobilityVisualizer.displayMovementTrails true
+param *.visualizer.*.mobilityVisualizer.animationSpeed 1
+param *.visualizer.*.packetDropVisualizer.displayPacketDrops false
+param *.visualizer.*.packetDropVisualizer.labelFormat "\"%n/reason: %r\""
+param *.visualizer.*.packetDropVisualizer.fadeOutTime 10s
+param **.constraintAreaMinX 0m
+param **.constraintAreaMinY 0m
+param **.constraintAreaMinZ 40m
+param **.constraintAreaMaxX 2500m
+param **.constraintAreaMaxY 2000m
+param **.constraintAreaMaxZ 200m
+param *.visualizer.*.mediumVisualizer.signalPropagationAnimationSpeed 500/3e8
+param *.visualizer.*.mediumVisualizer.signalTransmissionAnimationSpeed 50000/3e8
+param *.visualizer.*.mediumVisualizer.displaySignals false
+param *.visualizer.*.mediumVisualizer.displayTransmissions false
+param *.visualizer.*.mediumVisualizer.displayReceptions false
+param *.visualizer.*.mediumVisualizer.transmissionPlacementPriority 10
+param *.visualizer.*.mediumVisualizer.receptionPlacementPriority 10
+param *.visualizer.*.mediumVisualizer.displaySignals false
+param *.visualizer.*.mediumVisualizer.signalFadingDistance 50m
+param *.visualizer.*.mediumVisualizer.signalRingSize 50m
+param *.visualizer.osgVisualizer.mediumVisualizer.signalShape "\"both\""
+param *.host[*].osgModel "\"3d/drone.ive.100.scale.0,0,90.rot\""
+param *.host[*].mobility.typename "\"MassMobility\""
+param *.host[*].mobility.changeInterval 1s
+param *.host[*].mobility.initialMovementHeading "uniform(0deg, 360deg)"
+param *.host[*].mobility.initialMovementElevation "uniform(-90deg, 90deg)"
+param *.host[*].mobility.angleDelta uniform(-10deg,10deg)
+param *.host[*].mobility.rotationAxisAngle uniform(-10deg,10deg)
+param *.host[*].mobility.speed uniform(10mps,20mps)
+param *.host[*].mobility.faceForward false
+
+vector 0 FanetGrayHole.host[0].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 1 FanetGrayHole.host[1].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 2 FanetGrayHole.host[2].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 3 FanetGrayHole.host[0].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 4 FanetGrayHole.host[0].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 5 FanetGrayHole.host[1].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 6 FanetGrayHole.host[1].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 7 FanetGrayHole.host[2].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 8 FanetGrayHole.host[2].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 9 FanetGrayHole.host[0].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 10 FanetGrayHole.host[0].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 11 FanetGrayHole.host[0].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 12 FanetGrayHole.host[0].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 13 FanetGrayHole.host[0].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 14 FanetGrayHole.host[0].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 15 FanetGrayHole.host[1].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 16 FanetGrayHole.host[1].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 17 FanetGrayHole.host[2].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 18 FanetGrayHole.host[2].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 19 FanetGrayHole.host[1].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromUpper
+attr title "packets received from higher layer, vector(packetBytes)"
+vector 20 FanetGrayHole.host[1].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet pushed, vector(packetBytes)"
+vector 21 FanetGrayHole.host[1].wlan[0].mac.queue queueLength:vector ETV
+attr interpolationmode sample-hold
+attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
+attr title "queue length, vector"
+vector 22 FanetGrayHole.host[1].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+attr interpolationmode none
+attr title "packet popped, vector(packetBytes)"
+vector 23 FanetGrayHole.host[1].wlan[0].mac.queue queueingTime:vector ETV
+attr interpolationmode none
+attr source queueingTime(packetPopped)
+attr title "queueing times, vector"
+attr unit s
+vector 24 FanetGrayHole.host[1].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToLower
+attr title "packets sent to lower layer, vector(packetBytes)"
+vector 25 FanetGrayHole.host[0].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 26 FanetGrayHole.host[0].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 27 FanetGrayHole.host[0].app[0] packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 28 FanetGrayHole.host[0].udp packetSent:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSent
+attr title "packets sent, vector(packetBytes)"
+vector 29 FanetGrayHole.host[1].udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 30 FanetGrayHole.host[1].udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed up, vector(count)"
+vector 31 FanetGrayHole.host[1].app[0] packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 32 FanetGrayHole.host[1].app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+vector 33 FanetGrayHole.host[1].app[0] endToEndDelay:vector ETV
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "end-to-end delay, vector"
+attr unit s
+vector 34 FanetGrayHole.host[1].app[0] rcvdPkSeqNo:vector ETV
+attr interpolationmode none
+attr source appPkSeqNo(packetReceived)
+attr title "received packet sequence number, vector"
+vector 35 FanetGrayHole.host[2].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+0	10856 24 0 0 0 0 3 0 4 4 16
+1	10880 24 0 0 0 0 3 0 4 4 16
+2	10904 24 0 0 0 0 3 0 4 4 16
+3	10928 56 0 354 0 10.928472187789 3 1 3 5 11
+4	10984 90 0 374 0 11.000365333333 5 1 2 7 11
+5	11074 103 0 375 0 11.000368689483 5 1 3 9 21
+6	11177 56 0 353 0 10.928468830556 3 1 2 4 6
+7	11233 150 0 380 0 11.000370000425 7 1 3 13 31
+8	11383 8 0 0 0 0 1 1 1 1 1
+9	11391 39 318 370 10.488135023043 11 2 40 1068 1108 1142224
+10	11430 41 318 370 10.488135023043 11 2 40 1068 1108 1142224
+11	11471 74 318 370 10.488135023043 11 4 0 1 2 2
+12	11545 41 318 370 10.488135023043 11 2 40 1068 1108 1142224
+13	11586 37 318 370 10.488135023043 11 2 0 0 0 0
+14	11623 41 318 370 10.488135023043 11 2 56 1084 1140 1178192
+15	11664 54 324 376 10.488161053959 11.000368689483 2 56 1084 1140 1178192
+16	11718 54 324 376 10.488161053959 11.000368689483 2 40 1068 1108 1142224
+17	11772 79 328 381 10.48816235228 11.000370000425 3 56 1084 1196 1181328
+18	11851 51 328 359 10.48816235228 10.928473304857 2 40 40 80 3200
+19	11902 26 349 349 10.928446163889 10.928446163889 1 40 40 40 1600
+20	11928 26 349 349 10.928446163889 10.928446163889 1 40 40 40 1600
+21	11954 50 349 349 10.928446163889 10.928446163889 2 0 1 1 1
+22	12004 26 349 349 10.928446163889 10.928446163889 1 40 40 40 1600
+23	12030 25 349 349 10.928446163889 10.928446163889 1 0 0 0 0
+24	12055 26 349 349 10.928446163889 10.928446163889 1 56 56 56 3136
+25	12081 26 355 355 10.928472187789 10.928472187789 1 56 56 56 3136
+26	12107 26 355 355 10.928472187789 10.928472187789 1 40 40 40 1600
+27	12133 15 363 363 11 11 1 1000 1000 1000 1000000
+28	12148 15 368 368 11 11 1 1008 1008 1008 1016064
+29	12163 28 378 378 11.000368689483 11.000368689483 1 1008 1008 1008 1016064
+30	12191 25 378 378 11.000368689483 11.000368689483 1 1 1 1 1
+31	12216 28 379 379 11.000368689483 11.000368689483 1 1000 1000 1000 1000000
+32	12244 1419 379 379 0.1 11 110 0 0 0 0
+33	13663 38 379 379 11.000368689483 11.000368689483 1 0.000368689483 0.000368689483 0.000368689483 1.3593193487481e-07
+34	13701 25 379 379 11.000368689483 11.000368689483 1 0 0 0 0
+35	13726 28 381 381 11.000370000425 11.000370000425 1 1084 1084 1084 1175056
+

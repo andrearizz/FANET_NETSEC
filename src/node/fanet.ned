@@ -27,7 +27,7 @@ network Fanet
         @figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
 
         @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
-        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+        @statistic[packetReceived](source=host[1].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
 		
 		
 		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
@@ -65,7 +65,7 @@ network FanetSybil
 		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
 
         @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
-        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+        @statistic[packetReceived](source=host[1].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
 		
 		
 		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
@@ -104,7 +104,7 @@ network FanetSybilNormale
 		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
 
         @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
-        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+        @statistic[packetReceived](source=host[1].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
 		
 		
 		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
@@ -145,7 +145,7 @@ network FanetSecureSybil
 		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
 
         @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
-        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+        @statistic[packetReceived](source=host[1].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
 		
 		
 		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
@@ -183,7 +183,7 @@ network FanetCoordinateNormale
 		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
 
         @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
-        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+        @statistic[packetReceived](source=host[1].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
 		
 		
 		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
@@ -222,7 +222,7 @@ network FanetCoordinate
 		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
 
         @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
-        @statistic[packetReceived](source=host[15].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+        @statistic[packetReceived](source=host[1].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
 		
 		
 		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
@@ -239,7 +239,7 @@ network FanetCoordinate
             @display("p=100,50");
         }
 
-        host[numHosts]: SecureSybil;
+        host[numHosts]: Sybil;
         
         attacker[numAttackers]: CoordAttacker;
         
@@ -252,4 +252,38 @@ network FanetCoordinate
             @display("p=100,147");
         }
    
+}
+
+network FanetGrayHole
+{
+    parameters:
+		@figure[title](type=label; pos=0,-1; anchor=sw; color=darkblue);
+
+        @figure[rcvdPkText](type=indicatorText; pos=380,20; anchor=w; font=,38; textFormat="packets received: %g"; initialValue=0);
+        @statistic[packetReceived](source=host[1].app[0].packetReceived; record=figure(count); targetFigure=rcvdPkText);
+		
+		
+		@figure[sntPkText](type=indicatorText; pos=380,60; anchor=w; font=,38; textFormat="packets sent: %g"; initialValue=0);
+        @statistic[packetSent](source=host[0].app[0].packetSent; record=figure(count); targetFigure=sntPkText);
+        
+        
+        int numHosts;
+
+
+    submodules:
+
+        visualizer: IntegratedVisualizer {
+            @display("p=100,50");
+        }
+
+        host[numHosts]: GrayHole;
+        
+       
+        configurator: Ipv4NetworkConfigurator {
+            @display("p=98,250");
+        }
+
+        radioMedium: <default("UnitDiskRadioMedium")> like IRadioMedium {
+            @display("p=100,147");
+        }
 }

@@ -49,36 +49,38 @@ namespace sec {
 class INET_API Gpsr : public RoutingProtocolBase, public cListener, public NetfilterBase::HookBase
 {
   private:
-    // GPSR parameters
-    GpsrPlanarizationMode planarizationMode = static_cast<GpsrPlanarizationMode>(-1);
-    const char *interfaces = nullptr;
-    simtime_t beaconInterval;
-    simtime_t maxJitter;
-    simtime_t neighborValidityInterval;
-    bool displayBubbles;
 
-    // context
-    cModule *host = nullptr;
-    IMobility *mobility = nullptr;
-    IL3AddressType *addressType = nullptr;
-    IInterfaceTable *interfaceTable = nullptr;
-    const char *outputInterface = nullptr;
-    IRoutingTable *routingTable = nullptr;    // TODO: delete when necessary functions are moved to interface table
-    INetfilter *networkProtocol = nullptr;
-    static PositionTable globalPositionTable;    // KLUDGE: implement position registry protocol
-
-    // packet size
-    int positionByteLength = -1;
-
-    // internal
-    cMessage *beaconTimer = nullptr;
-    cMessage *purgeNeighborsTimer = nullptr;
-    PositionTable neighborPositionTable;
 
   public:
     Gpsr();
     virtual ~Gpsr();
 
+
+    // GPSR parameters
+        GpsrPlanarizationMode planarizationMode = static_cast<GpsrPlanarizationMode>(-1);
+        const char *interfaces = nullptr;
+        simtime_t beaconInterval;
+        simtime_t maxJitter;
+        simtime_t neighborValidityInterval;
+        bool displayBubbles;
+
+        // context
+        cModule *host = nullptr;
+        IMobility *mobility = nullptr;
+        IL3AddressType *addressType = nullptr;
+        IInterfaceTable *interfaceTable = nullptr;
+        const char *outputInterface = nullptr;
+        IRoutingTable *routingTable = nullptr;    // TODO: delete when necessary functions are moved to interface table
+        INetfilter *networkProtocol = nullptr;
+        static PositionTable globalPositionTable;    // KLUDGE: implement position registry protocol
+
+        // packet size
+        int positionByteLength = -1;
+
+        // internal
+        cMessage *beaconTimer = nullptr;
+        cMessage *purgeNeighborsTimer = nullptr;
+        PositionTable neighborPositionTable;
   protected:
     // module interface
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
