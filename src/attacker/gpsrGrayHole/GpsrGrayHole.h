@@ -36,17 +36,7 @@
 namespace inet {
 namespace sec {
 
-/**
- * This class implements the Greedy Perimeter Stateless Routing for Wireless Networks.
- * The implementation supports both GG and RNG planarization algorithms.
- *
- * For more information on the routing algorithm, see the GpsrGrayHole paper
- * http://www.eecs.harvard.edu/~htk/publication/2000-mobi-karp-kung.pdf
- */
-// TODO: optimize internal data structures for performance to use less lookups and be more prepared for routing a packet
-// TODO: implement position piggybacking that is all packets should carry the position of the sender, all packets act as a beacon and reset beacon timer
-// TODO: implement promiscuous mode, all receivers should process all packets with respect to neighbor positions
-// KLUDGE: implement position registry protocol instead of using a global variable
+
 class GpsrGrayHole: public Gpsr {
 public:
     GpsrGrayHole();

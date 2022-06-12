@@ -124,6 +124,15 @@
   host/gpsrSecureSybil/../gpsr/Gpsr_m.h \
   ../../inet4/src/inet/common/TlvOptions_m.h \
   ../../inet4/src/inet/common/geometry/Geometry_m.h host/gpsr/GpsrDefs.h \
+  /usr/local/include/cryptopp/eccrypto.h \
+  /usr/local/include/cryptopp/gfpcrypt.h \
+  /usr/local/include/cryptopp/modexppc.h \
+  /usr/local/include/cryptopp/dh.h /usr/local/include/cryptopp/mqv.h \
+  /usr/local/include/cryptopp/hmqv.h /usr/local/include/cryptopp/fhmqv.h \
+  /usr/local/include/cryptopp/ecp.h \
+  /usr/local/include/cryptopp/ecpoint.h \
+  /usr/local/include/cryptopp/gf2n.h /usr/local/include/cryptopp/ec2n.h \
+  /usr/local/include/cryptopp/oids.h /usr/local/include/cryptopp/dsa.h \
   ../../inet4/src/inet/networklayer/ipv4/Ipv4Header_m.h \
   ../../inet4/src/inet/networklayer/contract/ipv4/Ipv4Address_m.h \
   ../../inet4/src/inet/common/ProtocolGroup.h \
@@ -394,6 +403,32 @@ host/gpsrSecureSybil/../gpsr/Gpsr_m.h:
 ../../inet4/src/inet/common/geometry/Geometry_m.h:
 
 host/gpsr/GpsrDefs.h:
+
+/usr/local/include/cryptopp/eccrypto.h:
+
+/usr/local/include/cryptopp/gfpcrypt.h:
+
+/usr/local/include/cryptopp/modexppc.h:
+
+/usr/local/include/cryptopp/dh.h:
+
+/usr/local/include/cryptopp/mqv.h:
+
+/usr/local/include/cryptopp/hmqv.h:
+
+/usr/local/include/cryptopp/fhmqv.h:
+
+/usr/local/include/cryptopp/ecp.h:
+
+/usr/local/include/cryptopp/ecpoint.h:
+
+/usr/local/include/cryptopp/gf2n.h:
+
+/usr/local/include/cryptopp/ec2n.h:
+
+/usr/local/include/cryptopp/oids.h:
+
+/usr/local/include/cryptopp/dsa.h:
 
 ../../inet4/src/inet/networklayer/ipv4/Ipv4Header_m.h:
 

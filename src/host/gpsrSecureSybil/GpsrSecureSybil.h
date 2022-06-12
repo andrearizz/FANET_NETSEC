@@ -91,6 +91,7 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
     void generatePrivateKey(CryptoPP::RSA::PrivateKey privateKey);
     void generatePublicKey(CryptoPP::RSA::PrivateKey privateKey);
     string sign(string content);
+    string signECDSA(string content);
 
   protected:
     // module interface
@@ -118,8 +119,10 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
 
     // handling beacons
     const Ptr<GpsrBeaconSecure> createBeacon();
+    const Ptr<GpsrBeaconSecure> createBeaconECDSA();
     void sendBeacon(const Ptr<GpsrBeaconSecure>& beacon);
     void processBeacon(Packet *packet);
+    void preocessBeaconECDSAiptic(Packet *packet);
 
     // handling packets
     GpsrOption *createGpsrOption(L3Address destination);

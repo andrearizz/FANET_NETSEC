@@ -43,8 +43,16 @@
 #include "cryptopp/files.h"
 #include "cryptopp/queue.h"
 #include "cryptopp/base64.h"
+#include <chrono>
+#include <cryptopp/eccrypto.h>
+#include <cryptopp/asn.h>
+#include <cryptopp/cryptlib.h>
+#include <cryptopp/oids.h>
+#include <cryptopp/dsa.h>
 using namespace CryptoPP;
 using namespace std;
+using namespace std::chrono;
+
 
 #ifdef WITH_IPv4
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
@@ -85,58 +93,6 @@ GpsrSecureSybil::~GpsrSecureSybil()
 //
 
 
-/*
-CryptoPP::RSA::PrivateKey privateKey;
-
-void GpsrSecureSybil::generatePrivateKey(CryptoPP::RSA::PrivateKey privateKey){
-    srand(420);
-    CryptoPP::AutoSeededRandomPool rng;
-    privateKey.GenerateRandomWithKeySize(rng, 3072);
-}
-
-
-void Save(const std::string& filename, const CryptoPP::BufferedTransformation& bt)
-{
-    CryptoPP::FileSink file(filename.c_str());
-
-    bt.CopyTo(file);
-    file.MessageEnd();
-}
-
-void SavePublicKey(const std::string& filename, const CryptoPP::RSA::PublicKey& key)
-{
-    CryptoPP::ByteQueue queue;
-    key.Save(queue);
-
-    Save(filename, queue);
-}
-
-void GpsrSecureSybil::generatePublicKey(CryptoPP::RSA::PrivateKey privateKey){
-    CryptoPP::RSA::PublicKey rsaPublic(privateKey);
-    std::string filename = getSelfAddress().toIpv4().str();
-    SavePublicKey(filename, rsaPublic);
-
-}
- */
-
-/*
-void generateKeyPair() {
-    AutoSeededRandomPool rng;
-    InvertibleRSAFunction privkey;
-    privkey.Initialize(rng, 1024);
-
-    Base64Encoder privkeysink(new FileSink("private_" + getSelfAddress().toIpv4().str() + ".txt"));
-    privkey.DEREncode(privkeysink);
-    privkeysink.MessageEnd();
-
-    RSAFunction pubkey(privkey);
-
-    Base64Encoder pubkeysink(new FileSink("public_" + getSelfAddress().toIpv4().str() + ".txt"));
-    pubkey.DEREncode(pubkeysink);
-    pubkeysink.MessageEnd();
-
-}
- */
 
 void GpsrSecureSybil::initialize(int stage)
 {
@@ -188,9 +144,47 @@ void GpsrSecureSybil::initialize(int stage)
     // generatePrivateKey(privateKey);
     // generatePublicKey(privateKey);
 
+
     AutoSeededRandomPool rng;
+
+    ECDSA<ECP, SHA256>::PrivateKey privkey;
+    ECDSA<ECP, SHA256>::PublicKey publkey;
+    privkey.Initialize(rng, ASN1::secp256k1());
+    /*
     InvertibleRSAFunction privkey;
-    privkey.Initialize(rng, 1024);
+    privkey.Initialize(rng, 2048);
+    */
+
+    string prvKey = "privateKeyECDSA/" + getSelfAddress().toIpv4().str();
+    const char* ipPrivate = prvKey.c_str();
+    Base64Encoder privkeysink(new FileSink(ipPrivate));
+    privkey.DEREncode(privkeysink);
+    privkeysink.MessageEnd();
+
+    /*
+    RSAFunction pubkey(privkey);
+
+    string pubKey = "publicKey/" + getSelfAddress().toIpv4().str();
+    const char* ipPublic = pubKey.c_str();
+    Base64Encoder pubkeysink(new FileSink(ipPublic));
+    pubkey.DEREncode(pubkeysink);
+    pubkeysink.MessageEnd();
+    */
+
+    // generateECSAPrivKey(rng);
+
+    privkey.MakePublicKey( publkey );
+    string publKey = "publicKeyECDSA/" + getSelfAddress().toIpv4().str();
+    const char* ipPublic = publKey.c_str();
+    Base64Encoder publkeysink(new FileSink(ipPublic));
+    publkey.DEREncode(publkeysink);
+    publkeysink.MessageEnd();
+}
+/*
+void generateRSAKeys(AutoSeededRandomPool rng) {
+
+    InvertibleRSAFunction privkey;
+    privkey.Initialize(rng, 2048);
 
     string prvKey = "privateKey/" + getSelfAddress().toIpv4().str();
     const char* ipPrivate = prvKey.c_str();
@@ -206,6 +200,21 @@ void GpsrSecureSybil::initialize(int stage)
     pubkey.DEREncode(pubkeysink);
     pubkeysink.MessageEnd();
 }
+*/
+
+/*
+void generateECDSAPrivKey(AutoSeededRandomPool rng) {
+    ECDSA<ECP, SHA256>::PrivateKey privkey;
+    privkey.Initialize(rng, ASN1::secp256k1());
+
+    string prvKey = "privateKeyECDSA/" + getSelfAddress().toIpv4().str();
+    const char* ipPrivate = prvKey.c_str();
+    Base64Encoder privkeysink(new FileSink(ipPrivate));
+    privkey.DEREncode(privkeysink);
+    privkeysink.MessageEnd();
+
+}
+*/
 
 void GpsrSecureSybil::handleMessageWhenUp(cMessage *message)
 {
@@ -252,7 +261,7 @@ void GpsrSecureSybil::processBeaconTimer()
     EV_DEBUG << "Processing beacon timer" << endl;
     const L3Address selfAddress = getSelfAddress();
     if (!selfAddress.isUnspecified()) {
-        sendBeacon(createBeacon());
+        sendBeacon(createBeaconECDSA());
         storeSelfPositionInGlobalRegistry();
     }
     scheduleBeaconTimer();
@@ -341,6 +350,43 @@ string GpsrSecureSybil::sign(string content) {
 
 }
 
+string GpsrSecureSybil::signECDSA(string content) {
+    AutoSeededRandomPool rng;
+
+    CryptoPP::ByteQueue bytes;
+
+    string prvKey = "privateKeyECDSA/" + getSelfAddress().toIpv4().str();
+    const char* ipPrivate = prvKey.c_str();
+    FileSource file(ipPrivate, true, new Base64Decoder);
+    file.TransferTo(bytes);
+    bytes.MessageEnd();
+
+    ECDSA<ECP, SHA256>::PrivateKey privateKey;
+    privateKey.Load(bytes);
+    ECDSA<ECP, SHA256>::Signer signer(privateKey);
+    signer.AccessKey().Initialize( rng, ASN1::secp256k1() );
+
+    size_t siglen = signer.MaxSignatureLength();
+
+
+
+    byte* signature = new byte[signer.SignatureLength()];
+
+    siglen = signer.SignMessage( rng, (const byte*) content.c_str(), content.size(), (byte*) signature);
+
+    len = siglen;
+    string sig(reinterpret_cast<const char *>(signature), siglen);
+
+    string messageBase64;
+
+    StringSource ss(sig, true, new Base64Encoder(new StringSink(messageBase64)));
+
+    return messageBase64;
+
+
+}
+
+
 const Ptr<GpsrBeaconSecure> GpsrSecureSybil::createBeacon()
 {
     const auto& beacon = makeShared<GpsrBeaconSecure>();
@@ -350,8 +396,18 @@ const Ptr<GpsrBeaconSecure> GpsrSecureSybil::createBeacon()
     string signature = sign(content);
     beacon -> setSignature(signature.c_str());
     beacon->setChunkLength(B(getSelfAddress().getAddressType()->getAddressByteLength() + positionByteLength + signature.length()));
-
     return beacon;
+}
+
+const Ptr<GpsrBeaconSecure> GpsrSecureSybil::createBeaconECDSA() {
+    const auto& beacon = makeShared<GpsrBeaconSecure>();
+        beacon->setAddress(getSelfAddress());
+        beacon->setPosition(mobility->getCurrentPosition());
+        string content = beacon -> getAddress().str() + " " + beacon -> getPosition().str();
+        string signature = sign(content);
+        beacon -> setSignature(signature.c_str());
+        beacon->setChunkLength(B(getSelfAddress().getAddressType()->getAddressByteLength() + positionByteLength + signature.length()));
+        return beacon;
 }
 
 void GpsrSecureSybil::sendBeacon(const Ptr<GpsrBeaconSecure>& beacon)
@@ -375,7 +431,6 @@ void GpsrSecureSybil::sendBeacon(const Ptr<GpsrBeaconSecure>& beacon)
 
 
 bool verify(Packet *packet){
-    bool result = false;
     CryptoPP::ByteQueue bytes;
 
     const auto& beacon = packet->peekAtFront<GpsrBeaconSecure>();
@@ -402,65 +457,54 @@ bool verify(Packet *packet){
     //cout << "Inizio a firmare" << endl;
     bool r = verifier.VerifyMessage((const byte*) content.c_str(),content.length(), (const byte*) signature.c_str(), len);
 
-    /*
-    if(r){
-        cout << "Firma andatra a buon fine" << endl;
-    }
-    else{
+    return r;
+}
 
-        cout << "Firma andatra a fan" << endl;
-    }
-    */
+bool verifyECDSA(Packet *packet) {
+    CryptoPP::ByteQueue bytes;
 
-    /*
-    const char * content1 = content.c_str();
-
-    string combined(content1);
-    combined.append(signature);
-
-    cout << "Inizio a firmare" << endl;
-
-    cout << "Combined: " + combined << endl;
-    //cout << "Content: " + content << endl;
-
-    try
-    {
-        StringSource(combined, true, new SignatureVerificationFilter(verifier, NULL,SignatureVerificationFilter::THROW_EXCEPTION));
-        cout << "Firma OK" << endl;
-        EV_INFO << "Firma OK" << endl;
-        result = true;
-    }
-    catch(SignatureVerificationFilter::SignatureVerificationFailed &err)
-    {
-        cout << "Errore nella firma: " << err.what() << endl;
-        return false;
-    }
+    const auto& beacon = packet->peekAtFront<GpsrBeaconSecure>();
+    string ipPublic = "publicKeyECDSA/" + beacon->getAddress().toIpv4().str();
+    const char* pubKeyFile = ipPublic.c_str();
+    FileSource file(pubKeyFile, true, new Base64Decoder);
+    file.TransferTo(bytes);
+    bytes.MessageEnd();
+    ECDSA<ECP, SHA256>::PublicKey pubKey;
+    pubKey.Load(bytes);
 
 
-    cout << "Fine firma" << endl;
-     */
+    std::string signature;
+    CryptoPP::StringSource ss(beacon->getSignature(), true, new CryptoPP::Base64Decoder(new CryptoPP::StringSink(signature)));
+
+    ECDSA<ECP, SHA256>::Verifier verifier( pubKey );
+
+    string content = beacon -> getAddress().str() + " " + beacon -> getPosition().str();
+
+    bool r = verifier.VerifyMessage((const byte*) content.c_str(),content.length(), (const byte*) signature.c_str(), len);
+
     return r;
 }
 
 
 
-
-void GpsrSecureSybil::processBeacon(Packet *packet)
-{
-
+void GpsrSecureSybil::processBeacon(Packet *packet) {
     const auto& beacon = packet->peekAtFront<GpsrBeaconSecure>();
-    //verify
-    if(verify(packet)){
-        EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << ", signature = " << beacon -> getSignature() << endl;
-        neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
-        EV_INFO << "Processing neighborPositionTable: address = " << neighborPositionTable << endl;
+        //verify
+        if(verifyECDSA(packet)){
+            EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << ", signature = " << beacon -> getSignature() << endl;
+            neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
+            EV_INFO << "Processing neighborPositionTable: address = " << neighborPositionTable << endl;
 
-    }
-    delete packet;
+        }
+        delete packet;
 }
+
+
 //
 // handling packets
 //
+
+
 
 GpsrOption* GpsrSecureSybil::createGpsrOption(L3Address destination)
 {
