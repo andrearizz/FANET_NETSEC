@@ -367,19 +367,20 @@ string GpsrSecureSybil::signECDSA(string content) {
     signer.AccessKey().Initialize( rng, ASN1::secp256k1() );
 
     size_t siglen = signer.MaxSignatureLength();
+    string signature(siglen, 0x00);
+    // byte* signature = new byte[signer.SignatureLength()];
 
 
-
-    byte* signature = new byte[signer.SignatureLength()];
-
-    siglen = signer.SignMessage( rng, (const byte*) content.c_str(), content.size(), (byte*) signature);
+    siglen = signer.SignMessage( rng, (const byte*) &content[0], content.size(), (byte*) &signature[0]);
+    signature.resize(siglen);
 
     len = siglen;
-    string sig(reinterpret_cast<const char *>(signature), siglen);
+    string sig(reinterpret_cast<const char *>((byte*)&signature[0]), siglen);
 
     string messageBase64;
 
     StringSource ss(sig, true, new Base64Encoder(new StringSink(messageBase64)));
+
 
     return messageBase64;
 
@@ -401,13 +402,15 @@ const Ptr<GpsrBeaconSecure> GpsrSecureSybil::createBeacon()
 
 const Ptr<GpsrBeaconSecure> GpsrSecureSybil::createBeaconECDSA() {
     const auto& beacon = makeShared<GpsrBeaconSecure>();
-        beacon->setAddress(getSelfAddress());
-        beacon->setPosition(mobility->getCurrentPosition());
-        string content = beacon -> getAddress().str() + " " + beacon -> getPosition().str();
-        string signature = sign(content);
-        beacon -> setSignature(signature.c_str());
-        beacon->setChunkLength(B(getSelfAddress().getAddressType()->getAddressByteLength() + positionByteLength + signature.length()));
-        return beacon;
+    beacon->setAddress(getSelfAddress());
+    beacon->setPosition(mobility->getCurrentPosition());
+    string content = beacon -> getAddress().str() + " " + beacon -> getPosition().str();
+    cout << "Start signing" << endl;
+    string signature = signECDSA(content);
+    cout << "end signing" << endl;
+    beacon -> setSignature(signature.c_str());
+    beacon->setChunkLength(B(getSelfAddress().getAddressType()->getAddressByteLength() + positionByteLength + signature.length()));
+    return beacon;
 }
 
 void GpsrSecureSybil::sendBeacon(const Ptr<GpsrBeaconSecure>& beacon)
@@ -464,6 +467,7 @@ bool verifyECDSA(Packet *packet) {
     CryptoPP::ByteQueue bytes;
 
     const auto& beacon = packet->peekAtFront<GpsrBeaconSecure>();
+
     string ipPublic = "publicKeyECDSA/" + beacon->getAddress().toIpv4().str();
     const char* pubKeyFile = ipPublic.c_str();
     FileSource file(pubKeyFile, true, new Base64Decoder);
@@ -474,14 +478,21 @@ bool verifyECDSA(Packet *packet) {
 
 
     std::string signature;
+
     CryptoPP::StringSource ss(beacon->getSignature(), true, new CryptoPP::Base64Decoder(new CryptoPP::StringSink(signature)));
+
 
     ECDSA<ECP, SHA256>::Verifier verifier( pubKey );
 
     string content = beacon -> getAddress().str() + " " + beacon -> getPosition().str();
 
-    bool r = verifier.VerifyMessage((const byte*) content.c_str(),content.length(), (const byte*) signature.c_str(), len);
 
+    bool r = verifier.VerifyMessage((const byte*) &content[0],content.size(), (const byte*) &signature[0], signature.size());
+
+    if(r)
+        cout << "Firma verificata correttamente" << endl;
+    else
+        cout << "Verifica Firma fallita" << endl;
     return r;
 }
 
