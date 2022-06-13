@@ -268,6 +268,7 @@ network FanetGrayHole
         
         
         int numHosts;
+        int numAttackers;
 
 
     submodules:
@@ -276,8 +277,9 @@ network FanetGrayHole
             @display("p=100,50");
         }
 
-        host[numHosts]: GrayHole;
+        host[numHosts]: Drone;
         
+        attacker[numAttackers]: GrayHole;
        
         configurator: Ipv4NetworkConfigurator {
             @display("p=98,250");

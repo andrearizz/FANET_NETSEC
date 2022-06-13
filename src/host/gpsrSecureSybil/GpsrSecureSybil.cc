@@ -93,7 +93,7 @@ GpsrSecureSybil::~GpsrSecureSybil()
 //
 
 
-
+AutoSeededRandomPool rng;
 void GpsrSecureSybil::initialize(int stage)
 {
     //EV_INFO << "KEY: " + privateKey << endl;
@@ -145,7 +145,7 @@ void GpsrSecureSybil::initialize(int stage)
     // generatePublicKey(privateKey);
 
 
-    AutoSeededRandomPool rng;
+    // AutoSeededRandomPool rng;
 
     ECDSA<ECP, SHA256>::PrivateKey privkey;
     ECDSA<ECP, SHA256>::PublicKey publkey;
@@ -322,7 +322,7 @@ void GpsrSecureSybil::processUdpPacket(Packet *packet)
 
 int len;
 string GpsrSecureSybil::sign(string content) {
-    AutoSeededRandomPool rng;
+    // AutoSeededRandomPool rng;
 
     CryptoPP::ByteQueue bytes;
 
@@ -351,7 +351,7 @@ string GpsrSecureSybil::sign(string content) {
 }
 
 string GpsrSecureSybil::signECDSA(string content) {
-    AutoSeededRandomPool rng;
+    // AutoSeededRandomPool rng;
 
     CryptoPP::ByteQueue bytes;
 
@@ -360,27 +360,49 @@ string GpsrSecureSybil::signECDSA(string content) {
     FileSource file(ipPrivate, true, new Base64Decoder);
     file.TransferTo(bytes);
     bytes.MessageEnd();
-
     ECDSA<ECP, SHA256>::PrivateKey privateKey;
     privateKey.Load(bytes);
+
+
+
+    cout << "Private is = " <<  privateKey.Validate(rng, 3) << endl;
+
     ECDSA<ECP, SHA256>::Signer signer(privateKey);
     signer.AccessKey().Initialize( rng, ASN1::secp256k1() );
 
+    /*
+     *
     size_t siglen = signer.MaxSignatureLength();
     string signature(siglen, 0x00);
-    // byte* signature = new byte[signer.SignatureLength()];
+    //byte* signature = new byte[signer.SignatureLength()];
 
 
     siglen = signer.SignMessage( rng, (const byte*) &content[0], content.size(), (byte*) &signature[0]);
+    // size_t siglen = signer.SignMessage(rng, (const byte*) content.c_str(), content.length(), signature);
     signature.resize(siglen);
 
+
     len = siglen;
-    string sig(reinterpret_cast<const char *>((byte*)&signature[0]), siglen);
+    string sig(reinterpret_cast<const char *>((const byte*)&signature[0]), signature.length());
+    // string sig(reinterpret_cast<const char *>(signature), siglen);
+
+    */
+
+
+    string signature;
+
+    StringSource s(content, true, new SignerFilter( rng, signer, new StringSink( signature )));
+
+    string sig(reinterpret_cast<const char *>((const byte*)&signature[0]), signature.length());
 
     string messageBase64;
 
     StringSource ss(sig, true, new Base64Encoder(new StringSink(messageBase64)));
 
+
+    cout << "Signature = " << sig << endl;
+
+    cout << "Signature base64 = " << messageBase64 << endl;
 
     return messageBase64;
 
@@ -476,24 +498,38 @@ bool verifyECDSA(Packet *packet) {
     ECDSA<ECP, SHA256>::PublicKey pubKey;
     pubKey.Load(bytes);
 
+    cout << "Public is = " << pubKey.Validate(rng, 3) << endl;
+
 
     std::string signature;
 
     CryptoPP::StringSource ss(beacon->getSignature(), true, new CryptoPP::Base64Decoder(new CryptoPP::StringSink(signature)));
 
 
-    ECDSA<ECP, SHA256>::Verifier verifier( pubKey );
+    ECDSA<ECP, SHA256>::Verifier verifier(pubKey);
+
 
     string content = beacon -> getAddress().str() + " " + beacon -> getPosition().str();
 
+    cout << "Signature verify = " << signature << endl;
 
-    bool r = verifier.VerifyMessage((const byte*) &content[0],content.size(), (const byte*) &signature[0], signature.size());
+    cout << "Signature base64 verify = " << beacon->getSignature() << endl;
 
-    if(r)
+    // bool r = verifier.VerifyMessage((const byte*) content.c_str(),content.length(), (const byte*) signature.c_str(), signature.size());
+    bool result = false;
+
+    StringSource sss( signature+content, true /*pump all*/,
+        new SignatureVerificationFilter(
+            verifier,
+            new ArraySink( (byte*)&result, sizeof(result) )
+        ) // SignatureVerificationFilter
+    );
+
+    if(result)
         cout << "Firma verificata correttamente" << endl;
     else
         cout << "Verifica Firma fallita" << endl;
-    return r;
+    return result;
 }
 
 

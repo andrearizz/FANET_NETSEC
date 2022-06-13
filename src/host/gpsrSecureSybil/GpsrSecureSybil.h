@@ -67,6 +67,7 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
     simtime_t neighborValidityInterval;
     bool displayBubbles;
 
+
     // context
     cModule *host = nullptr;
     IMobility *mobility = nullptr;
@@ -92,6 +93,7 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
     void generatePublicKey(CryptoPP::RSA::PrivateKey privateKey);
     string sign(string content);
     string signECDSA(string content);
+
 
   protected:
     // module interface
