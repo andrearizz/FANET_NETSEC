@@ -32,6 +32,7 @@
 #include "inet/networklayer/common/NextHopAddressTag_m.h"
 #include "inet/networklayer/contract/IInterfaceTable.h"
 #include "GpsrGrayHole.h"
+#include "Singleton.h"
 
 #ifdef WITH_IPv4
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
@@ -58,12 +59,15 @@ static inline double determinant(double a1, double a2, double b1, double b2)
 
 GpsrGrayHole::GpsrGrayHole()
 {
+
 }
 
 GpsrGrayHole::~GpsrGrayHole()
 {
     cancelAndDelete(beaconTimer);
     cancelAndDelete(purgeNeighborsTimer);
+    singleton = Singleton::GetInstance();
+    singleton->send_received.clear();
 }
 
 //
@@ -115,6 +119,9 @@ void GpsrGrayHole::initialize(int stage)
         networkProtocol->registerHook(0, this);
         WATCH(neighborPositionTable);
     }
+
+    singleton = Singleton::GetInstance();
+    singleton -> send_received.insert({getSelfAddress().toIpv4().str(),{0,0,1}});
 }
 
 void GpsrGrayHole::handleMessageWhenUp(cMessage *message)
@@ -253,7 +260,7 @@ void GpsrGrayHole::processBeacon(Packet *packet)
     const auto& beacon = packet->peekAtFront<GpsrBeacon>();
     EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
     neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
-    EV_INFO << "---------------Processing neighborPositionTable: address = " << neighborPositionTable << endl;
+    EV_INFO << "Processing neighborPositionTable: address = " << neighborPositionTable << endl;
     delete packet;
 }
 //
@@ -309,7 +316,7 @@ Coord GpsrGrayHole::lookupPositionInGlobalRegistry(const L3Address& address) con
 {
     // KLUDGE: implement position registry protocol
     Coord position = globalPositionTable.getPosition(address);
-    EV_INFO << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << position << address;
+    EV_INFO << position << address;
     return position;
 }
 
@@ -605,10 +612,13 @@ INetfilter::IHook::Result GpsrGrayHole::routeDatagram(Packet *datagram, GpsrOpti
     datagram->addTagIfAbsent<NextHopAddressReq>()->setNextHopAddress(nextHop);
     double prob= ((double) rand() / (RAND_MAX));
     double soglia = 0.65;
+    string ip = source.toIpv4().str();
+    singleton = Singleton::GetInstance();
     if (nextHop.isUnspecified() || prob < soglia) {
         EV_WARN << "No next hop found, dropping packet: source = " << source << ", destination = " << destination << endl;
         if (displayBubbles && hasGUI())
             getContainingNode(host)->bubble("No next hop found, dropping packet");
+        singleton->insert(ip, 1);
         return DROP;
     }
     else {
@@ -616,6 +626,7 @@ INetfilter::IHook::Result GpsrGrayHole::routeDatagram(Packet *datagram, GpsrOpti
         gpsrOption->setSenderAddress(getSelfAddress());
         auto interfaceEntry = CHK(interfaceTable->findInterfaceByName(outputInterface));
         datagram->addTagIfAbsent<InterfaceReq>()->setInterfaceId(interfaceEntry->getInterfaceId());
+        singleton->insert(ip, 0);
         return ACCEPT;
     }
 }

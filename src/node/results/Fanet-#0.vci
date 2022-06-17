@@ -1,15 +1,15 @@
-file 7456 1655477611                                            
+file 691170 1655483618                                          
 version 2
-run Fanet-0-20220617-16:53:20-19833
+run Fanet-0-20220617-18:33:33-20860
 attr configname Fanet
-attr datetime 20220617-16:53:20
+attr datetime 20220617-18:33:33
 attr experiment Fanet
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network Fanet
-attr processid 19833
+attr processid 20860
 attr repetition 0
 attr replication #0
 attr resultdir results
@@ -112,172 +112,150 @@ vector 4 Fanet.host[4].wlan[0].radio radioMode:vector ETV
 attr interpolationmode sample-hold
 attr source radioModeChanged
 attr title "Radio mode, vector"
-vector 5 Fanet.host[0].wlan[0].radio receptionState:vector ETV
+vector 5 Fanet.host[5].wlan[0].radio radioMode:vector ETV
+attr interpolationmode sample-hold
+attr source radioModeChanged
+attr title "Radio mode, vector"
+vector 6 Fanet.host[0].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 6 Fanet.host[0].wlan[0].radio transmissionState:vector ETV
+vector 7 Fanet.host[0].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 7 Fanet.host[1].wlan[0].radio receptionState:vector ETV
+vector 8 Fanet.host[1].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 8 Fanet.host[1].wlan[0].radio transmissionState:vector ETV
+vector 9 Fanet.host[1].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 9 Fanet.host[2].wlan[0].radio receptionState:vector ETV
+vector 10 Fanet.host[2].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 10 Fanet.host[2].wlan[0].radio transmissionState:vector ETV
+vector 11 Fanet.host[2].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 11 Fanet.host[3].wlan[0].radio receptionState:vector ETV
+vector 12 Fanet.host[3].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 12 Fanet.host[3].wlan[0].radio transmissionState:vector ETV
+vector 13 Fanet.host[3].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-vector 13 Fanet.host[4].wlan[0].radio receptionState:vector ETV
+vector 14 Fanet.host[4].wlan[0].radio receptionState:vector ETV
 attr interpolationmode sample-hold
 attr source receptionStateChanged
 attr title "Radio reception state, vector"
-vector 14 Fanet.host[4].wlan[0].radio transmissionState:vector ETV
+vector 15 Fanet.host[4].wlan[0].radio transmissionState:vector ETV
 attr interpolationmode sample-hold
 attr source transmissionStateChanged
 attr title "Radio transmission state, vector"
-0	7250 24 0 0 0 0 3 0 4 4 16
-1	7274 24 0 0 0 0 3 0 4 4 16
-2	7298 24 0 0 0 0 3 0 4 4 16
-3	7322 24 0 0 0 0 3 0 4 4 16
-4	7346 24 0 0 0 0 3 0 4 4 16
-5	7370 8 0 0 0 0 1 1 1 1 1
-6	7378 8 0 0 0 0 1 1 1 1 1
-7	7386 8 0 0 0 0 1 1 1 1 1
-8	7394 8 0 0 0 0 1 1 1 1 1
-9	7402 8 0 0 0 0 1 1 1 1 1
-10	7410 9 0 0 0 0 1 1 1 1 1
-11	7419 9 0 0 0 0 1 1 1 1 1
-12	7428 9 0 0 0 0 1 1 1 1 1
-13	7437 9 0 0 0 0 1 1 1 1 1
-14	7446 9 0 0 0 0 1 1 1 1 1
-vector 15 Fanet.host[0].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+vector 16 Fanet.host[5].wlan[0].radio receptionState:vector ETV
+attr interpolationmode sample-hold
+attr source receptionStateChanged
+attr title "Radio reception state, vector"
+vector 17 Fanet.host[5].wlan[0].radio transmissionState:vector ETV
+attr interpolationmode sample-hold
+attr source transmissionStateChanged
+attr title "Radio transmission state, vector"
+vector 18 Fanet.host[0].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetReceivedFromUpper
 attr title "packets received from higher layer, vector(packetBytes)"
-vector 16 Fanet.host[0].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+vector 19 Fanet.host[0].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
 attr interpolationmode none
 attr title "packet pushed, vector(packetBytes)"
-vector 17 Fanet.host[0].wlan[0].mac.queue queueLength:vector ETV
+vector 20 Fanet.host[0].wlan[0].mac.queue queueLength:vector ETV
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, vector"
-vector 18 Fanet.host[0].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+vector 21 Fanet.host[0].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
 attr interpolationmode none
 attr title "packet popped, vector(packetBytes)"
-vector 19 Fanet.host[0].wlan[0].mac.queue queueingTime:vector ETV
+vector 22 Fanet.host[0].wlan[0].mac.queue queueingTime:vector ETV
 attr interpolationmode none
 attr source queueingTime(packetPopped)
 attr title "queueing times, vector"
 attr unit s
-vector 20 Fanet.host[0].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+vector 23 Fanet.host[0].wlan[0].mac sentDownPk:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetSentToLower
 attr title "packets sent to lower layer, vector(packetBytes)"
-6	8579 47 527 532 10.488135023043 10.48815768971 2 1 2 3 5
-15	8626 26 526 526 10.488135023043 10.488135023043 1 40 40 40 1600
-16	8652 26 526 526 10.488135023043 10.488135023043 1 40 40 40 1600
-17	8678 50 526 526 10.488135023043 10.488135023043 2 0 1 1 1
-18	8728 26 526 526 10.488135023043 10.488135023043 1 40 40 40 1600
-19	8754 25 526 526 10.488135023043 10.488135023043 1 0 0 0 0
-20	8779 26 526 526 10.488135023043 10.488135023043 1 56 56 56 3136
-vector 21 Fanet.host[1].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+vector 24 Fanet.host[1].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetReceivedFromUpper
 attr title "packets received from higher layer, vector(packetBytes)"
-vector 22 Fanet.host[1].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+vector 25 Fanet.host[1].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
 attr interpolationmode none
 attr title "packet pushed, vector(packetBytes)"
-vector 23 Fanet.host[1].wlan[0].mac.queue queueLength:vector ETV
+vector 26 Fanet.host[1].wlan[0].mac.queue queueLength:vector ETV
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, vector"
-vector 24 Fanet.host[1].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+vector 27 Fanet.host[1].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
 attr interpolationmode none
 attr title "packet popped, vector(packetBytes)"
-vector 25 Fanet.host[1].wlan[0].mac.queue queueingTime:vector ETV
+vector 28 Fanet.host[1].wlan[0].mac.queue queueingTime:vector ETV
 attr interpolationmode none
 attr source queueingTime(packetPopped)
 attr title "queueing times, vector"
 attr unit s
-vector 26 Fanet.host[1].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+vector 29 Fanet.host[1].wlan[0].mac sentDownPk:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetSentToLower
 attr title "packets sent to lower layer, vector(packetBytes)"
-vector 27 Fanet.host[0].app[0] packetSent:vector(packetBytes) ETV
+vector 30 Fanet.host[0].app[0] packetSent:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, vector(packetBytes)"
-vector 28 Fanet.host[0].udp packetSent:vector(packetBytes) ETV
+vector 31 Fanet.host[0].udp packetSent:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetSent
 attr title "packets sent, vector(packetBytes)"
-vector 29 Fanet.host[4].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+vector 32 Fanet.host[4].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetReceivedFromUpper
 attr title "packets received from higher layer, vector(packetBytes)"
-vector 30 Fanet.host[4].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+vector 33 Fanet.host[4].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
 attr interpolationmode none
 attr title "packet pushed, vector(packetBytes)"
-vector 31 Fanet.host[4].wlan[0].mac.queue queueLength:vector ETV
+vector 34 Fanet.host[4].wlan[0].mac.queue queueLength:vector ETV
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, vector"
-vector 32 Fanet.host[4].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+vector 35 Fanet.host[4].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
 attr interpolationmode none
 attr title "packet popped, vector(packetBytes)"
-vector 33 Fanet.host[4].wlan[0].mac.queue queueingTime:vector ETV
+vector 36 Fanet.host[4].wlan[0].mac.queue queueingTime:vector ETV
 attr interpolationmode none
 attr source queueingTime(packetPopped)
 attr title "queueing times, vector"
 attr unit s
-vector 34 Fanet.host[4].wlan[0].mac sentDownPk:vector(packetBytes) ETV
+vector 37 Fanet.host[4].wlan[0].mac sentDownPk:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetSentToLower
 attr title "packets sent to lower layer, vector(packetBytes)"
-vector 35 Fanet.host[2].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
+vector 38 Fanet.host[2].wlan[0].mac rcvdPkFromHl:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetReceivedFromUpper
 attr title "packets received from higher layer, vector(packetBytes)"
-vector 36 Fanet.host[2].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
+vector 39 Fanet.host[2].wlan[0].mac.queue packetPushed:vector(packetBytes) ETV
 attr interpolationmode none
 attr title "packet pushed, vector(packetBytes)"
-vector 37 Fanet.host[2].wlan[0].mac.queue queueLength:vector ETV
+vector 40 Fanet.host[2].wlan[0].mac.queue queueLength:vector ETV
 attr interpolationmode sample-hold
 attr source "count(packetPushed) - count(packetPopped) - count(packetRemoved) - count(packetDropped)"
 attr title "queue length, vector"
-vector 38 Fanet.host[2].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
+vector 41 Fanet.host[2].wlan[0].mac.queue packetPopped:vector(packetBytes) ETV
 attr interpolationmode none
 attr title "packet popped, vector(packetBytes)"
-vector 39 Fanet.host[2].wlan[0].mac.queue queueingTime:vector ETV
-attr interpolationmode none
-attr source queueingTime(packetPopped)
-attr title "queueing times, vector"
-attr unit s
-vector 40 Fanet.host[2].wlan[0].mac sentDownPk:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetSentToLower
-attr title "packets sent to lower layer, vector(packetBytes)"
-vector 41 Fanet.host[3].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromLower
-attr title "packets received from lower layer, vector(packetBytes)"
+vector 4kets received from lower layer, vector(packetBytes)"
 vector 42 Fanet.host[3].wlan[0].mac passedUpPk:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetSentToUpper
@@ -321,89 +299,191 @@ vector 52 Fanet.host[0].wlan[0].mac passedUpPk:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed to higher layer, vector(packetBytes)"
-vector 53 Fanet.host[0].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+0	14392 24 0 0 0 0 3 0 4 4 16
+1	14416 24 0 0 0 0 3 0 4 4 16
+2	14440 24 0 0 0 0 3 0 4 4 16
+3	14464 24 0 0 0 0 3 0 4 4 16
+4	14488 24 0 0 0 0 3 0 4 4 16
+5	14512 60 0 6846 0 115.413627254553 3 1 3 5 11
+6	14572 559 0 6829 0 115.410533713316 23 1 2 34 56
+7	15131 8 0 0 0 0 1 1 1 1 1
+8	15139 504 0 6319 0 106.717894755444 21 1 2 31 51
+9	15643 306 0 6830 0 115.410534858537 13 1 3 25 61
+10	15949 530 0 6845 0 115.413626109389 21 1 2 31 51
+11	16479 216 0 6850 0 115.413627295568 9 1 3 17 41
+12	16695 526 0 6475 0 109.290242605516 21 1 2 31 51
+13	17221 9 0 0 0 0 1 1 1 1 1
+14	17230 631 0 6451 0 109.097927215648 25 1 2 37 61
+15	17861 298 526 6823 10.488135023043 115.410511046649 11 40 40 440 17600
+16	18159 298 526 6823 10.488135023043 115.410511046649 11 40 40 440 17600
+17	18457 574 526 6823 10.488135023043 115.410511046649 22 0 1 11 11
+18	19031 298 526 6823 10.488135023043 115.410511046649 11 40 40 440 17600
+19	19329 287 526 6823 10.488135023043 115.410511046649 11 0 0 0 0
+20	19616 298 526 6823 10.488135023043 115.410511046649 11 56 56 616 34496
+21	19914 269 565 6313 10.928446163889 106.717872088777 10 40 40 400 16000
+22	20183 269 565 6313 10.928446163889 106.717872088777 10 40 40 400 16000
+23	20452 518 565 6313 10.928446163889 106.717872088777 20 0 1 10 10
+24	20970 269 565 6313 10.928446163889 106.717872088777 10 40 40 400 16000
+25	21239 259 565 6313 10.928446163889 106.717872088777 10 0 0 0 0
+26	21498 269 565 6313 10.928446163889 106.717872088777 10 56 56 560 31360
+27	21767 2970 577 6858 11 115.491506611164 103 1000 1000 103000 103000000
+28	24737 2971 584 6859 11 115.491506611164 103 1008 1008 103824 104654592
+29	27708 323 588 6445 11.027633703779 109.097904548981 12 40 40 480 19200
+30	28031 323 588 6445 11.027633703779 109.097904548981 12 40 40 480 19200
+31	28354 622 588 6445 11.027633703779 109.097904548981 24 0 1 12 12
+32	28976 323 588 6445 11.027633703779 109.097904548981 12 40 40 480 19200
+33	29299 311 588 6445 11.027633703779 109.097904548981 12 0 0 0 0
+34	29610 323 588 6445 11.027633703779 109.097904548981 12 56 56 672 37632
+35	29933 270 663 6839 12.151893649716 115.413603442722 10 40 40 400 16000
+36	30203 270 663 6839 12.151893649716 115.413603442722 10 40 40 400 16000
+37	30473 520 663 6839 12.151893649716 115.413603442722 20 0 1 10 10
+38	30993 270 663 6839 12.151893649716 115.413603442722 10 40 40 400 16000
+39	31263 260 663 6839 12.151893649716 115.413603442722 10 0 0 0 0
+40	31523 270 663 6839 12.151893649716 115.413603442722 10 56 56 560 31360
+41	31793 107 671 6851 12.151917354081 115.413627295568 4 56 56 224 12544
+42	31900 107 671 6851 12.151917354081 115.413627295568 4 40 40 160 6400
+43	32007 270 748 6469 13.442657440901 109.290219938849 10 40 40 400 16000
+44	32277 270 748 6469 13.442657440901 109.290219938849 10 40 40 400 16000
+45	32547 520 748 6469 13.442657440901 109.290219938849 20 0 1 10 10
+46	33067 270 748 6469 13.442657440901 109.290219938849 10 40 40 400 16000
+47	33337 260 748 6469 13.442657440901 109.290219938849 10 0 0 0 0
+48	33597 270 748 6469 13.442657440901 109.290219938849 10 56 56 560 31360
+49	33867 162 756 6831 13.442681124016 115.410534858537 6 56 56 336 18816
+50	34029 162 756 6831 13.442681124016 115.410534858537 6 40 40 240 9600
+51	34191 28 6847 6847 115.413627254553 115.413627254553 1 56 56 56 3136
+52	34219 28 6847 6847 115.413627254553 115.413627254553 1 40 40 40 1600
+
+ce packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 70 Fanet.host[1].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetDropReasonIsNotAddressedToUs(packetDropped)
 attr title "packet drop: not addressed to us, vector(packetBytes)"
-vector 54 Fanet.host[3].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drop: not addressed to us, vector(packetBytes)"
-vector 55 Fanet.host[2].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetDropReasonIsNotAddressedToUs(packetDropped)
-attr title "packet drop: not addressed to us, vector(packetBytes)"
-vector 56 Fanet.host[3].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetDropReasonIsHopLimitReached(packetDropped)
-attr title "packet drop: hop limit reached, vector(packetBytes)"
-vector 57 Fanet.host[2].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetDropReasonIsHopLimitReached(packetDropped)
-attr title "packet drop: hop limit reached, vector(packetBytes)"
-vector 58 Fanet.host[0].ipv4.ip packetDropHopLimitReached:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetDropReasonIsHopLimitReached(packetDropped)
-attr title "packet drop: hop limit reached, vector(packetBytes)"
-vector 59 Fanet.host[0].lo[0].lo rcvdPkFromHl:vector(packetBytes) ETV
-attr interpolationmode none
-attr source packetReceivedFromUpper
-attr title "packets received from higher layer, vector(packetBytes)"
-vector 60 Fanet.host[0].lo[0].lo passedUpPk:vector(packetBytes) ETV
+vector 71 Fanet.host[1].wlan[0].mac passedUpPk:vector(packetBytes) ETV
 attr interpolationmode none
 attr source packetSentToUpper
 attr title "packets passed to higher layer, vector(packetBytes)"
-5	16657 39313 6841 22652 115.413604587886 169.620345777999 1467 1 3 2935 7339
-6	55970 5726 1365 22646 24.067591221538 169.620345349527 216 1 2 324 540
-8	61696 762 566 19785 10.928446163889 163.256458780402 30 1 2 45 75
-9	62458 24534 750 22647 13.442658457349 169.620345563765 918 1 3 1836 4590
-10	86992 22425 664 22651 12.151893649716 169.620345563765 809 1 2 1214 2024
-11	109417 26612 665 22640 12.151894687414 169.619981297373 959 1 3 1919 4799
-12	136029 20250 749 22267 13.442657440901 169.610474497517 730 1 2 1095 1825
-14	156279 896 589 19141 11.027633703779 158.846333290589 34 1 2 51 85
-15	157175 3266 1364 22635 24.067591221538 169.619980016194 108 40 1068 99924 106102032
-16	160441 3266 1364 22635 24.067591221538 169.619980016194 108 40 1068 99924 106102032
-17	163707 5944 1364 22635 24.067591221538 169.619980016194 216 0 1 108 108
-18	169651 3266 1364 22635 24.067591221538 169.619980016194 108 40 1068 99924 106102032
-19	172917 2972 1364 22635 24.067591221538 169.619980016194 108 0 0 0 0
-20	175889 3266 1364 22635 24.067591221538 169.619980016194 108 56 1084 101652 109327248
-21	179155 412 565 19779 10.928446163889 163.256436113735 15 40 40 600 24000
-22	179567 412 565 19779 10.928446163889 163.256436113735 15 40 40 600 24000
-23	179979 794 565 19779 10.928446163889 163.256436113735 30 0 1 15 15
-24	180773 412 565 19779 10.928446163889 163.256436113735 15 40 40 600 24000
-25	181185 397 565 19779 10.928446163889 163.256436113735 15 0 0 0 0
-26	181582 412 565 19779 10.928446163889 163.256436113735 15 56 56 840 47040
-27	181994 4433 577 22244 11 169.609742550439 151 1000 1000 151000 151000000
-28	186427 4434 584 22245 11 169.609742550439 151 1008 1008 152208 153425664
-29	190861 465 588 19135 11.027633703779 158.846310623922 17 40 40 680 27200
-30	191326 465 588 19135 11.027633703779 158.846310623922 17 40 40 680 27200
-31	191791 896 588 19135 11.027633703779 158.846310623922 34 0 1 17 17
-32	192687 465 588 19135 11.027633703779 158.846310623922 17 40 40 680 27200
-33	193152 448 588 19135 11.027633703779 158.846310623922 17 0 0 0 0
-34	193600 465 588 19135 11.027633703779 158.846310623922 17 56 56 952 53312
-35	194065 12414 663 22650 12.151893649716 169.620345563765 405 40 1068 415352 442640000
-36	206479 12414 663 22650 12.151893649716 169.620345563765 405 40 1068 415352 442640000
-37	218893 22460 663 22650 12.151893649716 169.620345563765 810 0 1 405 405
-38	241353 12414 663 22650 12.151893649716 169.620345563765 405 40 1068 415352 442640000
-39	253767 11230 663 22650 12.151893649716 169.620345563765 405 0 0 0 0
-40	264997 12414 663 22650 12.151893649716 169.620345563765 405 56 1084 421832 456034944
-41	277411 14694 671 22639 12.151917354081 169.619981035275 479 56 1084 504104 545332928
-42	292105 11321 671 22257 12.151917354081 169.610109164184 369 40 1068 381756 407221968
-43	303426 11165 748 22259 13.442657440901 169.610109164184 365 40 1068 357528 379027200
-44	314591 11165 748 22259 13.442657440901 169.610109164184 365 40 1068 357528 379027200
-45	325756 20238 748 22259 13.442657440901 169.610109164184 730 0 1 365 365
-46	345994 11165 748 22259 13.442657440901 169.610109164184 365 40 1068 357528 379027200
-47	357159 10119 748 22259 13.442657440901 169.610109164184 365 0 0 0 0
-48	367278 11165 748 22259 13.442657440901 169.610109164184 365 56 1084 363368 390561536
-49	378443 14064 756 22648 13.442681124016 169.620345563765 459 56 1084 464236 499844880
-50	392507 12507 756 22648 13.442681124016 169.620345563765 408 40 1068 418268 446011184
-51	405014 22541 6847 22633 115.413627254553 169.619980016194 733 56 1084 766680 827729728
-52	427555 2810 6847 22633 115.413627254553 169.619980016194 93 40 1068 71432 73384256
-53	430365 19731 6882 21464 115.492239565285 167.268181395028 640 1084 1084 693760 752035840
-54	450096 3373 6912 22639 115.492972639416 169.619981035275 110 152 1084 116444 125800304
-55	453469 1557 9133 22269 138.683328424569 169.610475730659 51 152 1084 39440 40344672
-56	455026 525 9901 18623 141.13449197718 153.982244661532 17 1068 1068 18156 19390608
-57	455551 92 20383 21467 165.609721815459 167.268181480575 3 1068 1068 3204 3421872
-58	455643 31 22190 22190 169.385917685035 169.385917685035 1 1068 1068 1068 1140624
-59	455674 29 22192 22192 169.385917685035 169.385917685035 1 96 96 96 9216
-60	455703 29 22192 22192 169.385917685035 169.385917685035 1 96 96 96 9216
+vector 72 Fanet.host[1].udp packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 73 Fanet.host[1].udp passedUpPk:vector(count) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed up, vector(count)"
+vector 74 Fanet.host[1].app[0] packetReceived:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceived
+attr title "packets received, vector(packetBytes)"
+vector 75 Fanet.host[1].app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+vector 76 Fanet.host[1].app[0] endToEndDelay:vector ETV
+attr interpolationmode none
+attr source dataAge(packetReceived)
+attr title "end-to-end delay, vector"
+attr unit s
+vector 77 Fanet.host[1].app[0] rcvdPkSeqNo:vector ETV
+attr interpolationmode none
+attr source appPkSeqNo(packetReceived)
+attr title "received packet sequence number, vector"
+vector 78 Fanet.host[4].wlan[0].mac rcvdPkFromLl:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetReceivedFromLower
+attr title "packets received from lower layer, vector(packetBytes)"
+vector 79 Fanet.host[4].wlan[0].mac passedUpPk:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetSentToUpper
+attr title "packets passed to higher layer, vector(packetBytes)"
+vector 80 Fanet.host[4].wlan[0].mac packetDropNotAddressedToUs:vector(packetBytes) ETV
+attr interpolationmode none
+attr source packetDropReasonIsNotAddressedToUs(packetDropped)
+attr title "packet drop: not addressed to us, vector(packetBytes)"
+vector 81 Fanet.host[0].app[0] throughput:vector ETV
+attr source throughput(packetReceived)
+attr title "throughput, vector"
+attr unit bps
+0	20046 24 0 0 0 0 3 0 4 4 16
+1	20070 24 0 0 0 0 3 0 4 4 16
+2	20094 24 0 0 0 0 3 0 4 4 16
+3	20118 24 0 0 0 0 3 0 4 4 16
+4	20142 24 0 0 0 0 3 0 4 4 16
+5	20166 24 0 0 0 0 3 0 4 4 16
+6	20190 17331 0 47615 0 449.854703867188 673 1 3 1345 3361
+7	37521 28762 0 51634 0 494.544673090009 1087 1 2 1630 2716
+8	66283 8782 0 47844 0 451.945814534198 329 1 3 657 1641
+9	75065 2616 0 51406 0 492.457277177038 99 1 2 148 246
+10	77681 14328 0 46225 0 434.467075571783 545 1 3 1089 2721
+11	92009 10651 0 51234 0 490.127291875565 401 1 2 601 1001
+12	102660 18625 0 46268 0 434.876160229155 695 1 3 1389 3471
+13	121285 17253 0 51723 0 495.77681978759 645 1 2 967 1611
+14	138538 8824 0 35459 0 298.076840796536 317 1 3 633 1581
+15	147362 3161 0 51594 0 494.127300659332 115 1 2 172 286
+16	150523 9 0 0 0 0 1 1 1 1 1
+17	150532 2762 0 51440 0 492.710897697272 101 1 2 151 251
+18	153294 16453 630 51627 10.488135023043 494.544650423342 543 40 1068 529552 563546656
+19	169747 16453 630 51627 10.488135023043 494.544650423342 543 40 1068 529552 563546656
+20	186200 29842 630 51627 10.488135023043 494.544650423342 1086 0 1 543 543
+21	216042 16451 630 51627 10.488135023043 494.544650423342 543 40 1068 529552 563546656
+22	232493 15193 630 51627 10.488135023043 494.544650423342 543 0 0.096895643191 0.892321971673 0.050777646426943
+23	247686 16451 630 51627 10.488135023043 494.544650423342 543 56 1084 538240 580631328
+24	264137 1402 676 51399 10.928446163889 492.457254510371 49 40 40 1960 78400
+25	265539 1402 676 51399 10.928446163889 492.457254510371 49 40 40 1960 78400
+26	266941 2706 676 51399 10.928446163889 492.457254510371 98 0 1 49 49
+27	269647 1402 676 51399 10.928446163889 492.457254510371 49 40 40 1960 78400
+28	271049 1353 676 51399 10.928446163889 492.457254510371 49 0 0 0 0
+29	272402 1402 676 51399 10.928446163889 492.457254510371 49 56 56 2744 153664
+30	273804 15277 690 51902 11 498.46071945382 500 1000 1000 500000 500000000
+31	289081 15277 698 51903 11 498.46071945382 500 1008 1008 504000 508032000
+32	304358 1658 702 51587 11.027633703779 494.127277992665 57 40 1068 13588 12620464
+33	306016 1658 702 51587 11.027633703779 494.127277992665 57 40 1068 13588 12620464
+34	307674 3158 702 51587 11.027633703779 494.127277992665 114 0 1 57 57
+35	310832 1658 702 51587 11.027633703779 494.127277992665 57 40 1068 13588 12620464
+36	312490 1579 702 51587 11.027633703779 494.127277992665 57 0 0 0 0
+37	314069 1658 702 51587 11.027633703779 494.127277992665 57 56 1084 14500 13069872
+38	315727 5827 787 51227 12.151893649716 490.127269208898 200 40 1068 165284 174590672
+39	321554 5827 787 51227 12.151893649716 490.127269208898 200 40 1068 165284 174590672
+40	327381 10642 787 51227 12.151893649716 490.127269208898 400 0 1 200 200
+41	338023 5827 787 51227 12.151893649716 490.127269208898 200 40 1068 165284 174590672
+42	343850 5360 787 51227 12.151893649716 490.127269208898 200 0 0.090599249457 0.125651548707 0.0093459110794146
+43	349210 5827 787 51227 12.151893649716 490.127269208898 200 56 1084 168484 179930960
+44	355037 10298 796 46269 12.151916981626 434.876160229155 347 56 1084 350448 378446432
+45	365335 8757 796 46269 12.151916981626 434.876160229155 297 40 1068 291496 310289728
+46	374092 9480 893 51716 13.442657440901 495.776797120923 322 40 1068 288768 305841216
+47	383572 9480 893 51716 13.442657440901 495.776797120923 322 40 1068 288768 305841216
+48	393052 17236 893 51716 13.442657440901 495.776797120923 644 0 1 322 322
+49	410288 9480 893 51716 13.442657440901 495.776797120923 322 40 1068 288768 305841216
+50	419768 8631 893 51716 13.442657440901 495.776797120923 322 0 0.090800564291 0.090800564291 0.008244742475564
+51	428399 9480 893 51716 13.442657440901 495.776797120923 322 56 1084 293920 315164224
+52	437879 7917 902 46226 13.442680784226 434.467075571783 272 56 1084 262336 282193664
+53	445796 5277 902 46226 13.442680784226 434.467075571783 181 40 1068 164524 174560272
+54	451073 1429 921 51433 13.579456198495 492.710875030605 50 40 40 2000 80000
+55	452502 1429 921 51433 13.579456198495 492.710875030605 50 40 40 2000 80000
+56	453931 2758 921 51433 13.579456198495 492.710875030605 100 0 1 50 50
+57	456689 1429 921 51433 13.579456198495 492.710875030605 50 40 40 2000 80000
+58	458118 1379 921 51433 13.579456198495 492.710875030605 50 0 0 0 0
+59	459497 1429 921 51433 13.579456198495 492.710875030605 50 56 56 2800 156800
+60	460926 9941 2683 47616 38.148727056363 449.854703867188 336 56 1084 331328 357317376
+61	470867 5536 2683 47616 38.148727056363 449.854703867188 186 40 1068 165752 175707296
+62	476403 4405 2741 35475 38.483322466355 298.077207450402 150 1084 1084 162600 176258400
+63	480808 2640 2766 14725 38.484053703034 96.579928647433 91 152 1084 94916 102322288
+64	483448 352 3207 25256 38.494310326765 188.831366448944 12 1068 1068 12816 13687488
+65	483800 328 3209 25258 38.494310326765 188.831366448944 12 96 96 1152 110592
+66	484128 328 3209 25258 38.494310326765 188.831366448944 12 96 96 1152 110592
+67	484456 119 9680 11396 64.876569089201 66.079586009353 4 1068 1068 4272 4562496
+68	484575 1541 11740 22134 69.960897812115 177.977720913532 50 1084 1084 54200 58752800
+69	486116 4972 12901 47845 78.142401539041 451.945814534198 164 56 1084 141796 151691984
+70	491088 298 12901 13442 78.142401539041 82.155028471444 10 1084 1084 10840 11750560
+71	491386 4674 13374 47845 81.634437129741 451.945814534198 154 40 1068 128492 135790256
+72	496060 3667 13587 47821 83.483420470085 451.845787310263 119 1008 1008 119952 120911616
+73	499727 3440 13587 47821 83.483420470085 451.845787310263 119 1 119 7140 568820
+74	503167 3667 13588 47822 83.483420470085 451.845787310263 119 1000 1000 119000 119000000
+75	506834 83357 13588 52001 0.1 500 5000 0 160000 9520000 851200000000
+76	590191 4843 13588 47822 83.483420470085 451.845787310263 119 0.000365957525 0.00036663473 0.043587609082 1.5965378548503e-05
+77	595034 3525 13588 47822 83.483420470085 451.845787310263 119 77 449 23045 6117505
+78	598559 4854 17120 35460 122.601881186713 298.076840796536 158 56 1084 155852 168080048
+79	603413 774 17120 35460 122.601881186713 298.076840796536 26 40 1068 12348 12570864
+80	604187 4080 22961 34384 186.917137952917 286.291371590516 132 1084 1084 143088 155107392
+81	608267 82902 52001 52001 0.1 500 5000 0 0 0 0
+

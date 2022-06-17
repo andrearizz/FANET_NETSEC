@@ -28,8 +28,8 @@
 #include "inet/networklayer/contract/INetfilter.h"
 #include "inet/networklayer/contract/IRoutingTable.h"
 #include "inet/routing/base/RoutingProtocolBase.h"
-#include "Gpsr_m.h"
-#include "PositionTable.h"
+#include "host/gpsr/Gpsr_m.h"
+#include "host/gpsr/PositionTable.h"
 #include "inet/transportlayer/udp/UdpHeader_m.h"
 #include "Singleton.h"
 
@@ -47,14 +47,14 @@ namespace sec {
 // TODO: implement position piggybacking that is all packets should carry the position of the sender, all packets act as a beacon and reset beacon timer
 // TODO: implement promiscuous mode, all receivers should process all packets with respect to neighbor positions
 // KLUDGE: implement position registry protocol instead of using a global variable
-class INET_API Gpsr : public RoutingProtocolBase, public cListener, public NetfilterBase::HookBase
+class INET_API GpsrSecureGrayHole : public RoutingProtocolBase, public cListener, public NetfilterBase::HookBase
 {
   private:
 
 
   public:
-    Gpsr();
-    virtual ~Gpsr();
+    GpsrSecureGrayHole();
+    virtual ~GpsrSecureGrayHole();
 
 
     // GPSR parameters
@@ -82,7 +82,7 @@ class INET_API Gpsr : public RoutingProtocolBase, public cListener, public Netfi
         cMessage *beaconTimer = nullptr;
         cMessage *purgeNeighborsTimer = nullptr;
         PositionTable neighborPositionTable;
-
+        Singleton* singleton;
 
   protected:
     // module interface

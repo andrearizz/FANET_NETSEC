@@ -1,5 +1,6 @@
 #include "Singleton.h"
 #include <list>
+#include <vector>
 
 using namespace std;
 
@@ -8,6 +9,7 @@ Singleton::Singleton()
 }
 
 Singleton::~Singleton() {
+    send_received.clear();
 }
 
 Singleton* Singleton::pinstance_{nullptr};
@@ -30,7 +32,7 @@ pinstance_ = new Singleton();
 return pinstance_;
 }
 
-void print(std::list<std::string> const &list)
+void print(std::vector<std::string> const &list)
 {
     for (auto const &i: list) {
         std::cout << "IP = " << i << ", ";
@@ -38,11 +40,48 @@ void print(std::list<std::string> const &list)
     cout << endl;
 }
 
-void Singleton::prova(string ip) {
-    l.push_back(ip);
-    print(l);
+
+// i = 0 --> inviati
+// i = 1 --> non inviati
+
+void Singleton::insert(string ip, int i) {
+    vector<double> list;
+    if(ip.compare("<unspec>") == 0) {
+        return;
+    }
+    list = send_received.at(ip);
+    list[i]++;
+    double inviati = list[0];
+    double non_inviati = list[1];
+    cout << "Inviati: " << inviati << endl;
+    cout << "Non inviati: " << non_inviati << endl;
+    double trustness = (inviati + 1) / (inviati+non_inviati + 1);
+    list[2] = trustness;
+
+    //cout << trustness << endl;
+    send_received.insert({ip, list});
+    //cout << send_received.at(ip)[2] << endl;
 }
 
+void print_map(std::unordered_map<string, vector<double>> const &m)
+{
+    cout << "{";
+    for (auto it = m.cbegin(); it != m.cend(); ++it) {
+            std::cout << (*it).first << ", ";
+        }
+    cout << "}" << endl;
+}
+
+double Singleton::trustness(string ip) {
+
+    //print_map(send_received);
+    if(ip.compare("<unspec>") == 0) {
+            //cout << "????" << endl;
+            return 1;
+        }
+    // cout << "IP = " << ip << " trustness = " << send_received.at(ip)[2] << endl;
+    return send_received.at(ip)[2];
+}
 
 
 

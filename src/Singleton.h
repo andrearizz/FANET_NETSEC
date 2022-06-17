@@ -8,6 +8,8 @@
 #include <thread>
 #include <iostream>
 #include <list>
+#include <vector>
+#include <unordered_map>
 
 using namespace std;
 class Singleton {
@@ -19,8 +21,9 @@ public:
     void operator=(const Singleton &) = delete;
     static Singleton *GetInstance();
     void prova(string ip);
-    list<string> l;
-
+    unordered_map<string, vector<double>> send_received;
+    void insert(string ip, int i);
+    double trustness(string ip);
 
 private:
     static Singleton * pinstance_;

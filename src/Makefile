@@ -43,6 +43,7 @@ OBJS = \
     $O/attacker/gpsrSybilNormale/GpsrSybilNormale.o \
     $O/host/gpsr/Gpsr.o \
     $O/host/gpsr/PositionTable.o \
+    $O/host/gpsrSecureGrayHole/GpsrSecureGrayHole.o \
     $O/host/gpsrSecureSybil/GpsrSecureSybil.o \
     $O/host/gpsr/Gpsr_m.o
 

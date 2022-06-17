@@ -31,7 +31,8 @@
 #include "inet/networklayer/common/L3Tools.h"
 #include "inet/networklayer/common/NextHopAddressTag_m.h"
 #include "inet/networklayer/contract/IInterfaceTable.h"
-#include "Gpsr.h"
+#include "GpsrSecureGrayHole.h"
+#include "Singleton.h"
 
 #ifdef WITH_IPv4
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
@@ -49,28 +50,33 @@
 namespace inet {
 namespace sec {
 
-Define_Module(Gpsr);
+Define_Module(GpsrSecureGrayHole);
 
 static inline double determinant(double a1, double a2, double b1, double b2)
 {
     return a1 * b2 - a2 * b1;
 }
 
-Gpsr::Gpsr()
+GpsrSecureGrayHole::GpsrSecureGrayHole()
 {
+
+
 }
 
-Gpsr::~Gpsr()
+GpsrSecureGrayHole::~GpsrSecureGrayHole()
 {
     cancelAndDelete(beaconTimer);
     cancelAndDelete(purgeNeighborsTimer);
+    singleton = Singleton::GetInstance();
+    singleton->send_received.clear();
 }
 
 //
 // module interface
 //
 
-void Gpsr::initialize(int stage)
+
+void GpsrSecureGrayHole::initialize(int stage)
 {
     if (stage == INITSTAGE_ROUTING_PROTOCOLS)
         addressType = getSelfAddress().getAddressType();
@@ -78,7 +84,7 @@ void Gpsr::initialize(int stage)
     RoutingProtocolBase::initialize(stage);
 
     if (stage == INITSTAGE_LOCAL) {
-        // Gpsr parameters
+        // GpsrSecureGrayHole parameters
         const char *planarizationModeString = par("planarizationMode");
         if (!strcmp(planarizationModeString, ""))
             planarizationMode = GPSR_NO_PLANARIZATION;
@@ -107,6 +113,8 @@ void Gpsr::initialize(int stage)
         positionByteLength = par("positionByteLength");
         // KLUDGE: implement position registry protocol
         globalPositionTable.clear();
+
+
     }
     else if (stage == INITSTAGE_ROUTING_PROTOCOLS) {
         registerService(Protocol::manet, nullptr, gate("ipIn"));
@@ -115,9 +123,13 @@ void Gpsr::initialize(int stage)
         networkProtocol->registerHook(0, this);
         WATCH(neighborPositionTable);
     }
+
+    singleton = Singleton::GetInstance();
+    singleton -> send_received.insert({getSelfAddress().toIpv4().str(),{0,0,1}});
+
 }
 
-void Gpsr::handleMessageWhenUp(cMessage *message)
+void GpsrSecureGrayHole::handleMessageWhenUp(cMessage *message)
 {
     if (message->isSelfMessage())
         processSelfMessage(message);
@@ -129,7 +141,7 @@ void Gpsr::handleMessageWhenUp(cMessage *message)
 // handling messages
 //
 
-void Gpsr::processSelfMessage(cMessage *message)
+void GpsrSecureGrayHole::processSelfMessage(cMessage *message)
 {
     if (message == beaconTimer)
         processBeaconTimer();
@@ -139,11 +151,11 @@ void Gpsr::processSelfMessage(cMessage *message)
         throw cRuntimeError("Unknown self message");
 }
 
-void Gpsr::processMessage(cMessage *message)
+void GpsrSecureGrayHole::processMessage(cMessage *message)
 {
-    if (auto pk = dynamic_cast<Packet *>(message))
+    if (auto pk = dynamic_cast<Packet *>(message)) {
         processUdpPacket(pk);
-    else
+    } else
         throw cRuntimeError("Unknown message");
 }
 
@@ -151,13 +163,13 @@ void Gpsr::processMessage(cMessage *message)
 // beacon timers
 //
 
-void Gpsr::scheduleBeaconTimer()
+void GpsrSecureGrayHole::scheduleBeaconTimer()
 {
     EV_DEBUG << "Scheduling beacon timer" << endl;
     scheduleAt(simTime() + beaconInterval + uniform(-1, 1) * maxJitter, beaconTimer);
 }
 
-void Gpsr::processBeaconTimer()
+void GpsrSecureGrayHole::processBeaconTimer()
 {
     EV_DEBUG << "Processing beacon timer" << endl;
     const L3Address selfAddress = getSelfAddress();
@@ -167,13 +179,14 @@ void Gpsr::processBeaconTimer()
     }
     scheduleBeaconTimer();
     schedulePurgeNeighborsTimer();
+
 }
 
 //
 // handling purge neighbors timers
 //
 
-void Gpsr::schedulePurgeNeighborsTimer()
+void GpsrSecureGrayHole::schedulePurgeNeighborsTimer()
 {
     EV_DEBUG << "Scheduling purge neighbors timer" << endl;
     simtime_t nextExpiration = getNextNeighborExpiration();
@@ -193,7 +206,7 @@ void Gpsr::schedulePurgeNeighborsTimer()
     }
 }
 
-void Gpsr::processPurgeNeighborsTimer()
+void GpsrSecureGrayHole::processPurgeNeighborsTimer()
 {
     EV_DEBUG << "Processing purge neighbors timer" << endl;
     purgeNeighbors();
@@ -204,12 +217,12 @@ void Gpsr::processPurgeNeighborsTimer()
 // handling UDP packets
 //
 
-void Gpsr::sendUdpPacket(Packet *packet)
+void GpsrSecureGrayHole::sendUdpPacket(Packet *packet)
 {
     send(packet, "ipOut");
 }
 
-void Gpsr::processUdpPacket(Packet *packet)
+void GpsrSecureGrayHole::processUdpPacket(Packet *packet)
 {
     packet->popAtFront<UdpHeader>();
     processBeacon(packet);
@@ -220,7 +233,7 @@ void Gpsr::processUdpPacket(Packet *packet)
 // handling beacons
 //
 
-const Ptr<GpsrBeacon> Gpsr::createBeacon()
+const Ptr<GpsrBeacon> GpsrSecureGrayHole::createBeacon()
 {
     const auto& beacon = makeShared<GpsrBeacon>();
     beacon->setAddress(getSelfAddress());
@@ -229,7 +242,7 @@ const Ptr<GpsrBeacon> Gpsr::createBeacon()
     return beacon;
 }
 
-void Gpsr::sendBeacon(const Ptr<GpsrBeacon>& beacon)
+void GpsrSecureGrayHole::sendBeacon(const Ptr<GpsrBeacon>& beacon)
 {
     EV_INFO << "Sending beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
     Packet *udpPacket = new Packet("GPSRBeacon");
@@ -248,19 +261,19 @@ void Gpsr::sendBeacon(const Ptr<GpsrBeacon>& beacon)
     sendUdpPacket(udpPacket);
 }
 
-void Gpsr::processBeacon(Packet *packet)
+void GpsrSecureGrayHole::processBeacon(Packet *packet)
 {
     const auto& beacon = packet->peekAtFront<GpsrBeacon>();
     EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
     neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
-    EV_INFO << "---------------Processing neighborPositionTable: address = " << neighborPositionTable << endl;
+    EV_INFO << "Processing neighborPositionTable: address = " << neighborPositionTable << endl;
     delete packet;
 }
 //
 // handling packets
 //
 
-GpsrOption* Gpsr::createGpsrOption(L3Address destination)
+GpsrOption* GpsrSecureGrayHole::createGpsrOption(L3Address destination)
 {
     GpsrOption *gpsrOption = new GpsrOption();
     gpsrOption->setRoutingMode(GPSR_GREEDY_ROUTING);
@@ -269,7 +282,7 @@ GpsrOption* Gpsr::createGpsrOption(L3Address destination)
     return gpsrOption;
 }
 
-int Gpsr::computeOptionLength(GpsrOption *option)
+int GpsrSecureGrayHole::computeOptionLength(GpsrOption *option)
 {
     // routingMode
     int routingModeBytes = 1;
@@ -287,7 +300,7 @@ int Gpsr::computeOptionLength(GpsrOption *option)
 // configuration
 //
 
-void Gpsr::configureInterfaces()
+void GpsrSecureGrayHole::configureInterfaces()
 {
     // join multicast groups
     cPatternMatcher interfaceMatcher(interfaces, false, true, false);
@@ -303,30 +316,30 @@ void Gpsr::configureInterfaces()
 //
 
 // KLUDGE: implement position registry protocol
-PositionTable Gpsr::globalPositionTable;
+PositionTable GpsrSecureGrayHole::globalPositionTable;
 
-Coord Gpsr::lookupPositionInGlobalRegistry(const L3Address& address) const
+Coord GpsrSecureGrayHole::lookupPositionInGlobalRegistry(const L3Address& address) const
 {
     // KLUDGE: implement position registry protocol
     Coord position = globalPositionTable.getPosition(address);
-    EV_INFO << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << position << address;
+    EV_INFO << position << address;
     return position;
 }
 
-void Gpsr::storePositionInGlobalRegistry(const L3Address& address, const Coord& position) const
+void GpsrSecureGrayHole::storePositionInGlobalRegistry(const L3Address& address, const Coord& position) const
 {
     // KLUDGE: implement position registry protocol
     globalPositionTable.setPosition(address, position);
 }
 
-void Gpsr::storeSelfPositionInGlobalRegistry() const
+void GpsrSecureGrayHole::storeSelfPositionInGlobalRegistry() const
 {
     auto selfAddress = getSelfAddress();
     if (!selfAddress.isUnspecified())
         storePositionInGlobalRegistry(selfAddress, mobility->getCurrentPosition());
 }
 
-Coord Gpsr::computeIntersectionInsideLineSegments(Coord& begin1, Coord& end1, Coord& begin2, Coord& end2) const
+Coord GpsrSecureGrayHole::computeIntersectionInsideLineSegments(Coord& begin1, Coord& end1, Coord& begin2, Coord& end2) const
 {
     // NOTE: we must explicitly avoid computing the intersection points inside due to double instability
     if (begin1 == begin2 || begin1 == end2 || end1 == begin2 || end1 == end2)
@@ -353,7 +366,7 @@ Coord Gpsr::computeIntersectionInsideLineSegments(Coord& begin1, Coord& end1, Co
     }
 }
 
-Coord Gpsr::getNeighborPosition(const L3Address& address) const
+Coord GpsrSecureGrayHole::getNeighborPosition(const L3Address& address) const
 {
     return neighborPositionTable.getPosition(address);
 }
@@ -362,7 +375,7 @@ Coord Gpsr::getNeighborPosition(const L3Address& address) const
 // angle
 //
 
-double Gpsr::getVectorAngle(Coord vector) const
+double GpsrSecureGrayHole::getVectorAngle(Coord vector) const
 {
     ASSERT(vector != Coord::ZERO);
     double angle = atan2(-vector.y, vector.x);
@@ -371,7 +384,7 @@ double Gpsr::getVectorAngle(Coord vector) const
     return angle;
 }
 
-double Gpsr::getNeighborAngle(const L3Address& address) const
+double GpsrSecureGrayHole::getNeighborAngle(const L3Address& address) const
 {
     return getVectorAngle(getNeighborPosition(address) - mobility->getCurrentPosition());
 }
@@ -380,12 +393,12 @@ double Gpsr::getNeighborAngle(const L3Address& address) const
 // address
 //
 
-std::string Gpsr::getHostName() const
+std::string GpsrSecureGrayHole::getHostName() const
 {
     return host->getFullName();
 }
 
-L3Address Gpsr::getSelfAddress() const
+L3Address GpsrSecureGrayHole::getSelfAddress() const
 {
     //TODO choose self address based on a new 'interfaces' parameter
     L3Address ret = routingTable->getRouterIdAsGeneric();
@@ -405,7 +418,7 @@ L3Address Gpsr::getSelfAddress() const
     return ret;
 }
 
-L3Address Gpsr::getSenderNeighborAddress(const Ptr<const NetworkHeaderBase>& networkHeader) const
+L3Address GpsrSecureGrayHole::getSenderNeighborAddress(const Ptr<const NetworkHeaderBase>& networkHeader) const
 {
     const GpsrOption *gpsrOption = getGpsrOptionFromNetworkDatagram(networkHeader);
     return gpsrOption->getSenderAddress();
@@ -415,7 +428,7 @@ L3Address Gpsr::getSenderNeighborAddress(const Ptr<const NetworkHeaderBase>& net
 // neighbor
 //
 
-simtime_t Gpsr::getNextNeighborExpiration()
+simtime_t GpsrSecureGrayHole::getNextNeighborExpiration()
 {
     simtime_t oldestPosition = neighborPositionTable.getOldestPosition();
     if (oldestPosition == SimTime::getMaxTime())
@@ -424,12 +437,12 @@ simtime_t Gpsr::getNextNeighborExpiration()
         return oldestPosition + neighborValidityInterval;
 }
 
-void Gpsr::purgeNeighbors()
+void GpsrSecureGrayHole::purgeNeighbors()
 {
     neighborPositionTable.removeOldPositions(simTime() - neighborValidityInterval);
 }
 
-std::vector<L3Address> Gpsr::getPlanarNeighbors() const
+std::vector<L3Address> GpsrSecureGrayHole::getPlanarNeighbors() const
 {
     std::vector<L3Address> planarNeighbors;
     std::vector<L3Address> neighborAddresses = neighborPositionTable.getAddresses();
@@ -471,7 +484,7 @@ std::vector<L3Address> Gpsr::getPlanarNeighbors() const
     return planarNeighbors;
 }
 
-std::vector<L3Address> Gpsr::getPlanarNeighborsCounterClockwise(double startAngle) const
+std::vector<L3Address> GpsrSecureGrayHole::getPlanarNeighborsCounterClockwise(double startAngle) const
 {
     std::vector<L3Address> neighborAddresses = getPlanarNeighbors();
     std::sort(neighborAddresses.begin(), neighborAddresses.end(), [&](const L3Address& address1, const L3Address& address2) {
@@ -491,7 +504,7 @@ std::vector<L3Address> Gpsr::getPlanarNeighborsCounterClockwise(double startAngl
 // next hop
 //
 
-L3Address Gpsr::findNextHop(const L3Address& destination, GpsrOption *gpsrOption)
+L3Address GpsrSecureGrayHole::findNextHop(const L3Address& destination, GpsrOption *gpsrOption)
 {
     switch (gpsrOption->getRoutingMode()) {
         case GPSR_GREEDY_ROUTING: return findGreedyRoutingNextHop(destination, gpsrOption);
@@ -500,7 +513,7 @@ L3Address Gpsr::findNextHop(const L3Address& destination, GpsrOption *gpsrOption
     }
 }
 
-L3Address Gpsr::findGreedyRoutingNextHop(const L3Address& destination, GpsrOption *gpsrOption)
+L3Address GpsrSecureGrayHole::findGreedyRoutingNextHop(const L3Address& destination, GpsrOption *gpsrOption)
 {
     EV_DEBUG << "Finding next hop using greedy routing: destination = " << destination << endl;
     L3Address selfAddress = getSelfAddress();
@@ -509,10 +522,13 @@ L3Address Gpsr::findGreedyRoutingNextHop(const L3Address& destination, GpsrOptio
     double bestDistance = (destinationPosition - selfPosition).length();
     L3Address bestNeighbor;
     std::vector<L3Address> neighborAddresses = neighborPositionTable.getAddresses();
+    singleton = Singleton::GetInstance();
     for (auto& neighborAddress: neighborAddresses) {
+        std::string ip = neighborAddress.toIpv4().str();
+        double trustness = singleton->trustness(ip);
         Coord neighborPosition = neighborPositionTable.getPosition(neighborAddress);
         double neighborDistance = (destinationPosition - neighborPosition).length();
-        if (neighborDistance < bestDistance) {
+        if (neighborDistance < bestDistance && trustness > 0.6) {
             bestDistance = neighborDistance;
             bestNeighbor = neighborAddress;
         }
@@ -532,7 +548,7 @@ L3Address Gpsr::findGreedyRoutingNextHop(const L3Address& destination, GpsrOptio
         return bestNeighbor;
 }
 
-L3Address Gpsr::findPerimeterRoutingNextHop(const L3Address& destination, GpsrOption *gpsrOption)
+L3Address GpsrSecureGrayHole::findPerimeterRoutingNextHop(const L3Address& destination, GpsrOption *gpsrOption)
 {
     EV_DEBUG << "Finding next hop using perimeter routing: destination = " << destination << endl;
     L3Address selfAddress = getSelfAddress();
@@ -559,10 +575,13 @@ L3Address Gpsr::findPerimeterRoutingNextHop(const L3Address& destination, GpsrOp
         auto neighborAngle = senderNeighborAddress.isUnspecified() ? getVectorAngle(destinationPosition - mobility->getCurrentPosition()) : getNeighborAngle(senderNeighborAddress);
         L3Address selectedNeighborAddress;
         std::vector<L3Address> neighborAddresses = getPlanarNeighborsCounterClockwise(neighborAngle);
+        singleton = Singleton::GetInstance();
         for (auto& neighborAddress : neighborAddresses) {
+            std::string ip = neighborAddress.toIpv4().str();
+            double trustness = singleton->trustness(ip);
             Coord neighborPosition = getNeighborPosition(neighborAddress);
             Coord intersection = computeIntersectionInsideLineSegments(perimeterRoutingStartPosition, destinationPosition, selfPosition, neighborPosition);
-            if (std::isnan(intersection.x)) {
+            if (std::isnan(intersection.x) && trustness > 0.6) {
                 selectedNeighborAddress = neighborAddress;
                 break;
             }
@@ -595,7 +614,7 @@ L3Address Gpsr::findPerimeterRoutingNextHop(const L3Address& destination, GpsrOp
 // routing
 //
 
-INetfilter::IHook::Result Gpsr::routeDatagram(Packet *datagram, GpsrOption *gpsrOption)
+INetfilter::IHook::Result GpsrSecureGrayHole::routeDatagram(Packet *datagram, GpsrOption *gpsrOption)
 {
     const auto& networkHeader = getNetworkProtocolHeader(datagram);
     const L3Address& source = networkHeader->getSourceAddress();
@@ -603,10 +622,13 @@ INetfilter::IHook::Result Gpsr::routeDatagram(Packet *datagram, GpsrOption *gpsr
     EV_INFO << "Finding next hop: source = " << source << ", destination = " << destination << endl;
     auto nextHop = findNextHop(destination, gpsrOption);
     datagram->addTagIfAbsent<NextHopAddressReq>()->setNextHopAddress(nextHop);
+    string ip = source.toIpv4().str();
+    singleton = Singleton::GetInstance();
     if (nextHop.isUnspecified()) {
         EV_WARN << "No next hop found, dropping packet: source = " << source << ", destination = " << destination << endl;
         if (displayBubbles && hasGUI())
             getContainingNode(host)->bubble("No next hop found, dropping packet");
+        singleton->insert(ip, 1);
         return DROP;
     }
     else {
@@ -614,11 +636,12 @@ INetfilter::IHook::Result Gpsr::routeDatagram(Packet *datagram, GpsrOption *gpsr
         gpsrOption->setSenderAddress(getSelfAddress());
         auto interfaceEntry = CHK(interfaceTable->findInterfaceByName(outputInterface));
         datagram->addTagIfAbsent<InterfaceReq>()->setInterfaceId(interfaceEntry->getInterfaceId());
+        singleton->insert(ip, 0);
         return ACCEPT;
     }
 }
 
-void Gpsr::setGpsrOptionOnNetworkDatagram(Packet *packet, const Ptr<const NetworkHeaderBase>& networkHeader, GpsrOption *gpsrOption)
+void GpsrSecureGrayHole::setGpsrOptionOnNetworkDatagram(Packet *packet, const Ptr<const NetworkHeaderBase>& networkHeader, GpsrOption *gpsrOption)
 {
     packet->trimFront();
 #ifdef WITH_IPv4
@@ -671,7 +694,7 @@ void Gpsr::setGpsrOptionOnNetworkDatagram(Packet *packet, const Ptr<const Networ
     }
 }
 
-const GpsrOption *Gpsr::findGpsrOptionInNetworkDatagram(const Ptr<const NetworkHeaderBase>& networkHeader) const
+const GpsrOption *GpsrSecureGrayHole::findGpsrOptionInNetworkDatagram(const Ptr<const NetworkHeaderBase>& networkHeader) const
 {
     const GpsrOption *gpsrOption = nullptr;
 
@@ -705,7 +728,7 @@ const GpsrOption *Gpsr::findGpsrOptionInNetworkDatagram(const Ptr<const NetworkH
     return gpsrOption;
 }
 
-GpsrOption *Gpsr::findGpsrOptionInNetworkDatagramForUpdate(const Ptr<NetworkHeaderBase>& networkHeader)
+GpsrOption *GpsrSecureGrayHole::findGpsrOptionInNetworkDatagramForUpdate(const Ptr<NetworkHeaderBase>& networkHeader)
 {
     GpsrOption *gpsrOption = nullptr;
 
@@ -739,19 +762,19 @@ GpsrOption *Gpsr::findGpsrOptionInNetworkDatagramForUpdate(const Ptr<NetworkHead
     return gpsrOption;
 }
 
-const GpsrOption *Gpsr::getGpsrOptionFromNetworkDatagram(const Ptr<const NetworkHeaderBase>& networkHeader) const
+const GpsrOption *GpsrSecureGrayHole::getGpsrOptionFromNetworkDatagram(const Ptr<const NetworkHeaderBase>& networkHeader) const
 {
     const GpsrOption *gpsrOption = findGpsrOptionInNetworkDatagram(networkHeader);
     if (gpsrOption == nullptr)
-        throw cRuntimeError("Gpsr option not found in datagram!");
+        throw cRuntimeError("GpsrSecureGrayHole option not found in datagram!");
     return gpsrOption;
 }
 
-GpsrOption *Gpsr::getGpsrOptionFromNetworkDatagramForUpdate(const Ptr<NetworkHeaderBase>& networkHeader)
+GpsrOption *GpsrSecureGrayHole::getGpsrOptionFromNetworkDatagramForUpdate(const Ptr<NetworkHeaderBase>& networkHeader)
 {
     GpsrOption *gpsrOption = findGpsrOptionInNetworkDatagramForUpdate(networkHeader);
     if (gpsrOption == nullptr)
-        throw cRuntimeError("Gpsr option not found in datagram!");
+        throw cRuntimeError("GpsrSecureGrayHole option not found in datagram!");
     return gpsrOption;
 }
 
@@ -759,7 +782,7 @@ GpsrOption *Gpsr::getGpsrOptionFromNetworkDatagramForUpdate(const Ptr<NetworkHea
 // netfilter
 //
 
-INetfilter::IHook::Result Gpsr::datagramPreRoutingHook(Packet *datagram)
+INetfilter::IHook::Result GpsrSecureGrayHole::datagramPreRoutingHook(Packet *datagram)
 {
     Enter_Method("datagramPreRoutingHook");
     const auto& networkHeader = getNetworkProtocolHeader(datagram);
@@ -773,7 +796,7 @@ INetfilter::IHook::Result Gpsr::datagramPreRoutingHook(Packet *datagram)
     }
 }
 
-INetfilter::IHook::Result Gpsr::datagramLocalOutHook(Packet *packet)
+INetfilter::IHook::Result GpsrSecureGrayHole::datagramLocalOutHook(Packet *packet)
 {
     Enter_Method("datagramLocalOutHook");
     const auto& networkHeader = getNetworkProtocolHeader(packet);
@@ -791,14 +814,14 @@ INetfilter::IHook::Result Gpsr::datagramLocalOutHook(Packet *packet)
 // lifecycle
 //
 
-void Gpsr::handleStartOperation(LifecycleOperation *operation)
+void GpsrSecureGrayHole::handleStartOperation(LifecycleOperation *operation)
 {
     configureInterfaces();
     storeSelfPositionInGlobalRegistry();
     scheduleBeaconTimer();
 }
 
-void Gpsr::handleStopOperation(LifecycleOperation *operation)
+void GpsrSecureGrayHole::handleStopOperation(LifecycleOperation *operation)
 {
     // TODO: send a beacon to remove ourself from peers neighbor position table
     neighborPositionTable.clear();
@@ -806,7 +829,7 @@ void Gpsr::handleStopOperation(LifecycleOperation *operation)
     cancelEvent(purgeNeighborsTimer);
 }
 
-void Gpsr::handleCrashOperation(LifecycleOperation *operation)
+void GpsrSecureGrayHole::handleCrashOperation(LifecycleOperation *operation)
 {
     neighborPositionTable.clear();
     cancelEvent(beaconTimer);
@@ -817,7 +840,7 @@ void Gpsr::handleCrashOperation(LifecycleOperation *operation)
 // notification
 //
 
-void Gpsr::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj, cObject *details)
+void GpsrSecureGrayHole::receiveSignal(cComponent *source, simsignal_t signalID, cObject *obj, cObject *details)
 {
     Enter_Method("receiveChangeNotification");
     if (signalID == linkBrokenSignal) {
