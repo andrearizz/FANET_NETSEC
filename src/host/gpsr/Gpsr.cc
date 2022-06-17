@@ -32,6 +32,7 @@
 #include "inet/networklayer/common/NextHopAddressTag_m.h"
 #include "inet/networklayer/contract/IInterfaceTable.h"
 #include "Gpsr.h"
+#include "Singleton.h"
 
 #ifdef WITH_IPv4
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
@@ -70,6 +71,7 @@ Gpsr::~Gpsr()
 // module interface
 //
 
+
 void Gpsr::initialize(int stage)
 {
     if (stage == INITSTAGE_ROUTING_PROTOCOLS)
@@ -107,6 +109,8 @@ void Gpsr::initialize(int stage)
         positionByteLength = par("positionByteLength");
         // KLUDGE: implement position registry protocol
         globalPositionTable.clear();
+
+
     }
     else if (stage == INITSTAGE_ROUTING_PROTOCOLS) {
         registerService(Protocol::manet, nullptr, gate("ipIn"));
@@ -115,6 +119,9 @@ void Gpsr::initialize(int stage)
         networkProtocol->registerHook(0, this);
         WATCH(neighborPositionTable);
     }
+
+
+
 }
 
 void Gpsr::handleMessageWhenUp(cMessage *message)
@@ -167,6 +174,11 @@ void Gpsr::processBeaconTimer()
     }
     scheduleBeaconTimer();
     schedulePurgeNeighborsTimer();
+
+
+    singleton = Singleton::GetInstance();
+    string ip = getSelfAddress().toIpv4().str();
+    singleton->prova(ip);
 }
 
 //
@@ -309,7 +321,7 @@ Coord Gpsr::lookupPositionInGlobalRegistry(const L3Address& address) const
 {
     // KLUDGE: implement position registry protocol
     Coord position = globalPositionTable.getPosition(address);
-    EV_INFO << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << position << address;
+    EV_INFO << position << address;
     return position;
 }
 

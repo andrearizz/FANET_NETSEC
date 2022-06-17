@@ -31,6 +31,7 @@
 #include "Gpsr_m.h"
 #include "PositionTable.h"
 #include "inet/transportlayer/udp/UdpHeader_m.h"
+#include "Singleton.h"
 
 namespace inet {
 namespace sec {
@@ -81,6 +82,8 @@ class INET_API Gpsr : public RoutingProtocolBase, public cListener, public Netfi
         cMessage *beaconTimer = nullptr;
         cMessage *purgeNeighborsTimer = nullptr;
         PositionTable neighborPositionTable;
+        Singleton* singleton;
+
   protected:
     // module interface
     virtual int numInitStages() const override { return NUM_INIT_STAGES; }
