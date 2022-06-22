@@ -91,9 +91,70 @@ GpsrSecureSybil::~GpsrSecureSybil()
 //
 // module interface
 //
-
+L3Address GpsrSecureSybil::getSelfAddress() const
+{
+    //TODO choose self address based on a new 'interfaces' parameter
+    L3Address ret = routingTable->getRouterIdAsGeneric();
+#ifdef WITH_IPv6
+    if (ret.getType() == L3Address::IPv6) {
+        for (int i = 0; i < interfaceTable->getNumInterfaces(); i++) {
+            InterfaceEntry *ie = interfaceTable->getInterface(i);
+            if ((!ie->isLoopback())) {
+                if (auto ipv6Data = ie->findProtocolData<Ipv6InterfaceData>()) {
+                    ret = ipv6Data->getPreferredAddress();
+                    break;
+                }
+            }
+        }
+    }
+#endif
+    return ret;
+}
 
 AutoSeededRandomPool rng;
+
+
+void GpsrSecureSybil::generateRSAKeys() {
+
+    InvertibleRSAFunction privkey;
+    privkey.Initialize(rng, 1024);
+
+    string prvKey = "privateKey/" + getSelfAddress().toIpv4().str();
+    const char* ipPrivate = prvKey.c_str();
+    Base64Encoder privkeysink(new FileSink(ipPrivate));
+    privkey.DEREncode(privkeysink);
+    privkeysink.MessageEnd();
+
+    RSAFunction pubkey(privkey);
+
+    string pubKey = "publicKey/" + getSelfAddress().toIpv4().str();
+    const char* ipPublic = pubKey.c_str();
+    Base64Encoder pubkeysink(new FileSink(ipPublic));
+    pubkey.DEREncode(pubkeysink);
+    pubkeysink.MessageEnd();
+}
+
+
+void GpsrSecureSybil::generateECDSAKeys() {
+    ECDSA<ECP, SHA256>::PrivateKey privkey;
+    ECDSA<ECP, SHA256>::PublicKey publkey;
+    privkey.Initialize(rng, ASN1::secp256k1());
+
+    string prvKey = "privateKeyECDSA/" + getSelfAddress().toIpv4().str();
+    const char* ipPrivate = prvKey.c_str();
+    Base64Encoder privkeysink(new FileSink(ipPrivate));
+    privkey.DEREncode(privkeysink);
+    privkeysink.MessageEnd();
+
+    privkey.MakePublicKey( publkey );
+    string publKey = "publicKeyECDSA/" + getSelfAddress().toIpv4().str();
+    const char* ipPublic = publKey.c_str();
+    Base64Encoder publkeysink(new FileSink(ipPublic));
+    publkey.DEREncode(publkeysink);
+    publkeysink.MessageEnd();
+
+}
+
 void GpsrSecureSybil::initialize(int stage)
 {
     //EV_INFO << "KEY: " + privateKey << endl;
@@ -141,19 +202,23 @@ void GpsrSecureSybil::initialize(int stage)
         WATCH(neighborPositionTable);
     }
 
+
+    generateRSAKeys();
     // generatePrivateKey(privateKey);
     // generatePublicKey(privateKey);
 
 
     // AutoSeededRandomPool rng;
 
+
+    /*
     ECDSA<ECP, SHA256>::PrivateKey privkey;
     ECDSA<ECP, SHA256>::PublicKey publkey;
     privkey.Initialize(rng, ASN1::secp256k1());
     /*
     InvertibleRSAFunction privkey;
     privkey.Initialize(rng, 2048);
-    */
+
 
     string prvKey = "privateKeyECDSA/" + getSelfAddress().toIpv4().str();
     const char* ipPrivate = prvKey.c_str();
@@ -169,52 +234,20 @@ void GpsrSecureSybil::initialize(int stage)
     Base64Encoder pubkeysink(new FileSink(ipPublic));
     pubkey.DEREncode(pubkeysink);
     pubkeysink.MessageEnd();
-    */
+     */
 
     // generateECSAPrivKey(rng);
-
+    /*
     privkey.MakePublicKey( publkey );
     string publKey = "publicKeyECDSA/" + getSelfAddress().toIpv4().str();
     const char* ipPublic = publKey.c_str();
     Base64Encoder publkeysink(new FileSink(ipPublic));
     publkey.DEREncode(publkeysink);
     publkeysink.MessageEnd();
+     */
 }
-/*
-void generateRSAKeys(AutoSeededRandomPool rng) {
 
-    InvertibleRSAFunction privkey;
-    privkey.Initialize(rng, 2048);
 
-    string prvKey = "privateKey/" + getSelfAddress().toIpv4().str();
-    const char* ipPrivate = prvKey.c_str();
-    Base64Encoder privkeysink(new FileSink(ipPrivate));
-    privkey.DEREncode(privkeysink);
-    privkeysink.MessageEnd();
-
-    RSAFunction pubkey(privkey);
-
-    string pubKey = "publicKey/" + getSelfAddress().toIpv4().str();
-    const char* ipPublic = pubKey.c_str();
-    Base64Encoder pubkeysink(new FileSink(ipPublic));
-    pubkey.DEREncode(pubkeysink);
-    pubkeysink.MessageEnd();
-}
-*/
-
-/*
-void generateECDSAPrivKey(AutoSeededRandomPool rng) {
-    ECDSA<ECP, SHA256>::PrivateKey privkey;
-    privkey.Initialize(rng, ASN1::secp256k1());
-
-    string prvKey = "privateKeyECDSA/" + getSelfAddress().toIpv4().str();
-    const char* ipPrivate = prvKey.c_str();
-    Base64Encoder privkeysink(new FileSink(ipPrivate));
-    privkey.DEREncode(privkeysink);
-    privkeysink.MessageEnd();
-
-}
-*/
 
 void GpsrSecureSybil::handleMessageWhenUp(cMessage *message)
 {
@@ -261,7 +294,7 @@ void GpsrSecureSybil::processBeaconTimer()
     EV_DEBUG << "Processing beacon timer" << endl;
     const L3Address selfAddress = getSelfAddress();
     if (!selfAddress.isUnspecified()) {
-        sendBeacon(createBeaconECDSA());
+        sendBeacon(createBeacon());
         storeSelfPositionInGlobalRegistry();
     }
     scheduleBeaconTimer();
@@ -372,21 +405,16 @@ string GpsrSecureSybil::signECDSA(string content) {
 
     /*
      *
-    size_t siglen = signer.MaxSignatureLength();
-    string signature(siglen, 0x00);
-    //byte* signature = new byte[signer.SignatureLength()];
-
-
-    siglen = signer.SignMessage( rng, (const byte*) &content[0], content.size(), (byte*) &signature[0]);
-    // size_t siglen = signer.SignMessage(rng, (const byte*) content.c_str(), content.length(), signature);
-    signature.resize(siglen);
-
-
-    len = siglen;
-    string sig(reinterpret_cast<const char *>((const byte*)&signature[0]), signature.length());
-    // string sig(reinterpret_cast<const char *>(signature), siglen);
-
-    */
+        size_t siglen = signer.MaxSignatureLength();
+        string signature(siglen, 0x00);
+        //byte* signature = new byte[signer.SignatureLength()];
+        siglen = signer.SignMessage( rng, (const byte*) &content[0], content.size(), (byte*) &signature[0]);
+        // size_t siglen = signer.SignMessage(rng, (const byte*) content.c_str(), content.length(), signature);
+        signature.resize(siglen);
+        len = siglen;
+        string sig(reinterpret_cast<const char *>((const byte*)&signature[0]), signature.length());
+        // string sig(reinterpret_cast<const char *>(signature), siglen);
+     */
 
 
     string signature;
@@ -519,10 +547,10 @@ bool verifyECDSA(Packet *packet) {
     bool result = false;
 
     StringSource sss( signature+content, true /*pump all*/,
-        new SignatureVerificationFilter(
-            verifier,
-            new ArraySink( (byte*)&result, sizeof(result) )
-        ) // SignatureVerificationFilter
+            new SignatureVerificationFilter(
+                    verifier,
+                    new ArraySink( (byte*)&result, sizeof(result) )
+            ) // SignatureVerificationFilter
     );
 
     if(result)
@@ -534,16 +562,28 @@ bool verifyECDSA(Packet *packet) {
 
 
 
+void GpsrSecureSybil::processBeaconECDSA(Packet *packet) {
+    const auto& beacon = packet->peekAtFront<GpsrBeaconSecure>();
+    //verify
+    if(verifyECDSA(packet)){
+        EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << ", signature = " << beacon -> getSignature() << endl;
+        neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
+        EV_INFO << "Processing neighborPositionTable: address = " << neighborPositionTable << endl;
+
+    }
+    delete packet;
+}
+
 void GpsrSecureSybil::processBeacon(Packet *packet) {
     const auto& beacon = packet->peekAtFront<GpsrBeaconSecure>();
-        //verify
-        if(verifyECDSA(packet)){
-            EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << ", signature = " << beacon -> getSignature() << endl;
-            neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
-            EV_INFO << "Processing neighborPositionTable: address = " << neighborPositionTable << endl;
+    //verify
+    if(verify(packet)){
+        EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << ", signature = " << beacon -> getSignature() << endl;
+        neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
+        EV_INFO << "Processing neighborPositionTable: address = " << neighborPositionTable << endl;
 
-        }
-        delete packet;
+    }
+    delete packet;
 }
 
 
@@ -678,25 +718,6 @@ std::string GpsrSecureSybil::getHostName() const
     return host->getFullName();
 }
 
-L3Address GpsrSecureSybil::getSelfAddress() const
-{
-    //TODO choose self address based on a new 'interfaces' parameter
-    L3Address ret = routingTable->getRouterIdAsGeneric();
-#ifdef WITH_IPv6
-    if (ret.getType() == L3Address::IPv6) {
-        for (int i = 0; i < interfaceTable->getNumInterfaces(); i++) {
-            InterfaceEntry *ie = interfaceTable->getInterface(i);
-            if ((!ie->isLoopback())) {
-                if (auto ipv6Data = ie->findProtocolData<Ipv6InterfaceData>()) {
-                    ret = ipv6Data->getPreferredAddress();
-                    break;
-                }
-            }
-        }
-    }
-#endif
-    return ret;
-}
 
 L3Address GpsrSecureSybil::getSenderNeighborAddress(const Ptr<const NetworkHeaderBase>& networkHeader) const
 {

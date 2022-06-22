@@ -124,7 +124,9 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
     const Ptr<GpsrBeaconSecure> createBeaconECDSA();
     void sendBeacon(const Ptr<GpsrBeaconSecure>& beacon);
     void processBeacon(Packet *packet);
-    void preocessBeaconECDSAiptic(Packet *packet);
+    void processBeaconECDSA(Packet *packet);
+    void generateRSAKeys();
+    void generateECDSAKeys();
 
     // handling packets
     GpsrOption *createGpsrOption(L3Address destination);

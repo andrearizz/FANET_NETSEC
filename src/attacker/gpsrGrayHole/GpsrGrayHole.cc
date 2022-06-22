@@ -50,6 +50,9 @@
 namespace inet {
 namespace sec {
 
+int inviati2 = 0;
+int non_inviati2 = 0;
+
 Define_Module(GpsrGrayHole);
 
 static inline double determinant(double a1, double a2, double b1, double b2)
@@ -239,7 +242,7 @@ const Ptr<GpsrBeacon> GpsrGrayHole::createBeacon()
 void GpsrGrayHole::sendBeacon(const Ptr<GpsrBeacon>& beacon)
 {
     EV_INFO << "Sending beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
-    Packet *udpPacket = new Packet("GPSRBeacon");
+    Packet *udpPacket = new Packet("GPSRBeaconGH");
     udpPacket->insertAtBack(beacon);
     auto udpHeader = makeShared<UdpHeader>();
     udpHeader->setSourcePort(GPSR_UDP_PORT);
@@ -253,6 +256,7 @@ void GpsrGrayHole::sendBeacon(const Ptr<GpsrBeacon>& beacon)
     udpPacket->addTag<PacketProtocolTag>()->setProtocol(&Protocol::manet);
     udpPacket->addTag<DispatchProtocolReq>()->setProtocol(addressType->getNetworkProtocol());
     sendUdpPacket(udpPacket);
+
 }
 
 void GpsrGrayHole::processBeacon(Packet *packet)
@@ -353,7 +357,7 @@ Coord GpsrGrayHole::computeIntersectionInsideLineSegments(Coord& begin1, Coord& 
         double x = determinant(a, x1 - x2, b, x3 - x4) / c;
         double y = determinant(a, y1 - y2, b, y3 - y4) / c;
         if ((x <= x1 && x <= x2) || (x >= x1 && x >= x2) || (x <= x3 && x <= x4) || (x >= x3 && x >= x4) ||
-            (y <= y1 && y <= y2) || (y >= y1 && y >= y2) || (y <= y3 && y <= y4) || (y >= y3 && y >= y4))
+                (y <= y1 && y <= y2) || (y >= y1 && y >= y2) || (y <= y3 && y <= y4) || (y >= y3 && y >= y4))
             return Coord::NIL;
         else
             return Coord(x, y, 0);
@@ -473,7 +477,7 @@ std::vector<L3Address> GpsrGrayHole::getPlanarNeighbors() const
         else
             throw cRuntimeError("Unknown planarization mode");
         planarNeighbors.push_back(*it);
-      eliminate:;
+        eliminate:;
     }
     return planarNeighbors;
 }
@@ -501,9 +505,9 @@ std::vector<L3Address> GpsrGrayHole::getPlanarNeighborsCounterClockwise(double s
 L3Address GpsrGrayHole::findNextHop(const L3Address& destination, GpsrOption *gpsrOption)
 {
     switch (gpsrOption->getRoutingMode()) {
-        case GPSR_GREEDY_ROUTING: return findGreedyRoutingNextHop(destination, gpsrOption);
-        case GPSR_PERIMETER_ROUTING: return findPerimeterRoutingNextHop(destination, gpsrOption);
-        default: throw cRuntimeError("Unknown routing mode");
+    case GPSR_GREEDY_ROUTING: return findGreedyRoutingNextHop(destination, gpsrOption);
+    case GPSR_PERIMETER_ROUTING: return findPerimeterRoutingNextHop(destination, gpsrOption);
+    default: throw cRuntimeError("Unknown routing mode");
     }
 }
 
@@ -611,14 +615,17 @@ INetfilter::IHook::Result GpsrGrayHole::routeDatagram(Packet *datagram, GpsrOpti
     auto nextHop = findNextHop(destination, gpsrOption);
     datagram->addTagIfAbsent<NextHopAddressReq>()->setNextHopAddress(nextHop);
     double prob= ((double) rand() / (RAND_MAX));
-    double soglia = 0.65;
+    double soglia = 0.75;
     string ip = source.toIpv4().str();
     singleton = Singleton::GetInstance();
     if (nextHop.isUnspecified() || prob < soglia) {
         EV_WARN << "No next hop found, dropping packet: source = " << source << ", destination = " << destination << endl;
         if (displayBubbles && hasGUI())
             getContainingNode(host)->bubble("No next hop found, dropping packet");
-        singleton->insert(ip, 1);
+        //singleton->insert(ip, 1);
+        non_inviati2 = non_inviati2 + 1.0;
+        cout << "Attaccante" << endl;
+        singleton->send_received.at(getSelfAddress().toIpv4().str())[1]=non_inviati2;
         return DROP;
     }
     else {
@@ -626,7 +633,9 @@ INetfilter::IHook::Result GpsrGrayHole::routeDatagram(Packet *datagram, GpsrOpti
         gpsrOption->setSenderAddress(getSelfAddress());
         auto interfaceEntry = CHK(interfaceTable->findInterfaceByName(outputInterface));
         datagram->addTagIfAbsent<InterfaceReq>()->setInterfaceId(interfaceEntry->getInterfaceId());
-        singleton->insert(ip, 0);
+        //singleton->insert(ip, 0);
+        inviati2 = inviati2 + 1.0;
+        singleton->send_received.at(getSelfAddress().toIpv4().str())[0]=inviati2;
         return ACCEPT;
     }
 }
@@ -650,38 +659,38 @@ void GpsrGrayHole::setGpsrOptionOnNetworkDatagram(Packet *packet, const Ptr<cons
     else
 #endif
 #ifdef WITH_IPv6
-    if (dynamicPtrCast<const Ipv6Header>(networkHeader)) {
-        auto ipv6Header = removeNetworkProtocolHeader<Ipv6Header>(packet);
-        gpsrOption->setType(IPv6TLVOPTION_TLV_GPSR);
-        B oldHlen = ipv6Header->calculateHeaderByteLength();
-        Ipv6HopByHopOptionsHeader *hdr = check_and_cast_nullable<Ipv6HopByHopOptionsHeader *>(ipv6Header->findExtensionHeaderByTypeForUpdate(IP_PROT_IPv6EXT_HOP));
-        if (hdr == nullptr) {
-            hdr = new Ipv6HopByHopOptionsHeader();
-            hdr->setByteLength(B(8));
-            ipv6Header->addExtensionHeader(hdr);
+        if (dynamicPtrCast<const Ipv6Header>(networkHeader)) {
+            auto ipv6Header = removeNetworkProtocolHeader<Ipv6Header>(packet);
+            gpsrOption->setType(IPv6TLVOPTION_TLV_GPSR);
+            B oldHlen = ipv6Header->calculateHeaderByteLength();
+            Ipv6HopByHopOptionsHeader *hdr = check_and_cast_nullable<Ipv6HopByHopOptionsHeader *>(ipv6Header->findExtensionHeaderByTypeForUpdate(IP_PROT_IPv6EXT_HOP));
+            if (hdr == nullptr) {
+                hdr = new Ipv6HopByHopOptionsHeader();
+                hdr->setByteLength(B(8));
+                ipv6Header->addExtensionHeader(hdr);
+            }
+            hdr->getTlvOptionsForUpdate().appendTlvOption(gpsrOption);
+            hdr->setByteLength(B(utils::roundUp(2 + B(hdr->getTlvOptions().getLength()).get(), 8)));
+            B newHlen = ipv6Header->calculateHeaderByteLength();
+            ipv6Header->addChunkLength(newHlen - oldHlen);
+            insertNetworkProtocolHeader(packet, Protocol::ipv6, ipv6Header);
         }
-        hdr->getTlvOptionsForUpdate().appendTlvOption(gpsrOption);
-        hdr->setByteLength(B(utils::roundUp(2 + B(hdr->getTlvOptions().getLength()).get(), 8)));
-        B newHlen = ipv6Header->calculateHeaderByteLength();
-        ipv6Header->addChunkLength(newHlen - oldHlen);
-        insertNetworkProtocolHeader(packet, Protocol::ipv6, ipv6Header);
-    }
-    else
+        else
 #endif
 #ifdef WITH_NEXTHOP
-    if (dynamicPtrCast<const NextHopForwardingHeader>(networkHeader)) {
-        auto nextHopHeader = removeNetworkProtocolHeader<NextHopForwardingHeader>(packet);
-        gpsrOption->setType(NEXTHOP_TLVOPTION_TLV_GPSR);
-        int oldHlen = nextHopHeader->getTlvOptions().getLength();
-        nextHopHeader->getTlvOptionsForUpdate().appendTlvOption(gpsrOption);
-        int newHlen = nextHopHeader->getTlvOptions().getLength();
-        nextHopHeader->addChunkLength(B(newHlen - oldHlen));
-        insertNetworkProtocolHeader(packet, Protocol::nextHopForwarding, nextHopHeader);
-    }
-    else
+            if (dynamicPtrCast<const NextHopForwardingHeader>(networkHeader)) {
+                auto nextHopHeader = removeNetworkProtocolHeader<NextHopForwardingHeader>(packet);
+                gpsrOption->setType(NEXTHOP_TLVOPTION_TLV_GPSR);
+                int oldHlen = nextHopHeader->getTlvOptions().getLength();
+                nextHopHeader->getTlvOptionsForUpdate().appendTlvOption(gpsrOption);
+                int newHlen = nextHopHeader->getTlvOptions().getLength();
+                nextHopHeader->addChunkLength(B(newHlen - oldHlen));
+                insertNetworkProtocolHeader(packet, Protocol::nextHopForwarding, nextHopHeader);
+            }
+            else
 #endif
-    {
-    }
+            {
+            }
 }
 
 const GpsrOption *GpsrGrayHole::findGpsrOptionInNetworkDatagram(const Ptr<const NetworkHeaderBase>& networkHeader) const
@@ -695,26 +704,26 @@ const GpsrOption *GpsrGrayHole::findGpsrOptionInNetworkDatagram(const Ptr<const 
     else
 #endif
 #ifdef WITH_IPv6
-    if (auto ipv6Header = dynamicPtrCast<const Ipv6Header>(networkHeader)) {
-        const Ipv6HopByHopOptionsHeader *hdr = check_and_cast_nullable<const Ipv6HopByHopOptionsHeader *>(ipv6Header->findExtensionHeaderByType(IP_PROT_IPv6EXT_HOP));
-        if (hdr != nullptr) {
-            int i = (hdr->getTlvOptions().findByType(IPv6TLVOPTION_TLV_GPSR));
-            if (i >= 0)
-                gpsrOption = check_and_cast<const GpsrOption *>(hdr->getTlvOptions().getTlvOption(i));
+        if (auto ipv6Header = dynamicPtrCast<const Ipv6Header>(networkHeader)) {
+            const Ipv6HopByHopOptionsHeader *hdr = check_and_cast_nullable<const Ipv6HopByHopOptionsHeader *>(ipv6Header->findExtensionHeaderByType(IP_PROT_IPv6EXT_HOP));
+            if (hdr != nullptr) {
+                int i = (hdr->getTlvOptions().findByType(IPv6TLVOPTION_TLV_GPSR));
+                if (i >= 0)
+                    gpsrOption = check_and_cast<const GpsrOption *>(hdr->getTlvOptions().getTlvOption(i));
+            }
         }
-    }
-    else
+        else
 #endif
 #ifdef WITH_NEXTHOP
-    if (auto nextHopHeader = dynamicPtrCast<const NextHopForwardingHeader>(networkHeader)) {
-        int i = (nextHopHeader->getTlvOptions().findByType(NEXTHOP_TLVOPTION_TLV_GPSR));
-        if (i >= 0)
-            gpsrOption = check_and_cast<const GpsrOption *>(nextHopHeader->getTlvOptions().getTlvOption(i));
-    }
-    else
+            if (auto nextHopHeader = dynamicPtrCast<const NextHopForwardingHeader>(networkHeader)) {
+                int i = (nextHopHeader->getTlvOptions().findByType(NEXTHOP_TLVOPTION_TLV_GPSR));
+                if (i >= 0)
+                    gpsrOption = check_and_cast<const GpsrOption *>(nextHopHeader->getTlvOptions().getTlvOption(i));
+            }
+            else
 #endif
-    {
-    }
+            {
+            }
     return gpsrOption;
 }
 
@@ -729,26 +738,26 @@ GpsrOption *GpsrGrayHole::findGpsrOptionInNetworkDatagramForUpdate(const Ptr<Net
     else
 #endif
 #ifdef WITH_IPv6
-    if (auto ipv6Header = dynamicPtrCast<Ipv6Header>(networkHeader)) {
-        Ipv6HopByHopOptionsHeader *hdr = check_and_cast_nullable<Ipv6HopByHopOptionsHeader *>(ipv6Header->findExtensionHeaderByTypeForUpdate(IP_PROT_IPv6EXT_HOP));
-        if (hdr != nullptr) {
-            int i = (hdr->getTlvOptions().findByType(IPv6TLVOPTION_TLV_GPSR));
-            if (i >= 0)
-                gpsrOption = check_and_cast<GpsrOption *>(hdr->getTlvOptionsForUpdate().getTlvOptionForUpdate(i));
+        if (auto ipv6Header = dynamicPtrCast<Ipv6Header>(networkHeader)) {
+            Ipv6HopByHopOptionsHeader *hdr = check_and_cast_nullable<Ipv6HopByHopOptionsHeader *>(ipv6Header->findExtensionHeaderByTypeForUpdate(IP_PROT_IPv6EXT_HOP));
+            if (hdr != nullptr) {
+                int i = (hdr->getTlvOptions().findByType(IPv6TLVOPTION_TLV_GPSR));
+                if (i >= 0)
+                    gpsrOption = check_and_cast<GpsrOption *>(hdr->getTlvOptionsForUpdate().getTlvOptionForUpdate(i));
+            }
         }
-    }
-    else
+        else
 #endif
 #ifdef WITH_NEXTHOP
-    if (auto nextHopHeader = dynamicPtrCast<NextHopForwardingHeader>(networkHeader)) {
-        int i = (nextHopHeader->getTlvOptions().findByType(NEXTHOP_TLVOPTION_TLV_GPSR));
-        if (i >= 0)
-            gpsrOption = check_and_cast<GpsrOption *>(nextHopHeader->getTlvOptionsForUpdate().getTlvOptionForUpdate(i));
-    }
-    else
+            if (auto nextHopHeader = dynamicPtrCast<NextHopForwardingHeader>(networkHeader)) {
+                int i = (nextHopHeader->getTlvOptions().findByType(NEXTHOP_TLVOPTION_TLV_GPSR));
+                if (i >= 0)
+                    gpsrOption = check_and_cast<GpsrOption *>(nextHopHeader->getTlvOptionsForUpdate().getTlvOptionForUpdate(i));
+            }
+            else
 #endif
-    {
-    }
+            {
+            }
     return gpsrOption;
 }
 
@@ -840,4 +849,5 @@ void GpsrGrayHole::receiveSignal(cComponent *source, simsignal_t signalID, cObje
 }
 } //sec
 } // namespace inet
+
 

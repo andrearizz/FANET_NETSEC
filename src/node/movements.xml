@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movement>
+    <repeat>
+        <set speed="uniform(0,10)"/>
+        <turn angle="uniform(-30,30)"/>
+        <forward t="3"/>
+        <wait t = "20"/>
+    </repeat>
+</movement>
