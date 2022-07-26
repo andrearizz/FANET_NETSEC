@@ -28,10 +28,10 @@
 #include "inet/networklayer/contract/INetfilter.h"
 #include "inet/networklayer/contract/IRoutingTable.h"
 #include "inet/routing/base/RoutingProtocolBase.h"
-#include "host/gpsr/Gpsr_m.h"
-#include "host/gpsr/PositionTable.h"
+#include "../../host/gpsr/Gpsr_m.h"
+#include "../../host/gpsr/PositionTable.h"
+#include "../../PacketManager.h"
 #include "inet/transportlayer/udp/UdpHeader_m.h"
-#include "Singleton.h"
 
 namespace inet {
 namespace sec {
@@ -64,6 +64,8 @@ class INET_API GpsrGrayHole : public RoutingProtocolBase, public cListener, publ
         simtime_t maxJitter;
         simtime_t neighborValidityInterval;
         bool displayBubbles;
+        int inviati2;
+        int non_inviati2;
 
         // context
         cModule *host = nullptr;
@@ -82,7 +84,7 @@ class INET_API GpsrGrayHole : public RoutingProtocolBase, public cListener, publ
         cMessage *beaconTimer = nullptr;
         cMessage *purgeNeighborsTimer = nullptr;
         PositionTable neighborPositionTable;
-        Singleton* singleton;
+        PacketManager* pManager;
 
 
   protected:

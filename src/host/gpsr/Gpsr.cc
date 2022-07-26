@@ -206,6 +206,7 @@ void Gpsr::processPurgeNeighborsTimer()
 
 void Gpsr::sendUdpPacket(Packet *packet)
 {
+
     send(packet, "ipOut");
 }
 
@@ -225,7 +226,7 @@ const Ptr<GpsrBeacon> Gpsr::createBeacon()
     const auto& beacon = makeShared<GpsrBeacon>();
     beacon->setAddress(getSelfAddress());
     beacon->setPosition(mobility->getCurrentPosition());
-    beacon->setChunkLength(B(getSelfAddress().getAddressType()->getAddressByteLength() + positionByteLength));
+    beacon->setChunkLength(B(getSelfAddress().getAddressType()->getAddressByteLength() + positionByteLength + 90));
     return beacon;
 }
 
@@ -251,6 +252,7 @@ void Gpsr::sendBeacon(const Ptr<GpsrBeacon>& beacon)
 void Gpsr::processBeacon(Packet *packet)
 {
     const auto& beacon = packet->peekAtFront<GpsrBeacon>();
+    cout << beacon.get()->getChunkLength() << endl;
     EV_INFO << "Processing beacon: address = " << beacon->getAddress() << ", position = " << beacon->getPosition() << endl;
     neighborPositionTable.setPosition(beacon->getAddress(), beacon->getPosition());
     EV_INFO << "---------------Processing neighborPositionTable: address = " << neighborPositionTable << endl;

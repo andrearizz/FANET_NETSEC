@@ -67,7 +67,6 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
     simtime_t neighborValidityInterval;
     bool displayBubbles;
 
-
     // context
     cModule *host = nullptr;
     IMobility *mobility = nullptr;
@@ -89,11 +88,13 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
     GpsrSecureSybil();
     virtual ~GpsrSecureSybil();
 
-    void generatePrivateKey(CryptoPP::RSA::PrivateKey privateKey);
-    void generatePublicKey(CryptoPP::RSA::PrivateKey privateKey);
-    string sign(string content);
+    //METODI MITIGAZIONE
+    void generateKeyRSA();
+    void generateKeyECDSA();
+    string signRSA(string content);
     string signECDSA(string content);
-
+    bool verifyRSA(Packet *packet);
+    bool verifyECDSA(Packet *packet);
 
   protected:
     // module interface
@@ -121,12 +122,8 @@ class INET_API GpsrSecureSybil : public RoutingProtocolBase, public cListener, p
 
     // handling beacons
     const Ptr<GpsrBeaconSecure> createBeacon();
-    const Ptr<GpsrBeaconSecure> createBeaconECDSA();
     void sendBeacon(const Ptr<GpsrBeaconSecure>& beacon);
     void processBeacon(Packet *packet);
-    void processBeaconECDSA(Packet *packet);
-    void generateRSAKeys();
-    void generateECDSAKeys();
 
     // handling packets
     GpsrOption *createGpsrOption(L3Address destination);

@@ -35,7 +35,7 @@ O = $(PROJECT_OUTPUT_DIR)/$(CONFIGNAME)/$(PROJECTRELATIVE_PATH)
 
 # Object files for local .cc, .msg and .sm files
 OBJS = \
-    $O/Singleton.o \
+    $O/PacketManager.o \
     $O/attacker/gpsrCoordinate/GpsrCoordinate.o \
     $O/attacker/gpsrCoordinateNormale/GpsrCoordinateNormale.o \
     $O/attacker/gpsrGrayHole/GpsrGrayHole.o \
@@ -45,6 +45,7 @@ OBJS = \
     $O/host/gpsr/PositionTable.o \
     $O/host/gpsrSecureGrayHole/GpsrSecureGrayHole.o \
     $O/host/gpsrSecureSybil/GpsrSecureSybil.o \
+    $O/node/StateBasedEpEnergyConsumerCustom.o \
     $O/host/gpsr/Gpsr_m.o
 
 # Message files

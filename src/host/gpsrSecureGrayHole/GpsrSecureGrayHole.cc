@@ -32,7 +32,7 @@
 #include "inet/networklayer/common/NextHopAddressTag_m.h"
 #include "inet/networklayer/contract/IInterfaceTable.h"
 #include "GpsrSecureGrayHole.h"
-#include "Singleton.h"
+#include "../../PacketManager.h"
 
 #ifdef WITH_IPv4
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
@@ -50,9 +50,6 @@
 namespace inet {
 namespace sec {
 
-
-int inviati=0;
-int non_inviati=0;
 
 
 Define_Module(GpsrSecureGrayHole);
@@ -72,8 +69,8 @@ GpsrSecureGrayHole::~GpsrSecureGrayHole()
 {
     cancelAndDelete(beaconTimer);
     cancelAndDelete(purgeNeighborsTimer);
-    singleton = Singleton::GetInstance();
-    singleton->send_received.clear();
+    pmanager = PacketManager::GetInstance();
+    pmanager->send_received.clear();
 }
 
 //
@@ -129,9 +126,12 @@ void GpsrSecureGrayHole::initialize(int stage)
         WATCH(neighborPositionTable);
     }
 
-    singleton = Singleton::GetInstance();
-    singleton -> send_received.insert({getSelfAddress().toIpv4().str(),{0,0,1}});
-    //singleton->send_received.at(getSelfAddress().toIpv4().str())[2]=1;
+    //INSERT IP HOST NELLA MAPPA
+    pmanager= PacketManager::GetInstance();
+    pmanager -> send_received.insert({getSelfAddress().toIpv4().str(),{0,0,1}});
+    inviati=0;
+    non_inviati=0;
+    sogliaTrustness=0.6;
 
 }
 
@@ -530,14 +530,16 @@ L3Address GpsrSecureGrayHole::findGreedyRoutingNextHop(const L3Address& destinat
     double bestDistance = (destinationPosition - selfPosition).length();
     L3Address bestNeighbor;
     std::vector<L3Address> neighborAddresses = neighborPositionTable.getAddresses();
-    singleton = Singleton::GetInstance();
+
+    // MITIGAZIONE GRAYHOLE
+    pmanager = PacketManager::GetInstance();
     for (auto& neighborAddress: neighborAddresses) {
         std::string ip = neighborAddress.toIpv4().str();
-        double trustness = singleton->trustness(ip);
+        double trustness = pmanager->trustness(ip);
         cout << "Trustness presa dal greedy: " << trustness << endl;
         Coord neighborPosition = neighborPositionTable.getPosition(neighborAddress);
         double neighborDistance = (destinationPosition - neighborPosition).length();
-        if (neighborDistance < bestDistance && trustness > 0.6) {
+        if (neighborDistance < bestDistance && trustness > sogliaTrustness) {
             bestDistance = neighborDistance;
             bestNeighbor = neighborAddress;
         }
@@ -554,10 +556,6 @@ L3Address GpsrSecureGrayHole::findGreedyRoutingNextHop(const L3Address& destinat
         return findPerimeterRoutingNextHop(destination, gpsrOption);
     }
     else{
-        std::string ip = bestNeighbor.toIpv4().str();
-        double trustness = singleton->trustness(ip);
-        std::string ipMio = getSelfAddress().toIpv4().str();
-        std::cout << "Il miglior vicino di "<< ipMio << " ha ip: " << ip << endl;
         return bestNeighbor;
     }
 }
@@ -589,14 +587,16 @@ L3Address GpsrSecureGrayHole::findPerimeterRoutingNextHop(const L3Address& desti
         auto neighborAngle = senderNeighborAddress.isUnspecified() ? getVectorAngle(destinationPosition - mobility->getCurrentPosition()) : getNeighborAngle(senderNeighborAddress);
         L3Address selectedNeighborAddress;
         std::vector<L3Address> neighborAddresses = getPlanarNeighborsCounterClockwise(neighborAngle);
-        singleton = Singleton::GetInstance();
+
+        //MITIGAZIONE GRAYHOLE
+        pmanager = PacketManager::GetInstance();
         for (auto& neighborAddress : neighborAddresses) {
             std::string ip = neighborAddress.toIpv4().str();
-            double trustness = singleton->trustness(ip);
+            double trustness = pmanager->trustness(ip);
             cout << "Trustness presa dal perimeter routing: " << trustness << endl;
             Coord neighborPosition = getNeighborPosition(neighborAddress);
             Coord intersection = computeIntersectionInsideLineSegments(perimeterRoutingStartPosition, destinationPosition, selfPosition, neighborPosition);
-            if (std::isnan(intersection.x) && trustness > 0.6) {
+            if (std::isnan(intersection.x) && trustness > sogliaTrustness) {
                 selectedNeighborAddress = neighborAddress;
                 break;
             }
@@ -620,10 +620,7 @@ L3Address GpsrSecureGrayHole::findPerimeterRoutingNextHop(const L3Address& desti
         else {
             if (gpsrOption->getCurrentFaceFirstReceiverAddress().isUnspecified())
                 gpsrOption->setCurrentFaceFirstReceiverAddress(selectedNeighborAddress);
-            std::string ip = selectedNeighborAddress.toIpv4().str();
-            double trustness = singleton->trustness(ip);
-            std::string ipMio = getSelfAddress().toIpv4().str();
-            std::cout << "Il miglior vicino di "<< ipMio << " ha ip: " << ip << endl;
+
             return selectedNeighborAddress;
         }
     }
@@ -642,14 +639,15 @@ INetfilter::IHook::Result GpsrSecureGrayHole::routeDatagram(Packet *datagram, Gp
     auto nextHop = findNextHop(destination, gpsrOption);
     datagram->addTagIfAbsent<NextHopAddressReq>()->setNextHopAddress(nextHop);
     string ip = source.toIpv4().str();
-    singleton = Singleton::GetInstance();
+    pmanager = PacketManager::GetInstance();
     if (nextHop.isUnspecified()) {
         EV_WARN << "No next hop found, dropping packet: source = " << source << ", destination = " << destination << endl;
         if (displayBubbles && hasGUI())
             getContainingNode(host)->bubble("No next hop found, dropping packet");
-        //singleton->insert(ip, 1);
+
+        //AGGIORNAMENTO MAPPA
         non_inviati = non_inviati + 1.0;
-        singleton->send_received.at(getSelfAddress().toIpv4().str())[1]=non_inviati;
+        pmanager->send_received.at(getSelfAddress().toIpv4().str())[1]=non_inviati;
         return DROP;
     }
     else {
@@ -657,9 +655,10 @@ INetfilter::IHook::Result GpsrSecureGrayHole::routeDatagram(Packet *datagram, Gp
         gpsrOption->setSenderAddress(getSelfAddress());
         auto interfaceEntry = CHK(interfaceTable->findInterfaceByName(outputInterface));
         datagram->addTagIfAbsent<InterfaceReq>()->setInterfaceId(interfaceEntry->getInterfaceId());
-        //singleton->insert(ip, 0);
+
+        //AGGIORNAMENTO MAPPA
         inviati = inviati + 1.0;
-        singleton->send_received.at(getSelfAddress().toIpv4().str())[0] = inviati;
+        pmanager->send_received.at(getSelfAddress().toIpv4().str())[0] = inviati;
         return ACCEPT;
     }
 }
@@ -873,5 +872,4 @@ void GpsrSecureGrayHole::receiveSignal(cComponent *source, simsignal_t signalID,
 }
 } //sec
 } // namespace inet
-
 

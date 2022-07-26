@@ -58,7 +58,8 @@
   ../../inet4/src/inet/common/packet/Packet.h \
   ../../inet4/src/inet/networklayer/contract/NetworkHeaderBase_m.h \
   ../../inet4/src/inet/networklayer/common/NextHopAddressTag_m.h \
-  host/gpsr/Gpsr.h ../../inet4/src/inet/common/geometry/common/Coord.h \
+  host/gpsr/Gpsr.h host/gpsr/../../PacketManager.h \
+  ../../inet4/src/inet/common/geometry/common/Coord.h \
   ../../inet4/src/inet/mobility/contract/IMobility.h \
   ../../inet4/src/inet/common/geometry/common/Quaternion.h \
   ../../inet4/src/inet/common/geometry/common/EulerAngles.h \
@@ -208,6 +209,8 @@
 ../../inet4/src/inet/networklayer/common/NextHopAddressTag_m.h:
 
 host/gpsr/Gpsr.h:
+
+host/gpsr/../../PacketManager.h:
 
 ../../inet4/src/inet/common/geometry/common/Coord.h:
 

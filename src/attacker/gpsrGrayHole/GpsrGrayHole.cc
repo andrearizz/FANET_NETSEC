@@ -32,7 +32,7 @@
 #include "inet/networklayer/common/NextHopAddressTag_m.h"
 #include "inet/networklayer/contract/IInterfaceTable.h"
 #include "GpsrGrayHole.h"
-#include "Singleton.h"
+#include "../../PacketManager.h"
 
 #ifdef WITH_IPv4
 #include "inet/networklayer/ipv4/Ipv4Header_m.h"
@@ -50,9 +50,6 @@
 namespace inet {
 namespace sec {
 
-int inviati2 = 0;
-int non_inviati2 = 0;
-
 Define_Module(GpsrGrayHole);
 
 static inline double determinant(double a1, double a2, double b1, double b2)
@@ -69,8 +66,8 @@ GpsrGrayHole::~GpsrGrayHole()
 {
     cancelAndDelete(beaconTimer);
     cancelAndDelete(purgeNeighborsTimer);
-    singleton = Singleton::GetInstance();
-    singleton->send_received.clear();
+    pManager = PacketManager::GetInstance();
+    pManager->send_received.clear();
 }
 
 //
@@ -123,8 +120,11 @@ void GpsrGrayHole::initialize(int stage)
         WATCH(neighborPositionTable);
     }
 
-    singleton = Singleton::GetInstance();
-    singleton -> send_received.insert({getSelfAddress().toIpv4().str(),{0,0,1}});
+    //INSERT IP ATTACCANTE NELLA MAPPA
+    inviati2 = 0;
+    non_inviati2 = 0;
+    pManager = PacketManager::GetInstance();
+    pManager -> send_received.insert({getSelfAddress().toIpv4().str(),{0,0,1}});
 }
 
 void GpsrGrayHole::handleMessageWhenUp(cMessage *message)
@@ -614,18 +614,20 @@ INetfilter::IHook::Result GpsrGrayHole::routeDatagram(Packet *datagram, GpsrOpti
     EV_INFO << "Finding next hop: source = " << source << ", destination = " << destination << endl;
     auto nextHop = findNextHop(destination, gpsrOption);
     datagram->addTagIfAbsent<NextHopAddressReq>()->setNextHopAddress(nextHop);
+
+    //ATTACCO GRAYHOLE
     double prob= ((double) rand() / (RAND_MAX));
     double soglia = 0.75;
     string ip = source.toIpv4().str();
-    singleton = Singleton::GetInstance();
+    pManager = PacketManager::GetInstance();
     if (nextHop.isUnspecified() || prob < soglia) {
         EV_WARN << "No next hop found, dropping packet: source = " << source << ", destination = " << destination << endl;
         if (displayBubbles && hasGUI())
             getContainingNode(host)->bubble("No next hop found, dropping packet");
-        //singleton->insert(ip, 1);
+        //AGGIORNA MAPPA PACKET MANAGER
         non_inviati2 = non_inviati2 + 1.0;
         cout << "Attaccante" << endl;
-        singleton->send_received.at(getSelfAddress().toIpv4().str())[1]=non_inviati2;
+        pManager->send_received.at(getSelfAddress().toIpv4().str())[1]=non_inviati2;
         return DROP;
     }
     else {
@@ -633,9 +635,9 @@ INetfilter::IHook::Result GpsrGrayHole::routeDatagram(Packet *datagram, GpsrOpti
         gpsrOption->setSenderAddress(getSelfAddress());
         auto interfaceEntry = CHK(interfaceTable->findInterfaceByName(outputInterface));
         datagram->addTagIfAbsent<InterfaceReq>()->setInterfaceId(interfaceEntry->getInterfaceId());
-        //singleton->insert(ip, 0);
+        //AGGIORNA MAPPA PACKET MANAGER
         inviati2 = inviati2 + 1.0;
-        singleton->send_received.at(getSelfAddress().toIpv4().str())[0]=inviati2;
+        pManager->send_received.at(getSelfAddress().toIpv4().str())[0]=inviati2;
         return ACCEPT;
     }
 }
@@ -847,7 +849,8 @@ void GpsrGrayHole::receiveSignal(cComponent *source, simsignal_t signalID, cObje
         // TODO: remove the neighbor
     }
 }
+
+
 } //sec
 } // namespace inet
-
 

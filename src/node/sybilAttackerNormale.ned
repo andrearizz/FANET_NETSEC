@@ -20,4 +20,5 @@ module SybilNormale extends GpsrRouterSybilNormale
 @node;
 @networkNode;
 @labels(node,wireless-node);
+@display("i=misc/drone,#FF0000,100");
 }

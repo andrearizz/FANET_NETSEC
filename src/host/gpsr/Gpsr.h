@@ -20,6 +20,7 @@
 #ifndef __INET_GPSR_H
 #define __INET_GPSR_H
 
+#include "../../PacketManager.h"
 #include "inet/common/INETDefs.h"
 #include "inet/common/geometry/common/Coord.h"
 #include "inet/common/packet/Packet.h"
@@ -31,7 +32,6 @@
 #include "Gpsr_m.h"
 #include "PositionTable.h"
 #include "inet/transportlayer/udp/UdpHeader_m.h"
-#include "Singleton.h"
 
 namespace inet {
 namespace sec {

@@ -71,10 +71,12 @@
   ../../inet4/src/inet/networklayer/contract/IRoute.h \
   ../../inet4/src/inet/routing/base/RoutingProtocolBase.h \
   ../../inet4/src/inet/common/lifecycle/OperationalBase.h \
-  ../../inet4/src/inet/common/lifecycle/ILifecycle.h host/gpsr/Gpsr_m.h \
+  ../../inet4/src/inet/common/lifecycle/ILifecycle.h \
+  attacker/gpsrGrayHole/../../host/gpsr/Gpsr_m.h \
   ../../inet4/src/inet/common/TlvOptions_m.h \
   ../../inet4/src/inet/common/geometry/Geometry_m.h host/gpsr/GpsrDefs.h \
-  host/gpsr/PositionTable.h \
+  attacker/gpsrGrayHole/../../host/gpsr/PositionTable.h \
+  attacker/gpsrGrayHole/../../PacketManager.h \
   ../../inet4/src/inet/transportlayer/udp/UdpHeader_m.h \
   ../../inet4/src/inet/transportlayer/common/CrcMode_m.h \
   ../../inet4/src/inet/transportlayer/contract/TransportHeaderBase_m.h \
@@ -235,7 +237,7 @@ attacker/gpsrGrayHole/GpsrGrayHole.h:
 
 ../../inet4/src/inet/common/lifecycle/ILifecycle.h:
 
-host/gpsr/Gpsr_m.h:
+attacker/gpsrGrayHole/../../host/gpsr/Gpsr_m.h:
 
 ../../inet4/src/inet/common/TlvOptions_m.h:
 
@@ -243,7 +245,9 @@ host/gpsr/Gpsr_m.h:
 
 host/gpsr/GpsrDefs.h:
 
-host/gpsr/PositionTable.h:
+attacker/gpsrGrayHole/../../host/gpsr/PositionTable.h:
+
+attacker/gpsrGrayHole/../../PacketManager.h:
 
 ../../inet4/src/inet/transportlayer/udp/UdpHeader_m.h:
 
